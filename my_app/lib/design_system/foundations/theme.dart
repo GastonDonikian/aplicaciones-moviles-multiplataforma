@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/foundations/typos.dart';
 
 final serManosTheme = ThemeData(
+    primarySwatch: SerManosColorFoundations.getMaterialColor(
+        SerManosColorFoundations.statusBarColor),
     textTheme: const TextTheme(
         displayLarge: TextStyle(
           fontFamily: SerManosTyposFoundations.familyHead1,

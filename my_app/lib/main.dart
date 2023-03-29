@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/design_system/foundations/colors.dart';
+import 'package:my_app/design_system/molecules/button_elevated_short.dart';
 
 void main() {
   runApp(const MyApp());
@@ -102,6 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            const ButtonElevatedShort(text: "Gasti")
           ],
         ),
       ),
