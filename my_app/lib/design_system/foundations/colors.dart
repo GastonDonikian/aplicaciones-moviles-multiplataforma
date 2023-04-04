@@ -11,6 +11,7 @@ class SerManosColorFoundations {
   static const buttonEnabledColor = SerManosColors.grey75;
   static const buttonDisabledColor = SerManosColors.grey25;
   static const textDisabledColor = SerManosColors.grey50;
+  static const defaultTextColor = SerManosColors.white;
   static const buttonActiveColor = SerManosColors.primary;
   static const buttonErrorColor = SerManosColors.error;
   static const buttonOverlayColor = SerManosColors.grey10;

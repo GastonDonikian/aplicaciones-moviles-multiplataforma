@@ -9,6 +9,8 @@ class CtaIconButton extends StatelessWidget {
       required this.buttonIcons,
       required this.onPressed});
 
+  final Color textColorActive = SerManosColorFoundations.buttonActiveColor;
+  final Color textColorDisabled = SerManosColorFoundations.textDisabledColor;
   final Color backgroundColorActive =
       SerManosColorFoundations.buttonActiveColor;
   final Color overlayColor = SerManosColorFoundations.buttonOverlayColor;
@@ -24,6 +26,15 @@ class CtaIconButton extends StatelessWidget {
         icon: Icon(buttonIcons['active']!.icon),
         label: Text(label),
         style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return textColorDisabled;
+              } else {
+                return textColorActive;
+              }
+            },
+          ),
           iconColor: MaterialStateProperty.resolveWith<Color?>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.disabled)) {

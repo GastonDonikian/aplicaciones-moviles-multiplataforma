@@ -4,6 +4,8 @@ import 'package:my_app/design_system/foundations/colors.dart';
 class CtaElevatedButton extends StatelessWidget {
   CtaElevatedButton({super.key, required this.label, required this.onPressed});
 
+  final Color textColorActive = SerManosColorFoundations.defaultTextColor;
+  final Color textColorDisabled = SerManosColorFoundations.textDisabledColor;
   final Color backgroundColorActive =
       SerManosColorFoundations.buttonActiveColor;
   final Color backgroundColorDisabled =
@@ -16,6 +18,15 @@ class CtaElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ButtonStyle(
+          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return textColorDisabled;
+              } else {
+                return textColorActive;
+              }
+            },
+          ),
           backgroundColor: MaterialStateProperty.resolveWith<Color?>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.disabled)) {
