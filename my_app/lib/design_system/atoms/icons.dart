@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 
@@ -152,6 +154,12 @@ class SerManosIcons {
     Icons.add,
     color: SerManosColorFoundations.buttonActiveColor,
   );
+
+  static const Map<String, Icon> addIcons = {
+    'enabled': addEnabled,
+    'disabled': addDisabled,
+    'active': addActive
+  };
 
   //Backwards Icon Filled
 

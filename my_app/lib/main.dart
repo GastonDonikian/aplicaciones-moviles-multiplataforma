@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/design_system/foundations/colors.dart';
-import 'package:my_app/design_system/molecules/button_elevated_short.dart';
+import 'package:my_app/design_system/atoms/icons.dart';
+import 'package:my_app/design_system/molecules/cta_elevated_button.dart';
+import 'package:my_app/design_system/molecules/cta_text_button.dart';
+import 'package:my_app/design_system/molecules/cta_icon_button.dart';
 
 void main() {
   runApp(const MyApp());
@@ -104,7 +106,14 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const ButtonElevatedShort(text: "Gasti")
+            CtaIconButton(
+                label: "Press me",
+                buttonIcons: SerManosIcons.addIcons,
+                onPressed: _incrementCounter),
+            CtaElevatedButton(
+                label: "Prees me too", onPressed: _incrementCounter),
+            CtaTextButton(
+                label: "And press me too", onPressed: _incrementCounter)
           ],
         ),
       ),

@@ -10,8 +10,11 @@ class SerManosColorFoundations {
   //button
   static const buttonEnabledColor = SerManosColors.grey75;
   static const buttonDisabledColor = SerManosColors.grey25;
+  static const textDisabledColor = SerManosColors.grey50;
   static const buttonActiveColor = SerManosColors.primary;
   static const buttonErrorColor = SerManosColors.error;
+  static const buttonOverlayColor = SerManosColors.grey10;
+  static const textButtonOverlayColor = SerManosColors.grey25;
 
   static MaterialColor getMaterialColor(Color color) {
     final int red = color.red;

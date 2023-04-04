@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 
-class ButtonElevatedShort extends StatelessWidget {
-  const ButtonElevatedShort({super.key, required this.text});
+class CtaTextButton extends StatelessWidget {
+  CtaTextButton({super.key, required this.label, required this.onPressed});
 
-  final Color foregroundColor = SerManosColorFoundations.buttonActiveColor;
-  final Color overlayColor = SerManosColorFoundations.buttonEnabledColor;
-  final Color disabledColor = SerManosColorFoundations.buttonDisabledColor;
-  final String text;
+  final Color textColorActive = SerManosColorFoundations.buttonActiveColor;
+  final Color textColorDisabled = SerManosColorFoundations.textDisabledColor;
+  final Color overlayColor = SerManosColorFoundations.textButtonOverlayColor;
+  final String label;
+  void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return TextButton(
         style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.all<Color>(
-              SerManosColorFoundations.getMaterialColor(foregroundColor)),
+          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+              if (states.contains(MaterialState.disabled)) {
+                return textColorDisabled;
+              } else {
+                return textColorActive;
+              }
+            },
+          ),
           overlayColor: MaterialStateProperty.resolveWith<Color?>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.hovered)) {
@@ -30,7 +38,9 @@ class ButtonElevatedShort extends StatelessWidget {
             },
           ),
         ),
-        onPressed: () {},
-        child: Text(text));
+        child: Text(label),
+        onPressed: () {
+          onPressed!();
+        });
   }
 }
