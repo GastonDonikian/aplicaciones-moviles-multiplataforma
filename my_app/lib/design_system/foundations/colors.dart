@@ -7,15 +7,26 @@ class SerManosColorFoundations {
   //status bar
   static const statusBarColor = SerManosColors.secondary90;
 
+  //icon
+  static const iconEnabledColor = SerManosColors.grey75;
+  static const iconDisabledColor = SerManosColors.grey25;
+  static const iconActiveColor = SerManosColors.primary;
+
   //button
   static const buttonEnabledColor = SerManosColors.grey75;
   static const buttonDisabledColor = SerManosColors.grey25;
-  static const textDisabledColor = SerManosColors.grey50;
-  static const defaultTextColor = SerManosColors.white;
   static const buttonActiveColor = SerManosColors.primary;
   static const buttonErrorColor = SerManosColors.error;
   static const buttonOverlayColor = SerManosColors.grey10;
   static const textButtonOverlayColor = SerManosColors.grey25;
+  static const textDisabledColor = SerManosColors.grey50;
+  static const defaultTextColor = SerManosColors.white;
+  static const iconButtonActiveColor = SerManosColors.white;
+  static const iconButtonDisabledColor = SerManosColors.grey25;
+
+  //tab
+  static const tabColor = SerManosColors.secondary100;
+  static const tabSelectedColor = SerManosColors.secondary200;
 
   static MaterialColor getMaterialColor(Color color) {
     final int red = color.red;

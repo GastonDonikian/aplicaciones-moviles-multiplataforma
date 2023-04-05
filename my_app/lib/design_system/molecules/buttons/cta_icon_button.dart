@@ -6,7 +6,7 @@ class CtaIconButton extends StatelessWidget {
   CtaIconButton(
       {super.key,
       required this.label,
-      required this.buttonIcons,
+      required this.buttonIcon,
       required this.onPressed});
 
   final Color textColorActive = SerManosColorFoundations.buttonActiveColor;
@@ -17,13 +17,13 @@ class CtaIconButton extends StatelessWidget {
   final Color backgroundColorDisabled =
       SerManosColorFoundations.buttonDisabledColor;
   final String label;
-  final Map<String, Icon> buttonIcons;
+  final IconData buttonIcon;
   void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-        icon: Icon(buttonIcons['active']!.icon),
+        icon: Icon(buttonIcon),
         label: Text(label),
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.resolveWith<Color?>(
@@ -39,10 +39,10 @@ class CtaIconButton extends StatelessWidget {
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.disabled)) {
                 return SerManosColorFoundations.getMaterialColor(
-                    SerManosColors.grey50);
+                    SerManosColorFoundations.iconButtonDisabledColor);
               }
               return SerManosColorFoundations.getMaterialColor(
-                  SerManosColors.white);
+                  SerManosColorFoundations.iconButtonActiveColor);
             },
           ),
           backgroundColor: MaterialStateProperty.resolveWith<Color?>(
