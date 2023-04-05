@@ -5,6 +5,8 @@ import 'package:my_app/design_system/molecules/buttons/cta_elevated_button.dart'
 import 'package:my_app/design_system/molecules/buttons/cta_text_button.dart';
 import 'package:my_app/design_system/molecules/buttons/cta_icon_button.dart';
 
+import 'design_system/molecules/inputs.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -96,12 +98,20 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
+            const CustomInput(
+              placeholder: 'placeholder',
+              label: 'label',
+              errorText: 'errorText',
+              errorIcon: SerManosIcons.errorIcon,
+              eraseIcon: SerManosIcons.closeIcon,
+              defaultIcon: SerManosIcons.searchIcon
+            ),
             CtaIconButton(
                 label: "Press me",
                 buttonIcon: SerManosIcons.addIcon,
                 onPressed: _incrementCounter),
             CtaElevatedButton(
-                label: "Prees me too", onPressed: _incrementCounter),
+                label: "Press me too", onPressed: _incrementCounter),
             CtaTextButton(
                 label: "And press me too", onPressed: _incrementCounter)
           ],
