@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/design_system/atoms/icons.dart';
 import 'package:my_app/design_system/foundations/theme.dart';
-import 'package:my_app/design_system/molecules/buttons/cta_elevated_button.dart';
-import 'package:my_app/design_system/molecules/buttons/cta_text_button.dart';
-import 'package:my_app/design_system/molecules/buttons/cta_icon_button.dart';
-
+import 'package:my_app/design_system/molecules/buttons.dart';
 import 'design_system/molecules/inputs.dart';
 
 void main() {
@@ -98,21 +95,20 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const CustomInput(
-              placeholder: 'placeholder',
-              label: 'label',
-              errorText: 'errorText',
-              errorIcon: SerManosIcons.errorIcon,
-              eraseIcon: SerManosIcons.closeIcon,
-              defaultIcon: SerManosIcons.searchIcon
-            ),
-            CtaIconButton(
+            // const CustomInput(
+            //     placeholder: 'placeholder',
+            //     label: 'label',
+            //     errorText: 'errorText',
+            //     errorIcon: SerManosIcons.errorIcon,
+            //     eraseIcon: SerManosIcons.closeIcon,
+            //     defaultIcon: SerManosIcons.searchIcon),
+            SerManosIconButton(
                 label: "Press me",
                 buttonIcon: SerManosIcons.addIcon,
                 onPressed: _incrementCounter),
-            CtaElevatedButton(
+            SerManosElevatedButton(
                 label: "Press me too", onPressed: _incrementCounter),
-            CtaTextButton(
+            SerManosTextButton(
                 label: "And press me too", onPressed: _incrementCounter)
           ],
         ),
