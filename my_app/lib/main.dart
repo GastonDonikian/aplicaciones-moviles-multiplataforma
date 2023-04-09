@@ -99,9 +99,9 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             const CustomInput(
-              placeholder: 'placeholder',
-              label: 'label',
-              errorText: 'errorText',
+              placeholder: 'Placeholder',
+              label: 'Label',
+              errorText: 'ErrorText',
               errorIcon: SerManosIcons.errorIcon,
               eraseIcon: SerManosIcons.closeIcon,
               defaultIcon: SerManosIcons.searchIcon
