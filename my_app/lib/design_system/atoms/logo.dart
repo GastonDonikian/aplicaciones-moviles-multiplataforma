@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class SerManosSquareLogo extends StatelessWidget {
-  final String path = '../assets/';
   final double widthImage;
 
   const SerManosSquareLogo({
@@ -12,7 +11,7 @@ class SerManosSquareLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget logoImage = Image.asset(
-      path,
+      'assets/square_logo.jpeg',
       width: widthImage,
       height: widthImage,
     );
@@ -21,20 +20,21 @@ class SerManosSquareLogo extends StatelessWidget {
 }
 
 class SerManosRectangleLogo extends StatelessWidget {
-  final String path = '../assets/rectangular_logo';
   final double widthImage;
+  final double heightImage;
 
   const SerManosRectangleLogo({
     Key? key,
     required this.widthImage,
+    required this.heightImage,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Widget logoImage = Image.asset(
-      path,
+      'assets/rectangular_logo.jpeg',
       width: widthImage,
-      height: widthImage,
+      height: heightImage,
     );
     return logoImage;
   }
