@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
+import 'package:my_app/design_system/foundations/texts.dart';
 
 class SerManosElevatedButton extends StatelessWidget {
   SerManosElevatedButton(
@@ -54,7 +55,10 @@ class SerManosElevatedButton extends StatelessWidget {
             },
           ),
         ),
-        child: Text(label),
+        child: SerManosTexts.button(
+          label,
+          color: textColorActive,
+        ),
         onPressed: () {
           onPressed!();
         });
@@ -83,7 +87,10 @@ class SerManosIconButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
         icon: Icon(buttonIcon),
-        label: Text(label),
+        label: SerManosTexts.button(
+          label,
+          color: textColorActive,
+        ),
         style: ButtonStyle(
           foregroundColor: MaterialStateProperty.resolveWith<Color?>(
             (Set<MaterialState> states) {
@@ -172,7 +179,10 @@ class SerManosTextButton extends StatelessWidget {
             },
           ),
         ),
-        child: Text(label),
+        child: SerManosTexts.button(
+          label,
+          color: textColorActive,
+        ),
         onPressed: () {
           onPressed!();
         });

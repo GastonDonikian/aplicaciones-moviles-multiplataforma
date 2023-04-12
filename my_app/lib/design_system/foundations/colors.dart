@@ -27,6 +27,7 @@ class SerManosColorFoundations {
   //tab
   static const tabColor = SerManosColors.secondary100;
   static const tabSelectedColor = SerManosColors.secondary200;
+  static const tabSelectedLineColor = SerManosColors.white;
 
   static MaterialColor getMaterialColor(Color color) {
     final int red = color.red;

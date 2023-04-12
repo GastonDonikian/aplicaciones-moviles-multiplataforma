@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/design_system/atoms/icons.dart';
-import 'package:my_app/design_system/foundations/theme.dart';
+import 'package:my_app/design_system/cells/app_bar.dart';
+import 'package:my_app/design_system/cells/tab_bar.dart';
+import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'design_system/molecules/inputs.dart';
 
@@ -16,7 +18,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: SerManosThemeData.serManosTheme,
+      theme: ThemeData(
+        primarySwatch: SerManosColorFoundations.getMaterialColor(
+            SerManosColorFoundations.statusBarColor),
+      ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -40,8 +45,22 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with SingleTickerProviderStateMixin {
   int _counter = 0;
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 3, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -63,62 +82,76 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+      appBar: SerManosAppBar(
+        customTabBar: SerManosTabBar(tabController: _tabController),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const CustomInput(
+      body: TabBarView(controller: _tabController, children: [
+        TestTab(counterFunction: _incrementCounter, counter: _counter),
+        const Icon(Icons.directions_transit),
+        const Icon(Icons.directions_bike),
+      ]),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _incrementCounter,
+      //   tooltip: 'Increment',
+      //   child: const Icon(Icons.add),
+      // ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+//ONLY FOR TESTING PURPOSE, will be deleted later
+class TestTab extends StatelessWidget {
+  TestTab({super.key, required this.counterFunction, required this.counter});
+
+  void Function()? counterFunction;
+  int counter;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      // Center is a layout widget. It takes a single child and positions it
+      // in the middle of the parent.
+      child: Column(
+        // Column is also a layout widget. It takes a list of children and
+        // arranges them vertically. By default, it sizes itself to fit its
+        // children horizontally, and tries to be as tall as its parent.
+        //
+        // Invoke "debug painting" (press "p" in the console, choose the
+        // "Toggle Debug Paint" action from the Flutter Inspector in Android
+        // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+        // to see the wireframe for each widget.
+        //
+        // Column has various properties to control how it sizes itself and
+        // how it positions its children. Here we use mainAxisAlignment to
+        // center the children vertically; the main axis here is the vertical
+        // axis because Columns are vertical (the cross axis would be
+        // horizontal).
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          const Text(
+            'You have pushed the button this many times:',
+          ),
+          Text(
+            '$counter',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const CustomInput(
               placeholder: 'Placeholder',
               label: 'Label',
               errorText: 'ErrorText',
               errorIcon: SerManosIcons.errorIcon,
               eraseIcon: SerManosIcons.closeIcon,
-              defaultIcon: SerManosIcons.searchIcon
-            ),
-            SerManosIconButton(
-                label: "Press me",
-                buttonIcon: SerManosIcons.addIcon,
-                onPressed: _incrementCounter),
-            SerManosElevatedButton(
-                label: "Press me too", onPressed: _incrementCounter),
-            SerManosTextButton(
-                label: "And press me too", onPressed: _incrementCounter)
-          ],
-        ),
+              defaultIcon: SerManosIcons.searchIcon),
+          SerManosIconButton(
+              label: "Press me",
+              buttonIcon: SerManosIcons.addIcon,
+              onPressed: counterFunction),
+          SerManosElevatedButton(
+              label: "Press me too", onPressed: counterFunction),
+          SerManosTextButton(
+              label: "And press me too", onPressed: counterFunction)
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
