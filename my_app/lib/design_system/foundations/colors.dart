@@ -29,6 +29,10 @@ class SerManosColorFoundations {
   static const tabSelectedColor = SerManosColors.secondary200;
   static const tabSelectedLineColor = SerManosColors.white;
 
+  //card
+  static const cardOverlineTextColor = SerManosColors.grey75;
+  static const cardTextColor = SerManosColors.black;
+
   static MaterialColor getMaterialColor(Color color) {
     final int red = color.red;
     final int green = color.green;

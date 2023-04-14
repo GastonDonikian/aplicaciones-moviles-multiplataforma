@@ -65,8 +65,8 @@ class SerManosElevatedButton extends StatelessWidget {
   }
 }
 
-class SerManosIconButton extends StatelessWidget {
-  SerManosIconButton(
+class SerManosIconTextButton extends StatelessWidget {
+  SerManosIconTextButton(
       {super.key,
       required this.label,
       required this.buttonIcon,
@@ -186,5 +186,28 @@ class SerManosTextButton extends StatelessWidget {
         onPressed: () {
           onPressed!();
         });
+  }
+}
+
+class SerManosIconButton extends StatelessWidget {
+  SerManosIconButton(
+      {super.key,
+      required this.icon,
+      required this.iconColor,
+      required this.onPressed});
+
+  final IconData icon;
+  final Color iconColor;
+  void Function()? onPressed;
+  bool toggle = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        onPressed: onPressed,
+        icon: Icon(
+          icon,
+          color: iconColor,
+        ));
   }
 }

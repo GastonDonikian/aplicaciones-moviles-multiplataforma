@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/design_system/atoms/icons.dart';
+import 'package:my_app/design_system/atoms/logo.dart';
 import 'package:my_app/design_system/cells/app_bar.dart';
+import 'package:my_app/design_system/cells/cards.dart';
 import 'package:my_app/design_system/cells/tab_bar.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
+import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'design_system/molecules/inputs.dart';
 
 void main() {
@@ -108,7 +111,8 @@ class TestTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return SerManosGridPadding(
+        child: Center(
       // Center is a layout widget. It takes a single child and positions it
       // in the middle of the parent.
       child: Column(
@@ -128,30 +132,34 @@ class TestTab extends StatelessWidget {
         // horizontal).
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const Text(
-            'You have pushed the button this many times:',
-          ),
-          Text(
-            '$counter',
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          const CustomInput(
-              placeholder: 'Placeholder',
-              label: 'Label',
-              errorText: 'ErrorText',
-              errorIcon: SerManosIcons.errorIcon,
-              eraseIcon: SerManosIcons.closeIcon,
-              defaultIcon: SerManosIcons.searchIcon),
-          SerManosIconButton(
-              label: "Press me",
-              buttonIcon: SerManosIcons.addIcon,
-              onPressed: counterFunction),
-          SerManosElevatedButton(
-              label: "Press me too", onPressed: counterFunction),
-          SerManosTextButton(
-              label: "And press me too", onPressed: counterFunction)
+          const SerManosVolunteerCard(
+              imagePath: 'assets/volunteer_card_1.png',
+              cardOverlineText: 'Accion Social',
+              cardText: 'Un Techo Para mi Pais'),
+          // const Text(
+          //   'You have pushed the button this many times:',
+          // ),
+          // Text(
+          //   '$counter',
+          //   style: Theme.of(context).textTheme.headlineMedium,
+          // ),
+          // const CustomInput(
+          //     placeholder: 'Placeholder',
+          //     label: 'Label',
+          //     errorText: 'ErrorText',
+          //     errorIcon: SerManosIcons.errorIcon,
+          //     eraseIcon: SerManosIcons.closeIcon,
+          //     defaultIcon: SerManosIcons.searchIcon),
+          // SerManosIconTextButton(
+          //     label: "Press me",
+          //     buttonIcon: SerManosIcons.addIcon,
+          //     onPressed: counterFunction),
+          // SerManosElevatedButton(
+          //     label: "Press me too", onPressed: counterFunction),
+          // SerManosTextButton(
+          //     label: "And press me too", onPressed: counterFunction)
         ],
       ),
-    );
+    ));
   }
 }

@@ -6,6 +6,8 @@ class SerManosColors {
   static const Color white = Color(0xFFFFFFFF);
   static const Color black = Color(0xFF191919);
   static const Color grey10 = Color(0xFFFAFAFA);
+  static const Color blackOpacity15 = Color(0x26000000);
+  static const Color blackOpacity30 = Color(0x4D000000);
   static const Color grey25 = Color(0xFFE0E0E0);
   static const Color grey50 = Color(0xFF9E9E9E);
   static const Color grey75 = Color(0xFF666666);
