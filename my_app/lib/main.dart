@@ -3,6 +3,7 @@ import 'package:my_app/design_system/atoms/icons.dart';
 import 'package:my_app/design_system/atoms/logo.dart';
 import 'package:my_app/design_system/cells/app_bar.dart';
 import 'package:my_app/design_system/cells/cards.dart';
+import 'package:my_app/design_system/cells/modal.dart';
 import 'package:my_app/design_system/cells/tab_bar.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
@@ -116,6 +117,18 @@ class TestTab extends StatelessWidget {
   void Function()? counterFunction;
   int counter;
 
+  onPressedShowModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: ((BuildContext context) {
+        return SerManosModal(
+            title: "Un Techo para mi Pais",
+            schedule: "Días sábados de 9.00 a 17.00 horas.",
+            location: "Caballito");
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SerManosGridPadding(
@@ -178,10 +191,11 @@ class TestTab extends StatelessWidget {
               label: "Press me",
               buttonIcon: SerManosIcons.addIcon,
               onPressed: counterFunction),
-          SerManosElevatedButton(
-              label: "Press me too", onPressed: counterFunction),
           SerManosTextButton(
-              label: "And press me too", onPressed: counterFunction)
+              label: "And press me too", onPressed: counterFunction),
+          SerManosElevatedButton(
+              label: "Press me to activate modal",
+              onPressed: () => onPressedShowModal(context)),
         ],
       ),
     ));

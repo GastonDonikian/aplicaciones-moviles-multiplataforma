@@ -4,6 +4,9 @@ import 'package:my_app/design_system/tokens/colors.dart';
 class SerManosColorFoundations {
   SerManosColorFoundations._();
 
+  //text
+  static const defaultTextColor = SerManosColors.white;
+
   //status bar
   static const statusBarColor = SerManosColors.secondary90;
 
@@ -20,7 +23,6 @@ class SerManosColorFoundations {
   static const buttonOverlayColor = SerManosColors.grey10;
   static const textButtonOverlayColor = SerManosColors.grey25;
   static const textDisabledColor = SerManosColors.grey50;
-  static const defaultTextColor = SerManosColors.white;
   static const iconButtonActiveColor = SerManosColors.white;
   static const iconButtonDisabledColor = SerManosColors.grey50;
 
@@ -33,6 +35,12 @@ class SerManosColorFoundations {
   static const cardOverlineTextColor = SerManosColors.grey75;
   static const cardTitleColor = SerManosColors.black;
   static const cardTextColor = SerManosColors.grey75;
+
+  //modal
+  static const modalBackgroundColor = SerManosColors.white;
+  static const modalHeadlineTextColor = SerManosColors.black;
+  static const modalSubtitleTextColor = SerManosColors.black;
+  static const modalBodyTextColor = SerManosColors.grey75;
 
   static MaterialColor getMaterialColor(Color color) {
     final int red = color.red;
