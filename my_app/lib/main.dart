@@ -6,6 +6,7 @@ import 'package:my_app/design_system/cells/cards.dart';
 import 'package:my_app/design_system/cells/tab_bar.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
+import 'package:my_app/design_system/molecules/status_bar.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'design_system/molecules/inputs.dart';
 
@@ -84,6 +85,12 @@ class _MyHomePageState extends State<MyHomePage>
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    // return SerManosStatusBar(
+    //   body: TestTab(
+    //     counterFunction: _incrementCounter,
+    //     counter: _counter,
+    //   ),
+    // );
     return Scaffold(
       appBar: SerManosAppBar(
         customTabBar: SerManosTabBar(tabController: _tabController),
@@ -132,32 +139,49 @@ class TestTab extends StatelessWidget {
         // horizontal).
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          const SerManosVolunteerCard(
-              imagePath: 'assets/volunteer_card_1.png',
-              cardOverlineText: 'Accion Social',
-              cardText: 'Un Techo Para mi Pais'),
-          // const Text(
-          //   'You have pushed the button this many times:',
+          // Padding(
+          //   padding: EdgeInsets.only(top: 8),
+          //   child: SerManosVolunteerCard(
+          //     imagePath: 'assets/volunteer_card_1.png',
+          //     cardOverlineText: 'Accion Social',
+          //     cardTitle: 'Un Techo Para mi Pais',
+          //     onPressedFav: () => {},
+          //     onPressedLocation: () => {},
+          //   ),
           // ),
-          // Text(
-          //   '$counter',
-          //   style: Theme.of(context).textTheme.headlineMedium,
+          // Padding(
+          //   padding: EdgeInsets.only(top: 8),
+          //   child: SerManosNewsCard(
+          //     imagePath: 'assets/news_card_1.png',
+          //     cardOverlineText: 'Reporte 2820',
+          //     cardTitle: 'Ser Donante Voluntario',
+          //     cardText:
+          //         'Desde el Hospital Centenario recalcan la importancia de la donación voluntaria de Sangre',
+          //     onPressed: () => {},
+          //   ),
           // ),
-          // const CustomInput(
-          //     placeholder: 'Placeholder',
-          //     label: 'Label',
-          //     errorText: 'ErrorText',
-          //     errorIcon: SerManosIcons.errorIcon,
-          //     eraseIcon: SerManosIcons.closeIcon,
-          //     defaultIcon: SerManosIcons.searchIcon),
-          // SerManosIconTextButton(
-          //     label: "Press me",
-          //     buttonIcon: SerManosIcons.addIcon,
-          //     onPressed: counterFunction),
-          // SerManosElevatedButton(
-          //     label: "Press me too", onPressed: counterFunction),
-          // SerManosTextButton(
-          //     label: "And press me too", onPressed: counterFunction)
+          const Text(
+            'You have pushed the button this many times:',
+          ),
+          Text(
+            '$counter',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          const CustomInput(
+              placeholder: 'Placeholder',
+              label: 'Label',
+              errorText: 'ErrorText',
+              errorIcon: SerManosIcons.errorIcon,
+              eraseIcon: SerManosIcons.closeIcon,
+              defaultIcon: SerManosIcons.searchIcon),
+          SerManosIconTextButton(
+              label: "Press me",
+              buttonIcon: SerManosIcons.addIcon,
+              onPressed: counterFunction),
+          SerManosElevatedButton(
+              label: "Press me too", onPressed: counterFunction),
+          SerManosTextButton(
+              label: "And press me too", onPressed: counterFunction)
         ],
       ),
     ));

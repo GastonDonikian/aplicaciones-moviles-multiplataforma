@@ -22,7 +22,7 @@ class SerManosColorFoundations {
   static const textDisabledColor = SerManosColors.grey50;
   static const defaultTextColor = SerManosColors.white;
   static const iconButtonActiveColor = SerManosColors.white;
-  static const iconButtonDisabledColor = SerManosColors.grey25;
+  static const iconButtonDisabledColor = SerManosColors.grey50;
 
   //tab
   static const tabColor = SerManosColors.secondary100;
@@ -31,7 +31,8 @@ class SerManosColorFoundations {
 
   //card
   static const cardOverlineTextColor = SerManosColors.grey75;
-  static const cardTextColor = SerManosColors.black;
+  static const cardTitleColor = SerManosColors.black;
+  static const cardTextColor = SerManosColors.grey75;
 
   static MaterialColor getMaterialColor(Color color) {
     final int red = color.red;

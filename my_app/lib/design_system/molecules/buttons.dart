@@ -4,7 +4,10 @@ import 'package:my_app/design_system/foundations/texts.dart';
 
 class SerManosElevatedButton extends StatelessWidget {
   SerManosElevatedButton(
-      {super.key, required this.label, required this.onPressed});
+      {super.key,
+      required this.label,
+      required this.onPressed,
+      this.disabled = false});
 
   final Color textColorActive = SerManosColorFoundations.defaultTextColor;
   final Color textColorDisabled = SerManosColorFoundations.textDisabledColor;
@@ -15,53 +18,56 @@ class SerManosElevatedButton extends StatelessWidget {
   final Color overlayColor = SerManosColorFoundations.buttonOverlayColor;
   final String label;
   void Function()? onPressed;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return textColorDisabled;
-              } else {
-                return textColorActive;
-              }
-            },
-          ),
-          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return SerManosColorFoundations.getMaterialColor(
-                    backgroundColorDisabled);
-              } else {
-                return SerManosColorFoundations.getMaterialColor(
-                    backgroundColorActive);
-              }
-            },
-          ),
-          overlayColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.hovered)) {
-                return SerManosColorFoundations.getMaterialColor(overlayColor)
-                    .withOpacity(0.04);
-              }
-              if (states.contains(MaterialState.focused) ||
-                  states.contains(MaterialState.pressed)) {
-                return SerManosColorFoundations.getMaterialColor(overlayColor)
-                    .withOpacity(0.12);
-              }
-              return null; // Defer to the widget's default.
-            },
-          ),
-        ),
-        child: SerManosTexts.button(
-          label,
-          color: textColorActive,
-        ),
-        onPressed: () {
-          onPressed!();
-        });
+      style: ElevatedButton.styleFrom(
+          backgroundColor:
+              disabled ? backgroundColorDisabled : backgroundColorActive),
+      // style: ButtonStyle(
+      //   foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+      //     (Set<MaterialState> states) {
+      //       if (states.contains(MaterialState.disabled)) {
+      //         return textColorDisabled;
+      //       } else {
+      //         return textColorActive;
+      //       }
+      //     },
+      //   ),
+      //   backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+      //     (Set<MaterialState> states) {
+      //       if (states.contains(MaterialState.disabled)) {
+      //         return SerManosColorFoundations.getMaterialColor(
+      //             backgroundColorDisabled);
+      //       } else {
+      //         return SerManosColorFoundations.getMaterialColor(
+      //             backgroundColorActive);
+      //       }
+      //     },
+      //   ),
+      //   overlayColor: MaterialStateProperty.resolveWith<Color?>(
+      //     (Set<MaterialState> states) {
+      //       if (states.contains(MaterialState.hovered)) {
+      //         return SerManosColorFoundations.getMaterialColor(overlayColor)
+      //             .withOpacity(0.04);
+      //       }
+      //       if (states.contains(MaterialState.focused) ||
+      //           states.contains(MaterialState.pressed)) {
+      //         return SerManosColorFoundations.getMaterialColor(overlayColor)
+      //             .withOpacity(0.12);
+      //       }
+      //       return null; // Defer to the widget's default.
+      //     },
+      //   ),
+      // ),
+      onPressed: disabled ? null : onPressed,
+      child: SerManosTexts.button(
+        label,
+        color: disabled ? textColorDisabled : textColorActive,
+      ),
+    );
   }
 }
 
@@ -70,7 +76,8 @@ class SerManosIconTextButton extends StatelessWidget {
       {super.key,
       required this.label,
       required this.buttonIcon,
-      required this.onPressed});
+      required this.onPressed,
+      this.disabled = false});
 
   final Color textColorActive = SerManosColorFoundations.defaultTextColor;
   final Color textColorDisabled = SerManosColorFoundations.textDisabledColor;
@@ -79,113 +86,98 @@ class SerManosIconTextButton extends StatelessWidget {
   final Color overlayColor = SerManosColorFoundations.buttonOverlayColor;
   final Color backgroundColorDisabled =
       SerManosColorFoundations.buttonDisabledColor;
+  final Color iconButtonActiveColor =
+      SerManosColorFoundations.iconButtonActiveColor;
+  final Color iconButtonDisabledColor =
+      SerManosColorFoundations.iconButtonDisabledColor;
   final String label;
   final IconData buttonIcon;
   void Function()? onPressed;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
-        icon: Icon(buttonIcon),
+        icon: Icon(
+          buttonIcon,
+          color: disabled ? iconButtonDisabledColor : iconButtonActiveColor,
+        ),
         label: SerManosTexts.button(
           label,
-          color: textColorActive,
+          color: disabled ? textColorDisabled : textColorActive,
         ),
-        style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return textColorDisabled;
-              } else {
-                return textColorActive;
-              }
-            },
-          ),
-          iconColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return SerManosColorFoundations.getMaterialColor(
-                    SerManosColorFoundations.iconButtonDisabledColor);
-              }
-              return SerManosColorFoundations.getMaterialColor(
-                  SerManosColorFoundations.iconButtonActiveColor);
-            },
-          ),
-          backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
-            if (states.contains(MaterialState.disabled)) {
-              return SerManosColorFoundations.getMaterialColor(
-                  backgroundColorDisabled);
-            } else {
-              return SerManosColorFoundations.getMaterialColor(
-                  backgroundColorActive);
-            }
-          }),
-          overlayColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.hovered)) {
-                return SerManosColorFoundations.getMaterialColor(overlayColor)
-                    .withOpacity(0.04);
-              }
-              if (states.contains(MaterialState.focused) ||
-                  states.contains(MaterialState.pressed)) {
-                return SerManosColorFoundations.getMaterialColor(overlayColor)
-                    .withOpacity(0.12);
-              }
-              return null; // Defer to the widget's default.
-            },
-          ),
-        ),
-        onPressed: () {
-          onPressed!();
-        });
+        style: ElevatedButton.styleFrom(
+            backgroundColor:
+                disabled ? backgroundColorDisabled : backgroundColorActive),
+        // style: ButtonStyle(
+        // backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+        //     (Set<MaterialState> states) {
+        //   if (states.contains(MaterialState.disabled)) {
+        //     return SerManosColorFoundations.getMaterialColor(
+        //         backgroundColorDisabled);
+        //   } else {
+        //     return SerManosColorFoundations.getMaterialColor(
+        //         backgroundColorActive);
+        //   }
+        // }),
+        // overlayColor: MaterialStateProperty.resolveWith<Color?>(
+        //   (Set<MaterialState> states) {
+        //     if (states.contains(MaterialState.hovered)) {
+        //       return SerManosColorFoundations.getMaterialColor(overlayColor)
+        //           .withOpacity(0.04);
+        //     }
+        //     if (states.contains(MaterialState.focused) ||
+        //         states.contains(MaterialState.pressed)) {
+        //       return SerManosColorFoundations.getMaterialColor(overlayColor)
+        //           .withOpacity(0.12);
+        //     }
+        //     return null; // Defer to the widget's default.
+        //   },
+        // ),
+        // ),
+        onPressed: disabled ? null : onPressed);
   }
 }
 
 class SerManosTextButton extends StatelessWidget {
-  SerManosTextButton({super.key, required this.label, required this.onPressed});
+  SerManosTextButton(
+      {super.key,
+      required this.label,
+      required this.onPressed,
+      this.disabled = false});
 
   final Color textColorActive = SerManosColorFoundations.buttonActiveColor;
   final Color textColorDisabled = SerManosColorFoundations.textDisabledColor;
   final Color overlayColor = SerManosColorFoundations.textButtonOverlayColor;
   final String label;
   void Function()? onPressed;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-        style: ButtonStyle(
-          foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.disabled)) {
-                return textColorDisabled;
-              } else {
-                return textColorActive;
-              }
-            },
-          ),
-          overlayColor: MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.hovered)) {
-                return SerManosColorFoundations.getMaterialColor(overlayColor)
-                    .withOpacity(0.04);
-              }
-              if (states.contains(MaterialState.focused) ||
-                  states.contains(MaterialState.pressed)) {
-                return SerManosColorFoundations.getMaterialColor(overlayColor)
-                    .withOpacity(0.12);
-              }
-              return null; // Defer to the widget's default.
-            },
-          ),
+      style: ButtonStyle(
+        overlayColor: MaterialStateProperty.resolveWith<Color?>(
+          (Set<MaterialState> states) {
+            if (states.contains(MaterialState.hovered)) {
+              return SerManosColorFoundations.getMaterialColor(overlayColor)
+                  .withOpacity(0.04);
+            }
+            if (states.contains(MaterialState.focused) ||
+                states.contains(MaterialState.pressed)) {
+              return SerManosColorFoundations.getMaterialColor(overlayColor)
+                  .withOpacity(0.12);
+            }
+            return null; // Defer to the widget's default.
+          },
         ),
-        child: SerManosTexts.button(
-          label,
-          color: textColorActive,
-        ),
-        onPressed: () {
-          onPressed!();
-        });
+      ),
+      onPressed: disabled ? null : onPressed,
+      child: SerManosTexts.button(
+        label,
+        color: disabled ? textColorDisabled : textColorActive,
+      ),
+    );
   }
 }
 
