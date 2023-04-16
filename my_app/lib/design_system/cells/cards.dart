@@ -13,7 +13,8 @@ class SerManosVolunteerCard extends StatelessWidget {
       required this.cardOverlineText,
       required this.cardTitle,
       required this.onPressedFav,
-      required this.onPressedLocation});
+      required this.onPressedLocation,
+      this.maxCardWidth = 328});
 
   final String imagePath;
   final String cardTitle;
@@ -23,11 +24,13 @@ class SerManosVolunteerCard extends StatelessWidget {
   final Color cardTitleColor = SerManosColorFoundations.cardTitleColor;
   void Function()? onPressedFav;
   void Function()? onPressedLocation;
+  final double maxCardWidth;
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        constraints: BoxConstraints(maxWidth: maxCardWidth),
         decoration: const BoxDecoration(
           color: SerManosColors.white,
           borderRadius: BorderRadius.only(
@@ -59,22 +62,22 @@ class SerManosVolunteerCard extends StatelessWidget {
               ),
             ),
           ]),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                padding: const EdgeInsets.only(left: 16),
-                child: Expanded(
-                  child: SerManosTexts.subtitle1(
-                    cardTitle,
-                    color: cardTitleColor,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.only(left: 16, bottom: 16),
+                child: SerManosTexts.subtitle1(
+                  cardTitle,
+                  color: cardTitleColor,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              Column(
-                children: [
-                  Row(
+            ),
+            Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Row(
                     children: [
                       SerManosIconButton(
                         icon: SerManosIcons.favoriteIconOutline,
@@ -82,23 +85,19 @@ class SerManosVolunteerCard extends StatelessWidget {
                         onPressed: onPressedFav,
                       ),
                       Padding(
-                          padding: const EdgeInsets.only(right: 16),
-                          child: SerManosIconButton(
-                            icon: SerManosIcons.locationIcon,
-                            iconColor: SerManosColorFoundations.iconActiveColor,
-                            onPressed: onPressedLocation,
-                          )),
+                        padding: const EdgeInsets.only(right: 16),
+                        child: SerManosIconButton(
+                          icon: SerManosIcons.locationIcon,
+                          iconColor: SerManosColorFoundations.iconActiveColor,
+                          onPressed: onPressedLocation,
+                        ),
+                      ),
                     ],
-                  )
-                ],
-              )
-            ]
-                .map((widget) => Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: widget,
-                    ))
-                .toList(),
-          ),
+                  ),
+                )
+              ],
+            )
+          ]),
         ]),
       ),
     );
@@ -112,7 +111,9 @@ class SerManosNewsCard extends StatelessWidget {
       required this.cardOverlineText,
       required this.cardTitle,
       required this.cardText,
-      required this.onPressed});
+      required this.onPressed,
+      this.maxCardWidth = 328,
+      this.maxTextSectionWidth = 194});
 
   void Function()? onPressed;
   final String imagePath;
@@ -123,11 +124,14 @@ class SerManosNewsCard extends StatelessWidget {
       SerManosColorFoundations.cardOverlineTextColor;
   final Color cardTitleColor = SerManosColorFoundations.cardTitleColor;
   final Color cardTextColor = SerManosColorFoundations.cardTextColor;
+  final double maxCardWidth;
+  final double maxTextSectionWidth;
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Container(
+        constraints: BoxConstraints(maxWidth: maxCardWidth),
         decoration: const BoxDecoration(
           color: SerManosColors.white,
           borderRadius: BorderRadius.only(
@@ -138,7 +142,6 @@ class SerManosNewsCard extends StatelessWidget {
           ),
           boxShadow: SerManosShadows.boxShadows2,
         ),
-        // child: Text("Hi"),
         child: IntrinsicHeight(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -154,67 +157,67 @@ class SerManosNewsCard extends StatelessWidget {
                   )
                 ],
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding:
-                            const EdgeInsets.only(top: 16, left: 8, right: 8),
-                        child: Expanded(
+              Container(
+                constraints: BoxConstraints(maxWidth: maxTextSectionWidth),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding:
+                              const EdgeInsets.only(top: 16, left: 8, right: 8),
                           child: SerManosTexts.overline(
                             cardOverlineText,
                             color:
                                 SerManosColorFoundations.cardOverlineTextColor,
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(left: 8, right: 8),
-                        child: SerManosTexts.subtitle1(
-                          cardTitle,
-                          color: SerManosColorFoundations.cardTitleColor,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(left: 8, right: 8),
-                        child: Expanded(
-                          child: SerManosTexts.body2(
-                            cardText,
-                            color: SerManosColorFoundations.cardTextColor,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 4,
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.only(left: 8, right: 8),
+                            child: SerManosTexts.subtitle1(
+                              cardTitle,
+                              color: SerManosColorFoundations.cardTitleColor,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 12, right: 16),
-                        child: SerManosTextButton(
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                                left: 8, right: 8, bottom: 10),
+                            child: SerManosTexts.body2(
+                              cardText,
+                              color: SerManosColorFoundations.cardTextColor,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 4,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        SerManosTextButton(
                             label: "Leer Más", onPressed: onPressed),
-                      )
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               )
             ],
           ),
