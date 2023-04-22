@@ -5,6 +5,7 @@ import 'package:my_app/design_system/cells/modal.dart';
 import 'package:my_app/design_system/cells/tab_bar.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/screens/apply.dart';
+import 'package:my_app/screens/news.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,8 +14,7 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   int _counter = 0;
   late TabController _tabController;
 
@@ -42,10 +42,10 @@ class _HomePageState extends State<HomePage>
       appBar: SerManosAppBar(
         customTabBar: SerManosTabBar(tabController: _tabController),
       ),
-      body: TabBarView(controller: _tabController, children: [
-        ApplyTab(counterFunction: _incrementCounter, counter: _counter),
-        const Icon(Icons.directions_transit),
-        const Icon(Icons.directions_bike),
+      body: TabBarView(controller: _tabController, children: const [
+        ApplyTab(),
+        Icon(Icons.directions_transit),
+        NewsTab(),
       ]),
     );
   }

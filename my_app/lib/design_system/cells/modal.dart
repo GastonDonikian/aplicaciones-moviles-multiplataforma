@@ -5,107 +5,108 @@ import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/tokens/shadows.dart';
 
 class SerManosModal extends StatelessWidget {
-  SerManosModal(
-      {super.key,
-      required this.title,
-      required this.schedule,
-      required this.location});
+  const SerManosModal({
+    super.key,
+    required this.title,
+    required this.schedule,
+    required this.location,
+    required this.onPressedCanceled,
+    required this.onPressedConfirmed,
+  });
 
   final String title;
   final String schedule;
   final String location;
-  void Function()? onPressedCanceled;
-  void Function()? onPressedConfirmed;
+  final void Function()? onPressedCanceled;
+  final void Function()? onPressedConfirmed;
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      child: Container(
-        constraints: const BoxConstraints(maxHeight: 182),
-        decoration: const BoxDecoration(
-          color: SerManosColorFoundations.modalBackgroundColor,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(2.0),
-            topRight: Radius.circular(2.0),
-            bottomLeft: Radius.circular(2.0),
-            bottomRight: Radius.circular(2.0),
-          ),
-          boxShadow: SerManosShadows.boxShadows3,
-        ),
-        alignment: Alignment.center,
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                  child: SerManosTexts.subtitle1(
-                    "Te estas por postular a",
-                    color: SerManosColorFoundations.modalSubtitleTextColor,
-                  ),
-                ),
-              ],
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              color: SerManosColorFoundations.modalBackgroundColor,
+              borderRadius: BorderRadius.all(Radius.circular(2.0)),
+              boxShadow: SerManosShadows.boxShadows3,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+            padding: const EdgeInsets.all(16),
+            alignment: Alignment.center,
+            child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16),
-                  child: SerManosTexts.headline2(
-                    title,
-                    color: SerManosColorFoundations.modalHeadlineTextColor,
-                  ),
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SerManosTexts.subtitle1(
+                          "Te estas por postular a",
+                          color: SerManosColorFoundations.modalSubtitleTextColor,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SerManosTexts.headline2(
+                          title,
+                          color: SerManosColorFoundations.modalHeadlineTextColor,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: SerManosTexts.body1(
+                            schedule,
+                            color: SerManosColorFoundations.modalBodyTextColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: SerManosTexts.body1(
+                            location,
+                            color: SerManosColorFoundations.modalBodyTextColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-                  child: SerManosTexts.body1(
-                    schedule,
-                    color: SerManosColorFoundations.modalBodyTextColor,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 2),
-                  child: SerManosTexts.body1(
-                    location,
-                    color: SerManosColorFoundations.modalBodyTextColor,
-                  ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 24, right: 24, bottom: 20),
-                  child: SerManosTextButton(
-                    label: "Cancelar",
-                    onPressed: onPressedCanceled,
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 24, right: 24, bottom: 20),
-                  child: SerManosTextButton(
-                    label: "Confirmar",
-                    onPressed: onPressedConfirmed,
-                  ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: SerManosTextButton(
+                        label: "Cancelar",
+                        onPressed: onPressedCanceled,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: SerManosTextButton(
+                        label: "Confirmar",
+                        onPressed: onPressedConfirmed,
+                      ),
+                    )
+                  ],
                 )
               ],
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
