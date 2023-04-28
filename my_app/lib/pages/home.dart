@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/cells/app_bar.dart';
-import 'package:my_app/design_system/cells/cards.dart';
-import 'package:my_app/design_system/cells/modal.dart';
 import 'package:my_app/design_system/cells/tab_bar.dart';
-import 'package:my_app/design_system/tokens/grid_padding.dart';
-import 'package:my_app/screens/apply.dart';
-import 'package:my_app/screens/news.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final String location;
+  final Widget child;
+
+  const HomePage({Key? key, required this.location, required this.child}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
-  int _counter = 0;
   late TabController _tabController;
+
+  final tabs = [
+    {'path': 'home', 'title': 'Postularse'},
+    {'path': 'profile', 'title': 'Mi perfil'},
+    {'path': 'news', 'title': 'Novedades'},
+  ];
 
   @override
   void initState() {
@@ -30,23 +34,15 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     _tabController.dispose();
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  void _tap(int index) => context.go('/${tabs[index]['path']}');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SerManosAppBar(
-        customTabBar: SerManosTabBar(tabController: _tabController),
-      ),
-      body: TabBarView(controller: _tabController, children: const [
-        ApplyTab(),
-        Icon(Icons.directions_transit),
-        NewsTab(),
-      ]),
-    );
+        appBar: SerManosAppBar(
+          customTabBar: SerManosTabBar(
+              tabController: _tabController, onPressed: _tap, tabsTitle: tabs.map((t) => t['title']!).toList()),
+        ),
+        body: widget.child);
   }
 }

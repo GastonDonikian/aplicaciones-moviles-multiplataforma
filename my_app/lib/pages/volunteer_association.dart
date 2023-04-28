@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/atoms/icons.dart';
 import 'package:my_app/design_system/cells/modal.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
@@ -10,8 +11,9 @@ import 'package:my_app/models/volunteer_association.dart';
 
 class VolunteerAssociationPage extends StatefulWidget {
   final VolunteerAssociation volunteerAssociation;
+  final String id;
 
-  const VolunteerAssociationPage({super.key, required this.volunteerAssociation});
+  const VolunteerAssociationPage({super.key, required this.volunteerAssociation, required this.id});
 
   @override
   State<VolunteerAssociationPage> createState() => _VolunteerAssociationPageState();
@@ -28,7 +30,7 @@ class _VolunteerAssociationPageState extends State<VolunteerAssociationPage> {
           title: volunteerAssociation.name,
           schedule: volunteerAssociation.schedule,
           location: volunteerAssociation.location,
-          onPressedCanceled: () => Navigator.pop(context),
+          onPressedCanceled: () => context.pop(),
           onPressedConfirmed: () {
             // TODOO: Implementar postulación
           },
@@ -58,7 +60,7 @@ class _VolunteerAssociationPageState extends State<VolunteerAssociationPage> {
             SerManosIcons.backIcon,
             color: Colors.white,
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.pop(),
         ),
       ),
       body: SafeArea(

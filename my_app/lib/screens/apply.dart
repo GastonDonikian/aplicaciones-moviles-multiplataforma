@@ -1,11 +1,11 @@
 //ONLY FOR TESTING PURPOSE, will be deleted later
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/atoms/icons.dart';
 import 'package:my_app/design_system/cells/cards.dart';
 import 'package:my_app/design_system/molecules/inputs.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/models/volunteer_association.dart';
-import 'package:my_app/pages/volunteer_association.dart';
 
 class ApplyTab extends StatelessWidget {
   const ApplyTab({super.key});
@@ -21,10 +21,7 @@ class ApplyTab extends StatelessWidget {
     ];
 
     void goToVolunteerAssociation(VolunteerAssociation volunteerAssociation) {
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => VolunteerAssociationPage(
-                volunteerAssociation: volunteerAssociation,
-              )));
+      context.goNamed("association", extra: volunteerAssociation, params: {"id": volunteerAssociation.name});
     }
 
     void onSearchEnter(String query) {
