@@ -73,4 +73,25 @@ class SerManosIcons {
 
   //Close Icon Filled
   static const IconData closeIcon = Icons.close;
+
+  //Person Icon Filled
+  static const IconData personIcon = Icons.person;
+
+  //Radio Button Checked
+  static const IconData radioButtonCheckedIcon = Icons.radio_button_checked;
+
+  //Radio Button Off
+  static const IconData radioButtonOffIcon = Icons.radio_button_off;
+
+  //Calendar Icon
+  static const IconData calendarIcon = Icons.calendar_month;
+
+  //Near Me Icon
+  static const IconData nearMeIcon = Icons.near_me;
+
+  //List Icon
+  static const IconData listIcon = Icons.list;
+
+  //Map Icon
+  static const IconData mapIcon = Icons.map;
 }
