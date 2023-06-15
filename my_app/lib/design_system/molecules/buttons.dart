@@ -153,7 +153,7 @@ class SerManosFloatingActionButton extends StatelessWidget {
       child: FloatingActionButton(
         onPressed: onPressed,
         backgroundColor: SerManosColors.primary10,
-        elevation: 14,
+        elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(4),
         ),
