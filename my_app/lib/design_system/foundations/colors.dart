@@ -17,6 +17,7 @@ class SerManosColorFoundations {
   static const personIconEnabledColor = SerManosColors.grey75;
   static const personIconColor = SerManosColors.secondary80;
   static const personIconActiveColor = SerManosColors.secondary200;
+  static const sectionHeaderIconColor = SerManosColors.white;
 
   //button
   static const buttonEnabledColor = SerManosColors.grey75;
