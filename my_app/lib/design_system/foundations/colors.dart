@@ -13,12 +13,12 @@ class SerManosColorFoundations {
   //icon
   static const iconEnabledColor = SerManosColors.grey75;
   static const iconDisabledColor = SerManosColors.grey25;
-  static const iconActiveColor = SerManosColors.primary;
+  static const iconActiveColor = SerManosColors.primary100;
 
   //button
   static const buttonEnabledColor = SerManosColors.grey75;
   static const buttonDisabledColor = SerManosColors.grey25;
-  static const buttonActiveColor = SerManosColors.primary;
+  static const buttonActiveColor = SerManosColors.primary100;
   static const buttonErrorColor = SerManosColors.error;
   static const buttonOverlayColor = SerManosColors.grey10;
   static const textButtonOverlayColor = SerManosColors.grey25;
@@ -41,6 +41,11 @@ class SerManosColorFoundations {
   static const modalHeadlineTextColor = SerManosColors.black;
   static const modalSubtitleTextColor = SerManosColors.black;
   static const modalBodyTextColor = SerManosColors.grey75;
+
+  //vacancy
+  static const vacancyEnabledColor = SerManosColors.secondary200;
+  static const vacancyDisabledColor = SerManosColors.secondary80;
+  static const vacancyColor = SerManosColors.grey75;
 
   static MaterialColor getMaterialColor(Color color) {
     final int red = color.red;
