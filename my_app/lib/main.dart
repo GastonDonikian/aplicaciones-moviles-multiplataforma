@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/services/analytics_service.dart';
-import 'package:my_app/services/auth_service.dart';
+import 'package:my_app/services/user_service.dart';
 import 'package:my_app/services/navigation_service.dart';
 
 import 'package:firebase_core/firebase_core.dart';
