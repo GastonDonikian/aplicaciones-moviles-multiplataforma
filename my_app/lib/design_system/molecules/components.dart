@@ -49,9 +49,10 @@ class SerManosVacancy extends StatelessWidget {
 }
 
 class SerManosAvatar extends StatelessWidget {
-  const SerManosAvatar({Key? key, required this.imageUrl, this.big = false}) : super(key: key);
+  const SerManosAvatar({Key? key, this.imageUrl, this.big = false})
+      : super(key: key);
 
-  final String imageUrl;
+  final String? imageUrl;
   final bool big;
 
   @override
@@ -62,9 +63,13 @@ class SerManosAvatar extends StatelessWidget {
         backgroundColor: Colors.transparent,
         radius: radius,
         child: ClipOval(
-          child: Image.network(
-            imageUrl,
-          ),
+          child: imageUrl == null
+              ? const Image(
+                  image: AssetImage("assets/profile_image.png"),
+                )
+              : Image.network(
+                  imageUrl!,
+                ),
         ));
   }
 }
