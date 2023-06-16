@@ -44,7 +44,6 @@ class ApplyTab extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(top: 32),
             child: ListView.separated(
-              // padding: EdgeInsets.symmetric(horizontal: 16),
               itemCount: volunteerAssociations.length,
               itemBuilder: (context, index) {
                 return SerManosGridPadding(
@@ -52,6 +51,7 @@ class ApplyTab extends StatelessWidget {
                     imagePath: volunteerAssociations[index].imagePath,
                     cardOverlineText: volunteerAssociations[index].associationType,
                     cardTitle: volunteerAssociations[index].name,
+                    vacancy: 10,
                     onPressedFav: () => {},
                     onPressedLocation: () => {},
                     onPressedImage: () => goToVolunteerAssociation(volunteerAssociations[index]),

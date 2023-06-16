@@ -114,15 +114,9 @@ class _VolunteerAssociationPageState extends State<VolunteerAssociationPage> {
                           ),
                         ],
                       ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: SerManosElevatedButton(
-                              label: 'Postularme',
-                              onPressed: () => onPressedShowModal(context, widget.volunteerAssociation),
-                            ),
-                          ),
-                        ],
+                      SerManosElevatedButton(
+                        label: 'Postularme',
+                        onPressed: () => onPressedShowModal(context, widget.volunteerAssociation),
                       ),
                     ],
                   ),

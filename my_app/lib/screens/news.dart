@@ -10,25 +10,31 @@ class NewsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     List<News> news = [myNews, myNews, myNews, myNews, myNews, myNews, myNews, myNews];
 
-    return Padding(
-      padding: const EdgeInsets.only(top: 32),
-      child: ListView.separated(
-        itemCount: news.length,
-        itemBuilder: (context, index) {
-          return SerManosGridPadding(
-            child: SerManosNewsCard(
-              imagePath: news[index].imagePath,
-              cardOverlineText: news[index].newspaper,
-              cardTitle: news[index].title,
-              cardText: news[index].text,
-              onPressed: () => {
-                // TODO: go to news detail
+    return Column(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 32),
+            child: ListView.separated(
+              itemCount: news.length,
+              itemBuilder: (context, index) {
+                return SerManosGridPadding(
+                  child: SerManosNewsCard(
+                    imagePath: news[index].imagePath,
+                    cardOverlineText: news[index].newspaper,
+                    cardTitle: news[index].title,
+                    cardText: news[index].text,
+                    onPressed: () => {
+                      // TODO: go to news detail
+                    },
+                  ),
+                );
               },
+              separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 24),
             ),
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 24),
-      ),
+          ),
+        ),
+      ],
     );
   }
 }
