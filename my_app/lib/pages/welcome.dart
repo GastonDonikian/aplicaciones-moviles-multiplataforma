@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/cells/app_bar.dart';
 import 'package:my_app/design_system/foundations/text_styles.dart';
+import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/molecules/status_bar.dart';
 import 'package:my_app/design_system/tokens/colors.dart';
@@ -39,13 +40,11 @@ class WelcomePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 48),
                   Row(
-                    children: const [
+                    children: [
                       Expanded(
-                        child: Text(
+                        child: SerManosTexts.subtitle1(
                           "Nunca subestimes tu habilidad para mejorar la vida de alguien.",
-                          style: SerManosTextStyles.subtitle1(
-                            color: SerManosColors.black,
-                          ),
+                          color: SerManosColors.black,
                           textAlign: TextAlign.center,
                         ),
                       ),

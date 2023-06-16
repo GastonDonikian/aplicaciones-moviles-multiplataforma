@@ -51,6 +51,13 @@ class SerManosColorFoundations {
   static const vacancyDisabledColor = SerManosColors.secondary80;
   static const vacancyColor = SerManosColors.grey75;
 
+  //input
+  static const inputDefaultColor = SerManosColors.grey75;
+  static const inputFocusColor = SerManosColors.secondary200;
+  static const inputSufficIconColor = SerManosColors.primary100;
+  static const inputErrorColor = SerManosColors.error;
+  static const inputDisabledColor = SerManosColors.grey50;
+
   static MaterialColor getMaterialColor(Color color) {
     final int red = color.red;
     final int green = color.green;

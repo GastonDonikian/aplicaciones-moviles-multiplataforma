@@ -1,49 +1,181 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/foundations/text_styles.dart';
+import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/tokens/colors.dart';
 import 'package:my_app/design_system/tokens/shadows.dart';
+import 'package:my_app/utils/validation_rules.dart';
 
 import '../atoms/icons.dart';
 
-class CustomInput extends StatelessWidget {
-  const CustomInput(
+//------------------ Generic Input ------------------//
+class CustomGenericInput extends StatefulWidget {
+  const CustomGenericInput(
       {super.key,
       required this.placeholder,
       required this.label,
-      required this.errorText,
-      required this.errorIcon,
-      required this.eraseIcon,
-      required this.defaultIcon});
+      required this.suffixIcon,
+      required this.validator,
+      required this.controller,
+      this.obscureText = false});
 
-  final String placeholder;
+  final String? placeholder;
   final String label;
-  final String errorText;
-  final IconData errorIcon;
-  final IconData eraseIcon;
-  final IconData defaultIcon;
+  final Widget? suffixIcon;
+  final Function(String?) validator;
+  final TextEditingController controller;
+  final bool obscureText;
+
+  @override
+  State<CustomGenericInput> createState() => _CustomGenericInputState();
+}
+
+class _CustomGenericInputState extends State<CustomGenericInput> {
+  FocusNode myFocusNode = FocusNode();
+  bool hasError = false;
+
+  @override
+  void initState() {
+    myFocusNode.addListener(() {
+      setState(() {});
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    bool hasError = false;
+    InputBorder? errorBorder = hasError
+        ? const OutlineInputBorder(borderSide: BorderSide(color: SerManosColorFoundations.inputErrorColor, width: 1))
+        : null;
+
     InputDecoration defaultDecoration = InputDecoration(
-      labelText: label,
-      hintText: placeholder,
-      suffixIcon: hasError ? const Icon(SerManosIcons.errorIcon) : const Icon(SerManosIcons.closeIcon),
-      errorText: hasError ? errorText : null,
-      border: const OutlineInputBorder(borderSide: BorderSide(color: SerManosColorFoundations.defaultTextColor)),
-      errorBorder: hasError
-          ? const OutlineInputBorder(borderSide: BorderSide(color: SerManosColorFoundations.buttonErrorColor))
-          : null,
+      labelText: widget.label,
+      hintText: widget.placeholder,
+      suffixIcon: buildSuffixIcon(hasError),
+      border:
+          const OutlineInputBorder(borderSide: BorderSide(color: SerManosColorFoundations.inputDefaultColor, width: 1)),
+      errorBorder: errorBorder,
+      focusColor: SerManosColorFoundations.inputFocusColor,
+      focusedBorder:
+          const OutlineInputBorder(borderSide: BorderSide(color: SerManosColorFoundations.inputFocusColor, width: 1)),
+      labelStyle: SerManosTextStyles.subtitle1(color: labelColor(hasError)),
+      floatingLabelBehavior: widget.placeholder != null ? FloatingLabelBehavior.always : FloatingLabelBehavior.auto,
+      disabledBorder: const OutlineInputBorder(
+          borderSide: BorderSide(color: SerManosColorFoundations.inputDisabledColor, width: 1)),
     );
 
     return TextFormField(
-      enabled: false,
+      focusNode: myFocusNode,
       decoration: defaultDecoration,
+      controller: widget.controller,
+      cursorColor: !hasError ? SerManosColorFoundations.inputFocusColor : SerManosColorFoundations.inputErrorColor,
+      obscureText: widget.obscureText,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      onChanged: (value) => setState(() {
+        hasError = widget.validator(value) != null;
+      }),
+      validator: (value) => widget.validator(value),
     );
+  }
+
+  Widget? buildSuffixIcon(bool hasError) {
+    if (hasError) {
+      return const Icon(SerManosIcons.errorIcon, color: SerManosColorFoundations.inputErrorColor);
+    } else {
+      return widget.suffixIcon;
+    }
+  }
+
+  Color labelColor(bool hasError) {
+    if (hasError) {
+      return SerManosColorFoundations.inputErrorColor;
+    } else if (myFocusNode.hasFocus) {
+      return SerManosColorFoundations.inputFocusColor;
+    } else {
+      return SerManosColorFoundations.inputDefaultColor;
+    }
   }
 }
 
+//------------------ Text Input ------------------//
+class CustomTextInput extends StatefulWidget {
+  const CustomTextInput(
+      {super.key, required this.placeholder, required this.label, required this.validator, required this.controller});
+
+  final String? placeholder;
+  final String label;
+  final Function(String?) validator;
+  final TextEditingController controller;
+
+  @override
+  State<CustomTextInput> createState() => _CustomTextInputState();
+}
+
+class _CustomTextInputState extends State<CustomTextInput> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomGenericInput(
+      placeholder: widget.placeholder,
+      label: widget.label,
+      suffixIcon: null,
+      validator: widget.validator,
+      controller: widget.controller,
+    );
+  }
+}
+//------------------ END Text Input ------------------//
+
+//------------------ Password Input ------------------//
+class CustomPasswordInput extends StatefulWidget {
+  const CustomPasswordInput({super.key, required this.placeholder, required this.label, required this.controller});
+
+  final String? placeholder;
+  final String label;
+  final TextEditingController controller;
+
+  @override
+  State<CustomPasswordInput> createState() => _CustomPasswordInputState();
+}
+
+class _CustomPasswordInputState extends State<CustomPasswordInput> {
+  bool isPasswordVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomGenericInput(
+      placeholder: widget.placeholder,
+      label: widget.label,
+      suffixIcon: SerManosIconButton(
+        icon: isPasswordVisible ? SerManosIcons.visibilityIconSharp : SerManosIcons.visibilityOffIcon,
+        iconColor: SerManosColorFoundations.inputDefaultColor,
+        onPressed: () => setState(() => isPasswordVisible = !isPasswordVisible),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "Campo requerido";
+        } else if (!isValidPassword(value)) {
+          return "La contraseña debe tener al menos 6 caracteres";
+        }
+        return null;
+      },
+      controller: widget.controller,
+      obscureText: !isPasswordVisible,
+    );
+  }
+}
+//------------------ END Password Input ------------------//
+
+//------------------ Search Input ------------------//
 class CustomSearchInput extends StatefulWidget {
   const CustomSearchInput({
     super.key,
@@ -117,3 +249,4 @@ class _CustomSearchInputState extends State<CustomSearchInput> {
     );
   }
 }
+//------------------ END Search Input ------------------//
