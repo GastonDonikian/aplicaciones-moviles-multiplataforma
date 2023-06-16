@@ -2,14 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/services/analytics_service.dart';
+import 'package:my_app/services/auth_service.dart';
 import 'package:my_app/services/navigation_service.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-final analyticsService = Analytics();
-
+final analyticsService = AnalyticsService();
+final authService = AuthenticationService();
 void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
