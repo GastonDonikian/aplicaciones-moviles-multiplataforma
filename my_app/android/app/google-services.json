@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "69815020399",
+    "project_id": "sermanos-f8b2f",
+    "storage_bucket": "sermanos-f8b2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:69815020399:android:69e0698aec0a851c72d69a",
+        "android_client_info": {
+          "package_name": "com.example.my_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "69815020399-rd3gclsnnnhj1jfemkua0a513cs9a5j8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeHzsSiFEZLL_LznRAq9NwOsk4-HLBMDQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "69815020399-rd3gclsnnnhj1jfemkua0a513cs9a5j8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "69815020399-1i71qbmmphfbut5t3sbqpaqvqdl4l5gg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.myApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
