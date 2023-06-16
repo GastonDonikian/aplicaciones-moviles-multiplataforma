@@ -6,11 +6,12 @@ import 'package:my_app/services/auth_service.dart';
 import 'package:my_app/services/navigation_service.dart';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:my_app/services/news_service.dart';
 import 'firebase_options.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
-final analyticsService = AnalyticsService();
-final authService = AuthenticationService();
+import 'models/news.dart';
+
 void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

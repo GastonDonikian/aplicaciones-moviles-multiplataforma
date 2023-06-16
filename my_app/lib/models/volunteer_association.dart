@@ -16,6 +16,17 @@ class VolunteerAssociation {
     required this.schedule,
     required this.description,
   });
+  Map<String, dynamic> toJson() {
+    return {
+      'imagePath': imagePath,
+      'associationType': associationType,
+      'name': name,
+      'schedule': schedule,
+      'location': location,
+      'address': address,
+      'description': description,
+    };
+  }
 
   factory VolunteerAssociation.fromJson(Map<String, dynamic> json) {
     return VolunteerAssociation(

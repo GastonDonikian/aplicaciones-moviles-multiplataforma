@@ -10,7 +10,14 @@ class News {
     required this.title,
     required this.text,
   });
-
+  Map<String, dynamic> toJson() {
+    return {
+      'imagePath': imagePath,
+      'newspaper': newspaper,
+      'title': title,
+      'text': text,
+    };
+  }
   factory News.fromJson(Map<String, dynamic> json) {
     return News(
       imagePath: json['imagePath'],
