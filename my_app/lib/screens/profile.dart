@@ -6,8 +6,10 @@ import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/molecules/components.dart';
 import 'package:my_app/design_system/tokens/colors.dart';
+import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/models/gender.dart';
 import 'package:my_app/models/volunteer.dart';
+import 'package:my_app/services/user_service.dart';
 
 class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
@@ -40,17 +42,15 @@ class _ProfileTabState extends State<ProfileTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _hasProfileCompleted
-          ? ProfileCompleted(
-              onPressed: changeProfile,
-              volunteer: dummyCompletedVolunteer,
-            )
-          : ProfileEmpty(
-              onPressed: changeProfile,
-              volunteer: dummyEmptyVolunteer,
-            ),
-    );
+    return _hasProfileCompleted
+        ? ProfileCompleted(
+            onPressed: changeProfile,
+            volunteer: dummyCompletedVolunteer,
+          )
+        : ProfileEmpty(
+            onPressed: changeProfile,
+            volunteer: dummyEmptyVolunteer,
+          );
   }
 }
 
@@ -63,74 +63,78 @@ class ProfileCompleted extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 173.5),
-            child: SerManosAvatar(
-              imageUrl: volunteer.imagePath,
-            ),
+    return SingleChildScrollView(
+      child: SerManosGridPadding(
+        child: Center(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 32),
+                child: SerManosAvatar(
+                  imageUrl: volunteer.imagePath,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 26),
+                child: SerManosTexts.overline(
+                  "Voluntario".toUpperCase(),
+                  color: SerManosColorFoundations.defaultOverlineColor,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: SerManosTexts.subtitle1(
+                  volunteer.name,
+                  color: SerManosColorFoundations.defaultBodyColor,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 2),
+                child: SerManosTexts.body1(
+                  volunteer.email,
+                  color: SerManosColorFoundations.linkTextColor,
+                ),
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              SerManosInformationCard(
+                cardTitle: "Información Personal",
+                information: {
+                  "Fecha de nacimiento": volunteer.birthDate.toString(),
+                  "Genero":
+                      volunteer.gender != null ? volunteer.gender!.value : ""
+                },
+              ),
+              const SizedBox(
+                height: 32,
+              ),
+              SerManosInformationCard(
+                cardTitle: "Datos de contacto",
+                information: {
+                  "Telefono": volunteer.phone != null ? volunteer.phone! : "",
+                  "E-Mail": volunteer.email
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 32),
+                child: SerManosElevatedButton(
+                  label: "Editar Perfil",
+                  onPressed: () {},
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: SerManosTextButton(
+                  label: "Cerrar Sesión",
+                  onPressed: () {},
+                  textColorActive: SerManosColorFoundations.buttonErrorColor,
+                ),
+              ),
+              SerManosTextButton(label: "Change profile", onPressed: onPressed)
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 26),
-            child: SerManosTexts.overline(
-              "Voluntario",
-              color: SerManosColorFoundations.defaultOverlineColor,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: SerManosTexts.subtitle1(
-              volunteer.name,
-              color: SerManosColorFoundations.defaultBodyColor,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 2),
-            child: SerManosTexts.body1(
-              volunteer.email,
-              color: SerManosColorFoundations.linkTextColor,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 32),
-            child: SerManosInformationCard(
-              cardTitle: "Información Personal",
-              information: {
-                "Fecha de nacimiento": volunteer.birthDate.toString(),
-                "Genero":
-                    volunteer.gender != null ? volunteer.gender!.value : ""
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 32),
-            child: SerManosInformationCard(
-              cardTitle: "Datos de contacto",
-              information: {
-                "Telefono": volunteer.phone != null ? volunteer.phone! : "",
-                "E-Mail": volunteer.email
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 147.5),
-            child: SerManosElevatedButton(
-              label: "Editar Perfil",
-              onPressed: () {},
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20),
-            child: SerManosTextButton(
-              label: "Cerrar Sesión",
-              onPressed: () {},
-              textColorActive: SerManosColorFoundations.buttonErrorColor,
-            ),
-          ),
-          SerManosTextButton(label: "Change profile", onPressed: onPressed)
-        ],
+        ),
       ),
     );
   }
@@ -145,44 +149,46 @@ class ProfileEmpty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 173.5),
-            child: SerManosAvatar(),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 26),
-            child: SerManosTexts.overline(
-              "Voluntario",
-              color: SerManosColorFoundations.defaultOverlineColor,
+    return SingleChildScrollView(
+      child: Center(
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.only(top: 173.5),
+              child: SerManosAvatar(),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: SerManosTexts.subtitle1(
-              volunteer.name,
-              color: SerManosColorFoundations.defaultBodyColor,
+            Padding(
+              padding: const EdgeInsets.only(top: 26),
+              child: SerManosTexts.overline(
+                "Voluntario",
+                color: SerManosColorFoundations.defaultOverlineColor,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: SerManosTexts.overline(
-              "¡Completá tu perfil para tener acceso a mejores oportunidades!",
-              color: SerManosColorFoundations.defaultOverlineColor,
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: SerManosTexts.subtitle1(
+                volunteer.name,
+                color: SerManosColorFoundations.defaultBodyColor,
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 147.5),
-            child: SerManosIconTextButton(
-              label: "Completar",
-              buttonIcon: SerManosIcons.addIcon,
-              onPressed: () {},
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: SerManosTexts.overline(
+                "¡Completá tu perfil para tener acceso a mejores oportunidades!",
+                color: SerManosColorFoundations.defaultOverlineColor,
+              ),
             ),
-          ),
-          SerManosTextButton(label: "Change profile", onPressed: onPressed)
-        ],
+            Padding(
+              padding: const EdgeInsets.only(top: 147.5),
+              child: SerManosIconTextButton(
+                label: "Completar",
+                buttonIcon: SerManosIcons.addIcon,
+                onPressed: () {},
+              ),
+            ),
+            SerManosTextButton(label: "Change profile", onPressed: onPressed)
+          ],
+        ),
       ),
     );
   }

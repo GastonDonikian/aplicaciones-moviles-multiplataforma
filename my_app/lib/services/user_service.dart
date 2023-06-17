@@ -22,6 +22,14 @@ class AuthenticationService {
     });
   }
 
+  Future<Volunteer?> getCurrentUser() async {
+    final currentUser = _authenticator.currentUser;
+    if (currentUser != null) {
+      return getUserById(currentUser.uid);
+    }
+    return null;
+  }
+
   Future<Volunteer?> getUserById(String userId) async {
     try {
       var userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
