@@ -6,6 +6,9 @@ class SerManosColorFoundations {
 
   //text
   static const defaultTextColor = SerManosColors.white;
+  static const defaultOverlineColor = SerManosColors.grey75;
+  static const defaultBodyColor = SerManosColors.black;
+  static const linkTextColor = SerManosColors.secondary200;
 
   //status bar
   static const statusBarColor = SerManosColors.secondary90;

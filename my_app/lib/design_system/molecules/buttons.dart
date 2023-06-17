@@ -5,12 +5,18 @@ import 'package:my_app/design_system/tokens/colors.dart';
 import 'package:my_app/design_system/tokens/shadows.dart';
 
 class SerManosElevatedButton extends StatelessWidget {
-  const SerManosElevatedButton({super.key, required this.label, required this.onPressed, this.disabled = false});
+  const SerManosElevatedButton(
+      {super.key,
+      required this.label,
+      required this.onPressed,
+      this.disabled = false});
 
   final Color textColorActive = SerManosColorFoundations.defaultTextColor;
   final Color textColorDisabled = SerManosColorFoundations.textDisabledColor;
-  final Color backgroundColorActive = SerManosColorFoundations.buttonActiveColor;
-  final Color backgroundColorDisabled = SerManosColorFoundations.buttonDisabledColor;
+  final Color backgroundColorActive =
+      SerManosColorFoundations.buttonActiveColor;
+  final Color backgroundColorDisabled =
+      SerManosColorFoundations.buttonDisabledColor;
   final Color overlayColor = SerManosColorFoundations.buttonOverlayColor;
   final String label;
   final void Function()? onPressed;
@@ -20,7 +26,8 @@ class SerManosElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: disabled ? backgroundColorDisabled : backgroundColorActive,
+        backgroundColor:
+            disabled ? backgroundColorDisabled : backgroundColorActive,
         minimumSize: const Size.fromHeight(44),
       ),
       onPressed: disabled ? null : onPressed,
@@ -43,11 +50,15 @@ class SerManosIconTextButton extends StatelessWidget {
 
   final Color textColorActive = SerManosColorFoundations.defaultTextColor;
   final Color textColorDisabled = SerManosColorFoundations.textDisabledColor;
-  final Color backgroundColorActive = SerManosColorFoundations.buttonActiveColor;
+  final Color backgroundColorActive =
+      SerManosColorFoundations.buttonActiveColor;
   final Color overlayColor = SerManosColorFoundations.buttonOverlayColor;
-  final Color backgroundColorDisabled = SerManosColorFoundations.buttonDisabledColor;
-  final Color iconButtonActiveColor = SerManosColorFoundations.iconButtonActiveColor;
-  final Color iconButtonDisabledColor = SerManosColorFoundations.iconButtonDisabledColor;
+  final Color backgroundColorDisabled =
+      SerManosColorFoundations.buttonDisabledColor;
+  final Color iconButtonActiveColor =
+      SerManosColorFoundations.iconButtonActiveColor;
+  final Color iconButtonDisabledColor =
+      SerManosColorFoundations.iconButtonDisabledColor;
   final String label;
   final IconData buttonIcon;
   final void Function()? onPressed;
@@ -66,7 +77,8 @@ class SerManosIconTextButton extends StatelessWidget {
           color: disabled ? textColorDisabled : textColorActive,
         ),
         style: ElevatedButton.styleFrom(
-          backgroundColor: disabled ? backgroundColorDisabled : backgroundColorActive,
+          backgroundColor:
+              disabled ? backgroundColorDisabled : backgroundColorActive,
           padding: big
               ? const EdgeInsets.symmetric(horizontal: 12, vertical: 14)
               : const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -77,15 +89,23 @@ class SerManosIconTextButton extends StatelessWidget {
 
 class SerManosButton extends StatelessWidget {
   const SerManosButton(
-      {super.key, required this.label, required this.onPressed, this.disabled = false, this.big = false});
+      {super.key,
+      required this.label,
+      required this.onPressed,
+      this.disabled = false,
+      this.big = false});
 
   final Color textColorActive = SerManosColorFoundations.defaultTextColor;
   final Color textColorDisabled = SerManosColorFoundations.textDisabledColor;
-  final Color backgroundColorActive = SerManosColorFoundations.buttonActiveColor;
+  final Color backgroundColorActive =
+      SerManosColorFoundations.buttonActiveColor;
   final Color overlayColor = SerManosColorFoundations.buttonOverlayColor;
-  final Color backgroundColorDisabled = SerManosColorFoundations.buttonDisabledColor;
-  final Color iconButtonActiveColor = SerManosColorFoundations.iconButtonActiveColor;
-  final Color iconButtonDisabledColor = SerManosColorFoundations.iconButtonDisabledColor;
+  final Color backgroundColorDisabled =
+      SerManosColorFoundations.buttonDisabledColor;
+  final Color iconButtonActiveColor =
+      SerManosColorFoundations.iconButtonActiveColor;
+  final Color iconButtonDisabledColor =
+      SerManosColorFoundations.iconButtonDisabledColor;
   final String label;
   final void Function()? onPressed;
   final bool disabled;
@@ -95,7 +115,8 @@ class SerManosButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: disabled ? backgroundColorDisabled : backgroundColorActive,
+        backgroundColor:
+            disabled ? backgroundColorDisabled : backgroundColorActive,
         padding: big
             ? const EdgeInsets.symmetric(horizontal: 12, vertical: 14)
             : const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -110,9 +131,14 @@ class SerManosButton extends StatelessWidget {
 }
 
 class SerManosTextButton extends StatelessWidget {
-  const SerManosTextButton({super.key, required this.label, required this.onPressed, this.disabled = false});
+  const SerManosTextButton(
+      {super.key,
+      required this.label,
+      required this.onPressed,
+      this.disabled = false,
+      this.textColorActive = SerManosColorFoundations.buttonActiveColor});
 
-  final Color textColorActive = SerManosColorFoundations.buttonActiveColor;
+  final Color textColorActive;
   final Color textColorDisabled = SerManosColorFoundations.textDisabledColor;
   final Color overlayColor = SerManosColorFoundations.textButtonOverlayColor;
   final String label;
@@ -126,10 +152,13 @@ class SerManosTextButton extends StatelessWidget {
         overlayColor: MaterialStateProperty.resolveWith<Color?>(
           (Set<MaterialState> states) {
             if (states.contains(MaterialState.hovered)) {
-              return SerManosColorFoundations.getMaterialColor(overlayColor).withOpacity(0.04);
+              return SerManosColorFoundations.getMaterialColor(overlayColor)
+                  .withOpacity(0.04);
             }
-            if (states.contains(MaterialState.focused) || states.contains(MaterialState.pressed)) {
-              return SerManosColorFoundations.getMaterialColor(overlayColor).withOpacity(0.12);
+            if (states.contains(MaterialState.focused) ||
+                states.contains(MaterialState.pressed)) {
+              return SerManosColorFoundations.getMaterialColor(overlayColor)
+                  .withOpacity(0.12);
             }
             return null; // Defer to the widget's default.
           },
@@ -145,7 +174,11 @@ class SerManosTextButton extends StatelessWidget {
 }
 
 class SerManosIconButton extends StatelessWidget {
-  SerManosIconButton({super.key, required this.icon, required this.iconColor, required this.onPressed});
+  SerManosIconButton(
+      {super.key,
+      required this.icon,
+      required this.iconColor,
+      required this.onPressed});
 
   final IconData icon;
   final Color iconColor;
