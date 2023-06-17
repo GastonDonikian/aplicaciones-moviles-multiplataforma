@@ -56,6 +56,7 @@ class SerManosTextStyles extends TextStyle {
           fontFamily: familyHead2,
           fontWeight: fwHead2,
           fontSize: sizeHead2,
+          height: 1.2,
           color: color ?? SerManosColors.white,
         );
 
@@ -64,6 +65,7 @@ class SerManosTextStyles extends TextStyle {
           fontFamily: familySub1,
           fontWeight: fwSub1,
           fontSize: sizeSub1,
+          height: 1.5,
           color: color ?? SerManosColors.white,
         );
   const SerManosTextStyles.body1({Color? color})
@@ -71,6 +73,7 @@ class SerManosTextStyles extends TextStyle {
           fontFamily: familyBody1,
           fontWeight: fwBody1,
           fontSize: sizeBody1,
+          height: 1.4,
           color: color ?? SerManosColors.white,
         );
 
@@ -79,6 +82,7 @@ class SerManosTextStyles extends TextStyle {
           fontFamily: familyBody2,
           fontWeight: fwBody2,
           fontSize: sizeBody2,
+          height: 1.3,
           color: color ?? SerManosColors.white,
         );
 
@@ -87,6 +91,7 @@ class SerManosTextStyles extends TextStyle {
           fontFamily: familyButton,
           fontWeight: fwButton,
           fontSize: sizeButton,
+          height: 1.4,
           color: color ?? SerManosColors.white,
         );
 
@@ -95,6 +100,7 @@ class SerManosTextStyles extends TextStyle {
           fontFamily: familyCaption,
           fontWeight: fwCaption,
           fontSize: sizeCaption,
+          height: 1.3,
           color: color ?? SerManosColors.white,
         );
 
@@ -103,6 +109,7 @@ class SerManosTextStyles extends TextStyle {
           fontFamily: familyOverline,
           fontWeight: fwOverline,
           fontSize: sizeOverline,
+          height: 1.6,
           color: color ?? SerManosColors.white,
         );
 }

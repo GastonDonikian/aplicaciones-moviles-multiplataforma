@@ -160,7 +160,6 @@ class SerManosNewsCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
                         Row(
                           children: [
                             Expanded(
@@ -172,7 +171,6 @@ class SerManosNewsCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 8),
                         Row(
                           children: [
                             Expanded(

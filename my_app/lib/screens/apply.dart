@@ -38,6 +38,7 @@ class ApplyTab extends StatelessWidget {
             eraseIcon: SerManosIcons.closeIcon,
             defaultIcon: SerManosIcons.searchIcon,
             onEnter: onSearchEnter,
+            onFilterPressed: () {},
           ),
         ),
         Expanded(
