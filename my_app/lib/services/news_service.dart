@@ -14,4 +14,5 @@ class NewsService {
   Future getAllNews() async {
     return await db.collection(collectionPath).get();
   }
+
 }

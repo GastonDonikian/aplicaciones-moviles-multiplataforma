@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/volunteer_association.dart';
 
 
-class NewsService {
+class VolunteerAssociationService {
   final db = FirebaseFirestore.instance;
   final collectionPath = 'volunteer_association';
 

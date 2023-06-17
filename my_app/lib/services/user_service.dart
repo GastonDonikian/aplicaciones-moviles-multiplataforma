@@ -51,4 +51,8 @@ class AuthenticationService {
     }
   }
 
+  void editUser(String userId, Map<String, dynamic> json) async {
+    await FirebaseFirestore.instance.collection('users').doc(userId).set(json);
+  }
+
 }
