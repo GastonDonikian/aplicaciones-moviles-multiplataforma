@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/foundations/text_styles.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/tokens/colors.dart';
 import 'package:my_app/design_system/tokens/shadows.dart';
 import 'package:my_app/utils/validation_rules.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import '../atoms/icons.dart';
 
@@ -12,12 +14,14 @@ import '../atoms/icons.dart';
 class CustomGenericInput extends StatefulWidget {
   const CustomGenericInput(
       {super.key,
-      required this.placeholder,
+      this.placeholder,
       required this.label,
-      required this.suffixIcon,
+      this.suffixIcon,
       required this.validator,
       required this.controller,
-      this.obscureText = false});
+      this.obscureText = false,
+      this.helperText,
+      this.inputFormatters});
 
   final String? placeholder;
   final String label;
@@ -25,6 +29,8 @@ class CustomGenericInput extends StatefulWidget {
   final Function(String?) validator;
   final TextEditingController controller;
   final bool obscureText;
+  final String? helperText;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   State<CustomGenericInput> createState() => _CustomGenericInputState();
@@ -51,6 +57,8 @@ class _CustomGenericInputState extends State<CustomGenericInput> {
     InputDecoration defaultDecoration = InputDecoration(
       labelText: widget.label,
       hintText: widget.placeholder,
+      helperText: myFocusNode.hasFocus ? widget.helperText : null,
+      helperStyle: const SerManosTextStyles.caption(color: SerManosColorFoundations.inputDefaultColor),
       suffixIcon: buildSuffixIcon(hasError),
       border:
           const OutlineInputBorder(borderSide: BorderSide(color: SerManosColorFoundations.inputDefaultColor, width: 1)),
@@ -61,16 +69,18 @@ class _CustomGenericInputState extends State<CustomGenericInput> {
       labelStyle: SerManosTextStyles.subtitle1(color: labelColor(hasError)),
       floatingLabelBehavior: widget.placeholder != null ? FloatingLabelBehavior.always : FloatingLabelBehavior.auto,
       disabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: SerManosColorFoundations.inputDisabledColor, width: 1)),
+        borderSide: BorderSide(color: SerManosColorFoundations.inputDisabledColor, width: 1),
+      ),
     );
 
     return TextFormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       focusNode: myFocusNode,
       decoration: defaultDecoration,
       controller: widget.controller,
       cursorColor: !hasError ? SerManosColorFoundations.inputFocusColor : SerManosColorFoundations.inputErrorColor,
       obscureText: widget.obscureText,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      inputFormatters: widget.inputFormatters,
       onChanged: (value) => setState(() {
         hasError = widget.validator(value) != null;
       }),
@@ -183,6 +193,7 @@ class CustomSearchInput extends StatefulWidget {
     required this.label,
     required this.eraseIcon,
     required this.defaultIcon,
+    required this.onFilterPressed,
     this.onEnter,
     this.onChanged,
   });
@@ -193,6 +204,7 @@ class CustomSearchInput extends StatefulWidget {
   final IconData defaultIcon;
   final void Function(String)? onEnter;
   final void Function(String)? onChanged;
+  final Function() onFilterPressed;
 
   @override
   State<CustomSearchInput> createState() => _CustomSearchInputState();
@@ -200,14 +212,6 @@ class CustomSearchInput extends StatefulWidget {
 
 class _CustomSearchInputState extends State<CustomSearchInput> {
   TextEditingController controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    controller.addListener(() {
-      setState(() {});
-    });
-  }
 
   void clear() {
     controller.clear();
@@ -217,20 +221,18 @@ class _CustomSearchInputState extends State<CustomSearchInput> {
   Widget build(BuildContext context) {
     InputDecoration defaultDecoration = InputDecoration(
       hintText: widget.placeholder,
-      suffixIcon: controller.text.isEmpty
-          ? Icon(widget.defaultIcon, color: SerManosColors.grey75)
-          : IconButton(
-              icon: Icon(widget.eraseIcon),
-              color: SerManosColors.grey75,
-              onPressed: clear,
-            ),
+      suffixIcon: SerManosIconButton(
+        icon: controller.text.isEmpty ? SerManosIcons.listIcon : widget.eraseIcon,
+        iconColor: controller.text.isEmpty ? SerManosColorFoundations.buttonActiveColor : SerManosColors.grey75,
+        onPressed: controller.text.isEmpty ? widget.onFilterPressed : clear,
+      ),
+      prefixIcon: Icon(widget.defaultIcon, color: SerManosColors.grey75),
       border: InputBorder.none,
       contentPadding: const EdgeInsets.only(top: 14, bottom: 12),
       hintStyle: const SerManosTextStyles.subtitle1(color: SerManosColors.grey75),
     );
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: const BoxDecoration(
         color: SerManosColors.white,
         borderRadius: BorderRadius.all(Radius.circular(2.0)),
@@ -250,3 +252,50 @@ class _CustomSearchInputState extends State<CustomSearchInput> {
   }
 }
 //------------------ END Search Input ------------------//
+
+//------------------ Date Input ------------------//
+class CustomDateInput extends StatefulWidget {
+  const CustomDateInput({
+    super.key,
+    required this.placeholder,
+    required this.label,
+    required this.controller,
+    required this.validator,
+  });
+
+  final String placeholder;
+  final String label;
+  final TextEditingController controller;
+  final Function(String?) validator;
+
+  @override
+  State<CustomDateInput> createState() => _CustomDateInputState();
+}
+
+class _CustomDateInputState extends State<CustomDateInput> {
+  var maskFormatter = MaskTextInputFormatter(
+    mask: '##/##/####',
+    filter: {"#": RegExp(r'[0-9]')},
+    type: MaskAutoCompletionType.lazy,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomGenericInput(
+      placeholder: widget.placeholder,
+      label: widget.label,
+      suffixIcon: const Icon(SerManosIcons.calendarIcon, color: SerManosColorFoundations.inputSufficIconColor),
+      validator: (value) {
+        var res = dateValidation(value);
+        if (res == null) {
+          return widget.validator(value);
+        }
+        return res;
+      },
+      controller: widget.controller,
+      helperText: "Día / Mes / Año",
+      inputFormatters: [maskFormatter],
+    );
+  }
+}
+//------------------ END Date Input ------------------//
