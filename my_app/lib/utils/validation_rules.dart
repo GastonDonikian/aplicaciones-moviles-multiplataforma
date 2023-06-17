@@ -12,6 +12,10 @@ bool isValidDate(String text) {
       .hasMatch(text);
 }
 
+bool isValidPhoneNumber(String text) {
+  return RegExp(r"^\+?[0-9]+$").hasMatch(text);
+}
+
 String? emailValidation(value) {
   if (value == null || value.isEmpty) {
     return 'Por favor ingresa tu email';
@@ -47,6 +51,15 @@ String? dateValidation(value) {
     return 'Por favor ingresa tu fecha de nacimiento';
   } else if (!isValidDate(value)) {
     return 'La fecha ingresada es invalida';
+  }
+  return null;
+}
+
+String? phoneNumberValidation(value) {
+  if (value == null || value.isEmpty) {
+    return 'Por favor ingresa tu número de teléfono';
+  } else if (!isValidPhoneNumber(value)) {
+    return 'El número ingresado es invalido';
   }
   return null;
 }

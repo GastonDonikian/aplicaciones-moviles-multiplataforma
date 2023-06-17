@@ -1,10 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_app/design_system/cells/forms.dart';
 import 'package:my_app/design_system/cells/registration_squeleton.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
-import 'package:my_app/design_system/molecules/inputs.dart';
-import 'package:my_app/utils/validation_rules.dart';
+import 'package:my_app/models/forms/login.dart';
 
 import '../design_system/foundations/colors.dart';
 import '../services/user_service.dart';
@@ -17,17 +17,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isValid = true;
+  bool isValid = false;
+  LogInInfo logInInfo = LogInInfo();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
   final userService = AuthenticationService();
-
 
   void onLoginPressed() {
     if (formKey.currentState!.validate()) {
-      var email = emailController.text;
-      var password = passwordController.text;
+      formKey.currentState!.save();
+      var email = logInInfo.email!;
+      var password = logInInfo.password!;
       userService.signIn(email, password).then((value) {
         GoRouter.of(context).go('/home');
       }).catchError((e) {
@@ -47,66 +46,36 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void validateForm() {
-    setState(() {
-      isValid = emailValidation(emailController.text) == null && passwordValidation(passwordController.text) == null;
-    });
-  }
-
-  @override
-  void initState() {
-    validateForm();
-    emailController.addListener(() {
-      validateForm();
-    });
-    passwordController.addListener(() {
-      validateForm();
-    });
-    super.initState();
+  void onValidationChanged(bool isValid) {
+    setState(() => this.isValid = isValid);
   }
 
   @override
   Widget build(BuildContext context) {
     return RegistrationLayout(
-        body: _LoginBody(formKey: formKey, emailController: emailController, passwordController: passwordController),
-        footer: _LoginFooter(
-          loginEnabled: isValid,
-          onLoginPressed: onLoginPressed,
-        ));
+      body: _LoginBody(
+        onValidationChanged: onValidationChanged,
+        logInInfo: logInInfo,
+        formKey: formKey,
+      ),
+      footer: _LoginFooter(loginEnabled: isValid, onLoginPressed: onLoginPressed),
+    );
   }
 }
 
 class _LoginBody extends StatelessWidget {
-  const _LoginBody({required this.formKey, required this.emailController, required this.passwordController});
+  const _LoginBody({required this.onValidationChanged, required this.logInInfo, required this.formKey});
 
+  final LogInInfo logInInfo;
   final GlobalKey<FormState> formKey;
-  final TextEditingController emailController;
-  final TextEditingController passwordController;
+  final Function(bool) onValidationChanged;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         const SizedBox(height: 32),
-        Form(
-          key: formKey,
-          child: Column(
-            children: [
-              CustomTextInput(
-                label: "Email",
-                placeholder: null,
-                controller: emailController,
-                validator: emailValidation,
-              ),
-              const SizedBox(height: 24),
-              CustomPasswordInput(
-                label: "Contraseña",
-                placeholder: null,
-                controller: passwordController,
-              ),
-            ],
-          ),
-        ),
+        SerManosLogInForm(onValidationChanged: onValidationChanged, logInInfo: logInInfo, formKey: formKey)
       ],
     );
   }
@@ -124,11 +93,7 @@ class _LoginFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SerManosElevatedButton(
-          label: 'Iniciar Sesión',
-          disabled: !loginEnabled,
-          onPressed: onLoginPressed,
-        ),
+        SerManosElevatedButton(label: 'Iniciar Sesión', disabled: !loginEnabled, onPressed: onLoginPressed),
         const SizedBox(height: 28),
         SerManosTextButton(label: "No tengo cuenta", onPressed: () => context.goNamed("signup")),
       ],

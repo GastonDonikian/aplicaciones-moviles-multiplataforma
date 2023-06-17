@@ -4,6 +4,7 @@ import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/molecules/components.dart';
+import 'package:my_app/design_system/molecules/inputs.dart';
 import 'package:my_app/design_system/tokens/colors.dart';
 import 'package:my_app/design_system/tokens/shadows.dart';
 
@@ -270,50 +271,42 @@ class SerManosCurrentVolunteeringCard extends StatelessWidget {
   }
 }
 
-class SerManosInputCard extends StatefulWidget {
-  const SerManosInputCard({super.key, required this.cardTitle, required this.options, required this.onChanged});
+class SerManosInputCard extends StatelessWidget {
+  const SerManosInputCard({
+    super.key,
+    required this.cardTitle,
+    required this.options,
+    required this.onChangedValidity,
+    required this.onSaved,
+  });
 
   final String cardTitle;
   final List<String> options;
-  final Function(String) onChanged;
-
-  @override
-  State<SerManosInputCard> createState() => _SerManosInputCardState();
-}
-
-class _SerManosInputCardState extends State<SerManosInputCard> {
-  String? selectedOption;
-
-  void onCheckboxChanged(String value) {
-    setState(() {
-      selectedOption = value;
-    });
-    widget.onChanged(value);
-  }
+  final Function(bool) onChangedValidity;
+  final Function(String?) onSaved;
 
   @override
   Widget build(BuildContext context) {
     return SerManosBasicCard(
-      cardTitle: widget.cardTitle,
+      cardTitle: cardTitle,
       child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-          child: Column(children: [
-            for (var option in widget.options)
-              Row(children: [
-                Checkbox(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  value: selectedOption == option,
-                  fillColor: MaterialStateProperty.all(SerManosColors.primary100),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  onChanged: (value) {
-                    if (value != null && value) {
-                      onCheckboxChanged(option);
-                    }
-                  },
-                ),
-                SerManosTexts.body1(option, color: Colors.black)
-              ])
-          ])),
+        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+        child: Column(
+          children: [
+            SerManosCheckboxFormField(
+              options: options,
+              onChangeValidity: onChangedValidity,
+              onSaved: onSaved,
+              validator: (value) {
+                if (value == null) {
+                  return "Selecciona una opción";
+                }
+                return null;
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
