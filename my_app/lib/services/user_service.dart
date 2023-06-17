@@ -1,8 +1,5 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import '../models/volunteer.dart';
 
@@ -12,14 +9,11 @@ class AuthenticationService {
   final FirebaseAuth _authenticator = FirebaseAuth.instance;
 
   Future signIn(String email, String password) async {
-      return await _authenticator.signInWithEmailAndPassword(
-          email: email, password: password);
+    return await _authenticator.signInWithEmailAndPassword(email: email, password: password);
   }
 
-  Future signUp(String name, String surname, String email,
-      String password) async {
-    var userCredentials = await _authenticator.createUserWithEmailAndPassword(
-        email: email, password: password);
+  Future signUp(String name, String surname, String email, String password) async {
+    var userCredentials = await _authenticator.createUserWithEmailAndPassword(email: email, password: password);
     String userId = userCredentials.user!.uid;
     await FirebaseFirestore.instance.collection('users').doc(userId).set({
       'name': name,
@@ -28,15 +22,12 @@ class AuthenticationService {
     });
   }
 
-
   Future<Volunteer?> getUserById(String userId) async {
     try {
-      var userDoc = await FirebaseFirestore.instance.collection('users').doc(
-          userId).get();
+      var userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
 
       if (userDoc.exists) {
         var userData = userDoc.data() as Map<String, dynamic>;
-
         return Volunteer.fromJson(userData);
       } else {
         return null;
@@ -49,5 +40,4 @@ class AuthenticationService {
   void editUser(String userId, Map<String, dynamic> json) async {
     await FirebaseFirestore.instance.collection('users').doc(userId).set(json);
   }
-
 }

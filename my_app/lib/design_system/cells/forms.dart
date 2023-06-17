@@ -210,15 +210,7 @@ class _SerManosPersonalInfoFormState extends State<SerManosPersonalInfoForm> {
   TextEditingController dateController = TextEditingController();
 
   void setGender(String string) {
-    if (string == Gender.man.value) {
-      widget.personalInfo.gender = Gender.man;
-    } else if (string == Gender.woman.value) {
-      widget.personalInfo.gender = Gender.woman;
-    } else if (string == Gender.nonBinary.value) {
-      widget.personalInfo.gender == Gender.nonBinary;
-    } else {
-      widget.personalInfo.gender = null;
-    }
+    widget.personalInfo.gender = parseGender(string);
   }
 
   void validateForm() {

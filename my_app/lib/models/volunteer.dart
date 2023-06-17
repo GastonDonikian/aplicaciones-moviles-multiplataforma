@@ -20,13 +20,13 @@ class Volunteer {
 
   factory Volunteer.fromJson(Map<String, dynamic> json) {
     return Volunteer(
-        imagePath: json['imagePath'] as String,
-        email: json['email'] as String,
-        name: json['name'] as String,
-        surname: json['surname'] as String,
-        gender: json['gender'] as Gender,
-        phone: json['phone'] as String,
-        birthDate: json['birthDate'] as DateTime);
+        imagePath: json['imagePath'],
+        email: json['email'],
+        name: json['name'],
+        surname: json['surname'],
+        gender: json['gender'] != null ? parseGender(json['gender']) : null,
+        phone: json['phone'],
+        birthDate: json['birthDate']);
   }
 
   Map<String, dynamic> toJson() {
@@ -39,5 +39,10 @@ class Volunteer {
       'phone': phone,
       'birthDate': birthDate
     };
+  }
+
+  @override
+  String toString() {
+    return name + " " + surname;
   }
 }

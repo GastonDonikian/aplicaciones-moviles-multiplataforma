@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
-import 'package:my_app/services/analytics_service.dart';
-import 'package:my_app/services/user_service.dart';
 import 'package:my_app/services/navigation_service.dart';
-
 import 'package:firebase_core/firebase_core.dart';
-import 'package:my_app/services/news_service.dart';
 import 'firebase_options.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-
-import 'models/news.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +13,7 @@ void main() async {
   );
   // Pass all uncaught "fatal" errors from the framework to Crashlytics
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

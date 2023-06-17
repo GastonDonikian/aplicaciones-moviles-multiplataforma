@@ -1,22 +1,24 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/cells/forms.dart';
 import 'package:my_app/design_system/cells/registration_squeleton.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/models/forms/signup.dart';
+import 'package:my_app/providers/user_provider.dart';
 
 import '../services/user_service.dart';
 
-class SignUpPage extends StatefulWidget {
+class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  ConsumerState<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _SignUpPageState extends ConsumerState<SignUpPage> {
   bool isValid = false;
   SignUpInfo signUpInfo = SignUpInfo();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -31,7 +33,14 @@ class _SignUpPageState extends State<SignUpPage> {
       var password = signUpInfo.password!;
 
       userService.signUp(name, surname, email, password).then((value) {
-        GoRouter.of(context).go('/home');
+        userService.getUserById(value.user!.uid).then((user) {
+          if (user == null) {
+            throw FirebaseAuthException(code: 'user-not-found', message: 'User not found');
+          } else {
+            ref.read(userProvider.notifier).setUser(user);
+            GoRouter.of(context).go('/home');
+          }
+        });
       }).catchError((e) {
         if (e is FirebaseAuthException) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
