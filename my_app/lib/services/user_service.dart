@@ -12,32 +12,27 @@ class AuthenticationService {
   final FirebaseAuth _authenticator = FirebaseAuth.instance;
 
   Future signIn(String email, String password) async {
-    try {
-      return await _authenticator.signInWithEmailAndPassword(email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      FirebaseCrashlytics.instance.log("Error singIn: $e");
-    }
+      return await _authenticator.signInWithEmailAndPassword(
+          email: email, password: password);
   }
 
-  Future signUp(String name, String surname, String email, String password) async {
-    try {
-      var userCredentials = await _authenticator.createUserWithEmailAndPassword(
-          email: email, password: password);
-      String userId = userCredentials.user!.uid;
-      await FirebaseFirestore.instance.collection('users').doc(userId).set({
-        'name': name,
-        'surname': surname,
-        'email': email,
-      });
-    }
-    on FirebaseAuthException catch (e) {
-      FirebaseCrashlytics.instance.log("Error singUp: $e");
-    }
+  Future signUp(String name, String surname, String email,
+      String password) async {
+    var userCredentials = await _authenticator.createUserWithEmailAndPassword(
+        email: email, password: password);
+    String userId = userCredentials.user!.uid;
+    await FirebaseFirestore.instance.collection('users').doc(userId).set({
+      'name': name,
+      'surname': surname,
+      'email': email,
+    });
   }
+
 
   Future<Volunteer?> getUserById(String userId) async {
     try {
-      var userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+      var userDoc = await FirebaseFirestore.instance.collection('users').doc(
+          userId).get();
 
       if (userDoc.exists) {
         var userData = userDoc.data() as Map<String, dynamic>;

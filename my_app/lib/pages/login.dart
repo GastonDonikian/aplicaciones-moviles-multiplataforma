@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/cells/registration_squeleton.dart';
@@ -5,6 +6,7 @@ import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/molecules/inputs.dart';
 import 'package:my_app/utils/validation_rules.dart';
 
+import '../design_system/foundations/colors.dart';
 import '../services/user_service.dart';
 
 class LoginPage extends StatefulWidget {
@@ -26,7 +28,18 @@ class _LoginPageState extends State<LoginPage> {
     if (formKey.currentState!.validate()) {
       var email = emailController.text;
       var password = passwordController.text;
-      userService.signIn(email, password).then((value) => GoRouter.of(context).go('/home'));
+      userService.signIn(email, password).then((value) {
+        GoRouter.of(context).go('/home');
+      }).catchError((e) {
+        if (e is FirebaseAuthException) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(e.message.toString()),
+              backgroundColor: SerManosColorFoundations.buttonErrorColor,
+            ),
+          );
+        }
+      });
     } else {
       setState(() {
         isValid = false;

@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/cells/registration_squeleton.dart';
+import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/molecules/inputs.dart';
 import 'package:my_app/utils/validation_rules.dart';
@@ -29,8 +31,19 @@ class _SignUpPageState extends State<SignUpPage> {
       var surname = lastNameController.text;
       var email = emailController.text;
       var password = passwordController.text;
-      userService.signUp(name ,surname , email, password).then((value) => GoRouter.of(context).go('/home'));
-    } else {
+
+      userService.signUp(name, surname, email, password).then((value) {
+        GoRouter.of(context).go('/home');
+      }).catchError((e) {
+        if (e is FirebaseAuthException) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(e.message.toString()),
+            backgroundColor: SerManosColorFoundations.buttonErrorColor,
+          ));
+        }
+      });
+    }
+    else {
       setState(() {
         isValid = false;
       });
