@@ -5,6 +5,8 @@ import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/molecules/inputs.dart';
 import 'package:my_app/utils/validation_rules.dart';
 
+import '../services/user_service.dart';
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -19,11 +21,15 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
+  final userService = AuthenticationService();
 
   void onSignUpPressed() {
     if (formKey.currentState!.validate()) {
-      // TODO: signup
-      GoRouter.of(context).go('/home');
+      var name = nameController.text;
+      var surname = lastNameController.text;
+      var email = emailController.text;
+      var password = passwordController.text;
+      userService.signUp(name ,surname , email, password).then((value) => GoRouter.of(context).go('/home'));
     } else {
       setState(() {
         isValid = false;
