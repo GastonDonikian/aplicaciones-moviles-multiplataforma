@@ -49,8 +49,7 @@ class SerManosVacancy extends StatelessWidget {
 }
 
 class SerManosAvatar extends StatelessWidget {
-  const SerManosAvatar({Key? key, this.imageUrl, this.big = false})
-      : super(key: key);
+  const SerManosAvatar({Key? key, this.imageUrl, this.big = false}) : super(key: key);
 
   final String? imageUrl;
   final bool big;
@@ -58,6 +57,7 @@ class SerManosAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var radius = big ? 55.0 : 42.0;
+    radius = imageUrl == null ? 50 : radius;
 
     return CircleAvatar(
         backgroundColor: Colors.transparent,

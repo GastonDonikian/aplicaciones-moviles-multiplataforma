@@ -151,46 +151,47 @@ class ProfileEmpty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Center(
-        child: Column(
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(top: 173.5),
-              child: SerManosAvatar(),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 26),
-              child: SerManosTexts.overline(
-                "Voluntario",
-                color: SerManosColorFoundations.defaultOverlineColor,
+    return Column(
+      children: [
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SerManosAvatar(),
+              Padding(
+                padding: const EdgeInsets.only(top: 26),
+                child: SerManosTexts.overline(
+                  "Voluntario".toUpperCase(),
+                  color: SerManosColorFoundations.defaultOverlineColor,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: SerManosTexts.subtitle1(
-                volunteer.name,
-                color: SerManosColorFoundations.defaultBodyColor,
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: SerManosTexts.subtitle1(
+                  '${volunteer.name} ${volunteer.surname}',
+                  color: SerManosColorFoundations.defaultBodyColor,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8),
-              child: SerManosTexts.overline(
-                "¡Completá tu perfil para tener acceso a mejores oportunidades!",
-                color: SerManosColorFoundations.defaultOverlineColor,
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: SerManosTexts.body1(
+                  "¡Completá tu perfil para tener acceso a mejores oportunidades!",
+                  color: SerManosColorFoundations.defaultOverlineColor,
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 147.5),
-              child: SerManosIconTextButton(
-                label: "Completar",
-                buttonIcon: SerManosIcons.addIcon,
-                onPressed: completeOnPressed,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 80),
+          child: SerManosIconTextButton(
+            label: "Completar",
+            buttonIcon: SerManosIcons.addIcon,
+            onPressed: completeOnPressed,
+          ),
+        ),
+      ],
     );
   }
 }
