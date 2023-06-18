@@ -366,42 +366,40 @@ class SerManosInformationCard extends StatelessWidget {
     return SerManosBasicCard(
       cardTitle: cardTitle,
       child: SizedBox(
-        child: Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: SerManosTexts.overline(
-                          information.keys.elementAt(index).toUpperCase(),
-                          color: SerManosColorFoundations.cardOverlineTextColor,
-                        ),
+        child: ListView.separated(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: SerManosTexts.overline(
+                        information.keys.elementAt(index).toUpperCase(),
+                        color: SerManosColorFoundations.cardOverlineTextColor,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: SerManosTexts.body1(
-                        information.values.elementAt(index),
-                        color: Colors.black,
-                      )),
-                    ],
-                  ),
-                ],
-              );
-            },
-            itemCount: information.length,
-            separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(height: 8);
-            },
-          ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Expanded(
+                        child: SerManosTexts.body1(
+                      information.values.elementAt(index),
+                      color: Colors.black,
+                    )),
+                  ],
+                ),
+              ],
+            );
+          },
+          itemCount: information.length,
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox(height: 8);
+          },
         ),
       ),
     );
