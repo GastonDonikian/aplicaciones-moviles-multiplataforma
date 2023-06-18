@@ -252,7 +252,7 @@ class _SerManosPersonalInfoFormState extends State<SerManosPersonalInfoForm> {
                 placeholder: "DD/MM/YYYY",
                 label: "Fecha de nacimiento",
                 controller: dateController,
-                validator: (value) => {},
+                validator: (value) => null,
                 onSaved: (date) {
                   widget.personalInfo.birthDate = date!;
                 },
