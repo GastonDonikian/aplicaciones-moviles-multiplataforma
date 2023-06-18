@@ -8,6 +8,7 @@ class Volunteer {
   Gender? gender;
   String? phone;
   DateTime? birthDate;
+  bool profileCompleted;
 
   Volunteer(
       {required this.email,
@@ -16,7 +17,8 @@ class Volunteer {
       this.imagePath,
       this.gender,
       this.phone,
-      this.birthDate});
+      this.birthDate,
+      this.profileCompleted = false});
 
   factory Volunteer.fromJson(Map<String, dynamic> json) {
     return Volunteer(
@@ -26,7 +28,8 @@ class Volunteer {
         surname: json['surname'],
         gender: json['gender'] != null ? parseGender(json['gender']) : null,
         phone: json['phone'],
-        birthDate: json['birthDate']);
+        birthDate: json['birthDate'],
+        profileCompleted: json['profileCompleted']);
   }
 
   Map<String, dynamic> toJson() {
@@ -37,7 +40,8 @@ class Volunteer {
       'surname': surname,
       'gender': gender,
       'phone': phone,
-      'birthDate': birthDate
+      'birthDate': birthDate,
+      'profileCompleted': profileCompleted
     };
   }
 

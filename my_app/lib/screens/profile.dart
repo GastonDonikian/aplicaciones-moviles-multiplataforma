@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/atoms/icons.dart';
 import 'package:my_app/design_system/cells/cards.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
@@ -9,56 +11,58 @@ import 'package:my_app/design_system/tokens/colors.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/models/gender.dart';
 import 'package:my_app/models/volunteer.dart';
+import 'package:my_app/providers/user_provider.dart';
 import 'package:my_app/services/user_service.dart';
 
-class ProfileTab extends StatefulWidget {
+class ProfileTab extends ConsumerStatefulWidget {
   const ProfileTab({super.key});
 
   @override
-  State<ProfileTab> createState() => _ProfileTabState();
+  ConsumerState<ProfileTab> createState() => _ProfileTabState();
 }
 
-class _ProfileTabState extends State<ProfileTab> {
-  bool _hasProfileCompleted = false;
-  Volunteer dummyEmptyVolunteer =
-      Volunteer(email: "email@itba.edu.ar", name: "User", surname: "Test");
-  Volunteer dummyCompletedVolunteer = Volunteer(
-    email: "email@itba.edu.ar",
-    name: "User",
-    surname: "Test",
-    imagePath:
-        "https://fastly.picsum.photos/id/357/200/200.jpg?hmac=hHhE00vBpBPSjAiUhwzFKQi9PsCWu7sblLKC2rT6Fn8",
-    gender: Gender.man,
-    phone: "1234-5678",
-    birthDate: DateTime(1999, 8, 15),
-  );
+class _ProfileTabState extends ConsumerState<ProfileTab> {
+  Volunteer? currentUser;
+  AuthenticationService authenticationService = AuthenticationService();
 
-  //Testing purposes, to switch from one profile view to another
-  void changeProfile() {
-    setState(() {
-      _hasProfileCompleted = !_hasProfileCompleted;
+  @override
+  void initState() {
+    super.initState();
+    // "ref" can be used in all life-cycles of a StatefulWidget.
+    currentUser = ref.read(userProvider);
+  }
+
+  void sessionOnPressed() {
+    authenticationService.signOut().then((value) {
+      ref.read(userProvider.notifier).logOut();
+      GoRouter.of(context).go('/login');
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return _hasProfileCompleted
+    return currentUser!.profileCompleted
         ? ProfileCompleted(
-            onPressed: changeProfile,
-            volunteer: dummyCompletedVolunteer,
+            volunteer: currentUser!,
+            editOnPressed: () {},
+            sessionOnPressed: sessionOnPressed,
           )
         : ProfileEmpty(
-            onPressed: changeProfile,
-            volunteer: dummyEmptyVolunteer,
+            volunteer: currentUser!,
+            completeOnPressed: () {},
           );
   }
 }
 
 class ProfileCompleted extends StatelessWidget {
   const ProfileCompleted(
-      {super.key, required this.onPressed, required this.volunteer});
+      {super.key,
+      required this.volunteer,
+      required this.sessionOnPressed,
+      required this.editOnPressed});
 
-  final void Function() onPressed;
+  final void Function() sessionOnPressed;
+  final void Function() editOnPressed;
   final Volunteer volunteer;
 
   @override
@@ -120,18 +124,17 @@ class ProfileCompleted extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 32),
                 child: SerManosElevatedButton(
                   label: "Editar Perfil",
-                  onPressed: () {},
+                  onPressed: editOnPressed,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 20),
                 child: SerManosTextButton(
                   label: "Cerrar Sesión",
-                  onPressed: () {},
+                  onPressed: sessionOnPressed,
                   textColorActive: SerManosColorFoundations.buttonErrorColor,
                 ),
               ),
-              SerManosTextButton(label: "Change profile", onPressed: onPressed)
             ],
           ),
         ),
@@ -142,9 +145,9 @@ class ProfileCompleted extends StatelessWidget {
 
 class ProfileEmpty extends StatelessWidget {
   const ProfileEmpty(
-      {super.key, required this.onPressed, required this.volunteer});
+      {super.key, required this.completeOnPressed, required this.volunteer});
 
-  final void Function() onPressed;
+  final void Function() completeOnPressed;
   final Volunteer volunteer;
 
   @override
@@ -183,10 +186,9 @@ class ProfileEmpty extends StatelessWidget {
               child: SerManosIconTextButton(
                 label: "Completar",
                 buttonIcon: SerManosIcons.addIcon,
-                onPressed: () {},
+                onPressed: completeOnPressed,
               ),
             ),
-            SerManosTextButton(label: "Change profile", onPressed: onPressed)
           ],
         ),
       ),
