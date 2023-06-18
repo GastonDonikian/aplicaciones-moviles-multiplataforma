@@ -244,7 +244,6 @@ class SerManosCurrentVolunteeringCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
                   Row(
                     children: [
                       Expanded(

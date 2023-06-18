@@ -217,7 +217,6 @@ class CustomSearchInput extends StatefulWidget {
     required this.label,
     required this.eraseIcon,
     required this.defaultIcon,
-    required this.onFilterPressed,
     this.onEnter,
     this.onChanged,
   });
@@ -228,7 +227,6 @@ class CustomSearchInput extends StatefulWidget {
   final IconData defaultIcon;
   final void Function(String)? onEnter;
   final void Function(String)? onChanged;
-  final Function() onFilterPressed;
 
   @override
   State<CustomSearchInput> createState() => _CustomSearchInputState();
@@ -245,14 +243,16 @@ class _CustomSearchInputState extends State<CustomSearchInput> {
   Widget build(BuildContext context) {
     InputDecoration defaultDecoration = InputDecoration(
       hintText: widget.placeholder,
-      suffixIcon: SerManosIconButton(
-        icon: controller.text.isEmpty ? SerManosIcons.listIcon : widget.eraseIcon,
-        iconColor: controller.text.isEmpty ? SerManosColorFoundations.buttonActiveColor : SerManosColors.grey75,
-        onPressed: controller.text.isEmpty ? widget.onFilterPressed : clear,
-      ),
+      suffixIcon: controller.text.isEmpty
+          ? null
+          : SerManosIconButton(
+              icon: widget.eraseIcon,
+              iconColor: SerManosColors.grey75,
+              onPressed: clear,
+            ),
       prefixIcon: Icon(widget.defaultIcon, color: SerManosColors.grey75),
       border: InputBorder.none,
-      contentPadding: const EdgeInsets.only(top: 14, bottom: 12),
+      contentPadding: const EdgeInsets.symmetric(vertical: 12),
       hintStyle: const SerManosTextStyles.subtitle1(color: SerManosColors.grey75),
     );
 

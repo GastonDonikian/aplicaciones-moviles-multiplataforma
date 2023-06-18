@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/atoms/icons.dart';
 import 'package:my_app/design_system/cells/cards.dart';
+import 'package:my_app/design_system/cells/current_activities.dart';
+import 'package:my_app/design_system/cells/volunteering_list.dart';
+import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/molecules/inputs.dart';
+import 'package:my_app/design_system/tokens/colors.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/models/volunteer_association.dart';
 
@@ -28,6 +32,8 @@ class ApplyTab extends StatelessWidget {
       // TODO: query search
     }
 
+    void loadVolunteerAssociations() {}
+
     return Column(
       children: [
         const SizedBox(height: 24),
@@ -38,28 +44,24 @@ class ApplyTab extends StatelessWidget {
             eraseIcon: SerManosIcons.closeIcon,
             defaultIcon: SerManosIcons.searchIcon,
             onEnter: onSearchEnter,
-            onFilterPressed: () {},
           ),
         ),
+        const SizedBox(height: 32),
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 32),
-            child: ListView.separated(
-              itemCount: volunteerAssociations.length,
-              itemBuilder: (context, index) {
-                return SerManosGridPadding(
-                  child: SerManosVolunteerCard(
-                    imagePath: volunteerAssociations[index].imagePath,
-                    cardOverlineText: volunteerAssociations[index].associationType,
-                    cardTitle: volunteerAssociations[index].name,
-                    vacancy: 10,
-                    onPressedFav: () => {},
-                    onPressedLocation: () => {},
-                    onPressedImage: () => goToVolunteerAssociation(volunteerAssociations[index]),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SerManosGridPadding(
+                  child: SerManosCurrentActivityWidget(
+                    association: myVolunteerAssociation,
+                    onAssociationPressed: goToVolunteerAssociation,
                   ),
-                );
-              },
-              separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 24),
+                ),
+                SerManosVolunteeringList(
+                  associations: volunteerAssociations,
+                  onAssociationClicked: goToVolunteerAssociation,
+                ),
+              ],
             ),
           ),
         ),

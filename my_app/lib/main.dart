@@ -25,7 +25,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: SerManosColorFoundations.getMaterialColor(SerManosColorFoundations.statusBarColor),
+        primarySwatch: SerManosColorFoundations.getMaterialColor(
+          SerManosColorFoundations.statusBarColor,
+        ),
+        scaffoldBackgroundColor: SerManosColorFoundations.getMaterialColor(
+          SerManosColorFoundations.scaffoldBackgroundColor,
+        ),
       ),
       routerConfig: router,
     );

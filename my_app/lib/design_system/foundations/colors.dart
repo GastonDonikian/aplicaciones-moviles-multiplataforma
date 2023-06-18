@@ -4,6 +4,8 @@ import 'package:my_app/design_system/tokens/colors.dart';
 class SerManosColorFoundations {
   SerManosColorFoundations._();
 
+  static const scaffoldBackgroundColor = SerManosColors.secondary10;
+
   //text
   static const defaultTextColor = SerManosColors.white;
   static const defaultOverlineColor = SerManosColors.grey75;
