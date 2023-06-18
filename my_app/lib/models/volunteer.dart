@@ -8,6 +8,7 @@ class Volunteer {
   Gender? gender;
   String? phone;
   DateTime? birthDate;
+  bool profileCompleted;
 
   Volunteer(
       {required this.email,
@@ -16,17 +17,19 @@ class Volunteer {
       this.imagePath,
       this.gender,
       this.phone,
-      this.birthDate});
+      this.birthDate,
+      this.profileCompleted = false});
 
   factory Volunteer.fromJson(Map<String, dynamic> json) {
     return Volunteer(
-        imagePath: json['imagePath'] as String,
-        email: json['email'] as String,
-        name: json['name'] as String,
-        surname: json['surname'] as String,
-        gender: json['gender'] as Gender,
-        phone: json['phone'] as String,
-        birthDate: json['birthDate'] as DateTime);
+        imagePath: json['imagePath'],
+        email: json['email'],
+        name: json['name'],
+        surname: json['surname'],
+        gender: json['gender'] != null ? parseGender(json['gender']) : null,
+        phone: json['phone'],
+        birthDate: json['birthDate'],
+        profileCompleted: json['profileCompleted']);
   }
 
   Map<String, dynamic> toJson() {
@@ -37,7 +40,13 @@ class Volunteer {
       'surname': surname,
       'gender': gender,
       'phone': phone,
-      'birthDate': birthDate
+      'birthDate': birthDate,
+      'profileCompleted': profileCompleted
     };
+  }
+
+  @override
+  String toString() {
+    return name + " " + surname;
   }
 }

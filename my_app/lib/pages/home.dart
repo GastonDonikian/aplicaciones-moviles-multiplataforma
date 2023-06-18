@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/cells/app_bar.dart';
 import 'package:my_app/design_system/cells/tab_bar.dart';
+import 'package:my_app/design_system/foundations/colors.dart';
 
 class HomePage extends StatefulWidget {
   final String location;
@@ -38,12 +39,13 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-        appBar: SerManosAppBar(
-          customTabBar: SerManosTabBar(
-              tabController: _tabController, onPressed: _tap, tabsTitle: tabs.map((t) => t['title']!).toList()),
-        ),
-        body: widget.child);
+      backgroundColor: SerManosColorFoundations.scaffoldBackgroundColor,
+      appBar: SerManosAppBar(
+        customTabBar: SerManosTabBar(
+            tabController: _tabController, onPressed: _tap, tabsTitle: tabs.map((t) => t['title']!).toList()),
+      ),
+      body: widget.child,
+    );
   }
 }

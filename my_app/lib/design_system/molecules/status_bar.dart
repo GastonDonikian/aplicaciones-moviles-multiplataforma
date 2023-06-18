@@ -47,7 +47,7 @@ class SerManosWhiteStatusBar extends StatelessWidget {
         shadowColor: null,
         centerTitle: true,
         systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: SerManosColors.white),
+            SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.white),
         leading: leading,
         title: title,
       ),

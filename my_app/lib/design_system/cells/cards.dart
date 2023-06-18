@@ -4,6 +4,7 @@ import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/molecules/components.dart';
+import 'package:my_app/design_system/molecules/inputs.dart';
 import 'package:my_app/design_system/tokens/colors.dart';
 import 'package:my_app/design_system/tokens/shadows.dart';
 
@@ -243,7 +244,6 @@ class SerManosCurrentVolunteeringCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
                   Row(
                     children: [
                       Expanded(
@@ -270,50 +270,42 @@ class SerManosCurrentVolunteeringCard extends StatelessWidget {
   }
 }
 
-class SerManosInputCard extends StatefulWidget {
-  const SerManosInputCard({super.key, required this.cardTitle, required this.options, required this.onChanged});
+class SerManosInputCard extends StatelessWidget {
+  const SerManosInputCard({
+    super.key,
+    required this.cardTitle,
+    required this.options,
+    required this.onChangedValidity,
+    required this.onSaved,
+  });
 
   final String cardTitle;
   final List<String> options;
-  final Function(String) onChanged;
-
-  @override
-  State<SerManosInputCard> createState() => _SerManosInputCardState();
-}
-
-class _SerManosInputCardState extends State<SerManosInputCard> {
-  String? selectedOption;
-
-  void onCheckboxChanged(String value) {
-    setState(() {
-      selectedOption = value;
-    });
-    widget.onChanged(value);
-  }
+  final Function(bool) onChangedValidity;
+  final Function(String?) onSaved;
 
   @override
   Widget build(BuildContext context) {
     return SerManosBasicCard(
-      cardTitle: widget.cardTitle,
+      cardTitle: cardTitle,
       child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
-          child: Column(children: [
-            for (var option in widget.options)
-              Row(children: [
-                Checkbox(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                  value: selectedOption == option,
-                  fillColor: MaterialStateProperty.all(SerManosColors.primary100),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  onChanged: (value) {
-                    if (value != null && value) {
-                      onCheckboxChanged(option);
-                    }
-                  },
-                ),
-                SerManosTexts.body1(option, color: Colors.black)
-              ])
-          ])),
+        padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 10),
+        child: Column(
+          children: [
+            SerManosCheckboxFormField(
+              options: options,
+              onChangeValidity: onChangedValidity,
+              onSaved: onSaved,
+              validator: (value) {
+                if (value == null) {
+                  return "Selecciona una opción";
+                }
+                return null;
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -373,42 +365,40 @@ class SerManosInformationCard extends StatelessWidget {
     return SerManosBasicCard(
       cardTitle: cardTitle,
       child: SizedBox(
-        child: Expanded(
-          child: ListView.separated(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: SerManosTexts.overline(
-                          information.keys.elementAt(index).toUpperCase(),
-                          color: SerManosColorFoundations.cardOverlineTextColor,
-                        ),
+        child: ListView.separated(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: SerManosTexts.overline(
+                        information.keys.elementAt(index).toUpperCase(),
+                        color: SerManosColorFoundations.cardOverlineTextColor,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: SerManosTexts.body1(
-                        information.values.elementAt(index),
-                        color: Colors.black,
-                      )),
-                    ],
-                  ),
-                ],
-              );
-            },
-            itemCount: information.length,
-            separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(height: 8);
-            },
-          ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Expanded(
+                        child: SerManosTexts.body1(
+                      information.values.elementAt(index),
+                      color: Colors.black,
+                    )),
+                  ],
+                ),
+              ],
+            );
+          },
+          itemCount: information.length,
+          separatorBuilder: (BuildContext context, int index) {
+            return const SizedBox(height: 8);
+          },
         ),
       ),
     );

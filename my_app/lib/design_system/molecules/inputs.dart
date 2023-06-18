@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/foundations/text_styles.dart';
+import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/tokens/colors.dart';
 import 'package:my_app/design_system/tokens/shadows.dart';
@@ -12,16 +13,18 @@ import '../atoms/icons.dart';
 
 //------------------ Generic Input ------------------//
 class CustomGenericInput extends StatefulWidget {
-  const CustomGenericInput(
-      {super.key,
-      this.placeholder,
-      required this.label,
-      this.suffixIcon,
-      required this.validator,
-      required this.controller,
-      this.obscureText = false,
-      this.helperText,
-      this.inputFormatters});
+  const CustomGenericInput({
+    super.key,
+    this.placeholder,
+    required this.label,
+    this.suffixIcon,
+    required this.validator,
+    required this.controller,
+    this.obscureText = false,
+    this.helperText,
+    this.inputFormatters,
+    this.onSaved,
+  });
 
   final String? placeholder;
   final String label;
@@ -31,6 +34,7 @@ class CustomGenericInput extends StatefulWidget {
   final bool obscureText;
   final String? helperText;
   final List<TextInputFormatter>? inputFormatters;
+  final Function(String?)? onSaved;
 
   @override
   State<CustomGenericInput> createState() => _CustomGenericInputState();
@@ -84,6 +88,7 @@ class _CustomGenericInputState extends State<CustomGenericInput> {
       onChanged: (value) => setState(() {
         hasError = widget.validator(value) != null;
       }),
+      onSaved: widget.onSaved,
       validator: (value) => widget.validator(value),
     );
   }
@@ -109,13 +114,22 @@ class _CustomGenericInputState extends State<CustomGenericInput> {
 
 //------------------ Text Input ------------------//
 class CustomTextInput extends StatefulWidget {
-  const CustomTextInput(
-      {super.key, required this.placeholder, required this.label, required this.validator, required this.controller});
+  const CustomTextInput({
+    super.key,
+    required this.placeholder,
+    required this.label,
+    required this.validator,
+    required this.controller,
+    required this.onSaved,
+    this.inputFormatters,
+  });
 
   final String? placeholder;
   final String label;
   final Function(String?) validator;
   final TextEditingController controller;
+  final Function(String?) onSaved;
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   State<CustomTextInput> createState() => _CustomTextInputState();
@@ -135,6 +149,8 @@ class _CustomTextInputState extends State<CustomTextInput> {
       suffixIcon: null,
       validator: widget.validator,
       controller: widget.controller,
+      onSaved: widget.onSaved,
+      inputFormatters: widget.inputFormatters,
     );
   }
 }
@@ -142,11 +158,18 @@ class _CustomTextInputState extends State<CustomTextInput> {
 
 //------------------ Password Input ------------------//
 class CustomPasswordInput extends StatefulWidget {
-  const CustomPasswordInput({super.key, required this.placeholder, required this.label, required this.controller});
+  const CustomPasswordInput({
+    super.key,
+    required this.placeholder,
+    required this.label,
+    required this.controller,
+    required this.onSaved,
+  });
 
   final String? placeholder;
   final String label;
   final TextEditingController controller;
+  final Function(String?) onSaved;
 
   @override
   State<CustomPasswordInput> createState() => _CustomPasswordInputState();
@@ -180,6 +203,7 @@ class _CustomPasswordInputState extends State<CustomPasswordInput> {
       },
       controller: widget.controller,
       obscureText: !isPasswordVisible,
+      onSaved: widget.onSaved,
     );
   }
 }
@@ -193,7 +217,6 @@ class CustomSearchInput extends StatefulWidget {
     required this.label,
     required this.eraseIcon,
     required this.defaultIcon,
-    required this.onFilterPressed,
     this.onEnter,
     this.onChanged,
   });
@@ -204,7 +227,6 @@ class CustomSearchInput extends StatefulWidget {
   final IconData defaultIcon;
   final void Function(String)? onEnter;
   final void Function(String)? onChanged;
-  final Function() onFilterPressed;
 
   @override
   State<CustomSearchInput> createState() => _CustomSearchInputState();
@@ -221,14 +243,16 @@ class _CustomSearchInputState extends State<CustomSearchInput> {
   Widget build(BuildContext context) {
     InputDecoration defaultDecoration = InputDecoration(
       hintText: widget.placeholder,
-      suffixIcon: SerManosIconButton(
-        icon: controller.text.isEmpty ? SerManosIcons.listIcon : widget.eraseIcon,
-        iconColor: controller.text.isEmpty ? SerManosColorFoundations.buttonActiveColor : SerManosColors.grey75,
-        onPressed: controller.text.isEmpty ? widget.onFilterPressed : clear,
-      ),
+      suffixIcon: controller.text.isEmpty
+          ? null
+          : SerManosIconButton(
+              icon: widget.eraseIcon,
+              iconColor: SerManosColors.grey75,
+              onPressed: clear,
+            ),
       prefixIcon: Icon(widget.defaultIcon, color: SerManosColors.grey75),
       border: InputBorder.none,
-      contentPadding: const EdgeInsets.only(top: 14, bottom: 12),
+      contentPadding: const EdgeInsets.symmetric(vertical: 12),
       hintStyle: const SerManosTextStyles.subtitle1(color: SerManosColors.grey75),
     );
 
@@ -261,12 +285,14 @@ class CustomDateInput extends StatefulWidget {
     required this.label,
     required this.controller,
     required this.validator,
+    required this.onSaved,
   });
 
   final String placeholder;
   final String label;
   final TextEditingController controller;
   final Function(String?) validator;
+  final Function(String?) onSaved;
 
   @override
   State<CustomDateInput> createState() => _CustomDateInputState();
@@ -295,7 +321,53 @@ class _CustomDateInputState extends State<CustomDateInput> {
       controller: widget.controller,
       helperText: "Día / Mes / Año",
       inputFormatters: [maskFormatter],
+      onSaved: widget.onSaved,
     );
   }
 }
 //------------------ END Date Input ------------------//
+
+//------------------ Checkbox Input ------------------//
+class SerManosCheckboxFormField extends FormField<String> {
+  SerManosCheckboxFormField(
+      {required List<String> options,
+      required Function(bool) onChangeValidity,
+      FormFieldSetter<String>? onSaved,
+      FormFieldValidator<String>? validator,
+      String? initialValue,
+      AutovalidateMode autovalidateMode = AutovalidateMode.disabled,
+      bool autovalidate = true})
+      : super(
+            onSaved: onSaved,
+            validator: validator,
+            initialValue: initialValue,
+            builder: (FormFieldState<String> state) {
+              return Column(
+                children: [
+                  for (var option in options)
+                    Row(
+                      children: [
+                        Checkbox(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            value: state.value == option,
+                            fillColor: MaterialStateProperty.all(SerManosColors.primary100),
+                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            onChanged: (value) {
+                              state.didChange(option);
+                              var aux = state.isValid;
+                              state.validate();
+                              if (aux != state.isValid) {
+                                onChangeValidity(state.isValid);
+                              }
+                              if (state.isValid) {
+                                state.save();
+                              }
+                            }),
+                        SerManosTexts.body1(option, color: Colors.black),
+                      ],
+                    ),
+                ],
+              );
+            });
+}
+//------------------ END Checkbox Input ------------------//

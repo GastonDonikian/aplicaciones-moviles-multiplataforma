@@ -14,3 +14,15 @@ extension GenderNaming on Gender {
     }
   }
 }
+
+Gender? parseGender(String gender) {
+  if (gender == Gender.man.value) {
+    return Gender.man;
+  } else if (gender == Gender.woman.value) {
+    return Gender.woman;
+  } else if (gender == Gender.nonBinary.value) {
+    return Gender.nonBinary;
+  } else {
+    return null;
+  }
+}
