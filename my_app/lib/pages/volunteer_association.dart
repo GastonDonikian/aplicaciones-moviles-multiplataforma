@@ -13,6 +13,9 @@ class VolunteerAssociationPage extends StatefulWidget {
   final VolunteerAssociation volunteerAssociation;
   final String id;
 
+  static String get routeName => 'association';
+  static String get routeLocation => 'association/:id';
+
   const VolunteerAssociationPage({super.key, required this.volunteerAssociation, required this.id});
 
   @override

@@ -22,14 +22,15 @@ class Volunteer {
 
   factory Volunteer.fromJson(Map<String, dynamic> json) {
     return Volunteer(
-        imagePath: json['imagePath'],
-        email: json['email'],
-        name: json['name'],
-        surname: json['surname'],
-        gender: json['gender'] != null ? parseGender(json['gender']) : null,
-        phone: json['phone'],
-        birthDate: json['birthDate'],
-        profileCompleted: json['profileCompleted']);
+      imagePath: json['imagePath'],
+      email: json['email'],
+      name: json['name'],
+      surname: json['surname'],
+      gender: json['gender'] != null ? parseGender(json['gender']) : null,
+      phone: json['phone'],
+      birthDate: json['birthDate'],
+      profileCompleted: json['profileCompleted'],
+    );
   }
 
   Map<String, dynamic> toJson() {
@@ -47,6 +48,7 @@ class Volunteer {
 
   @override
   String toString() {
-    return name + " " + surname;
+    // return a string with all the properties
+    return name + ' ' + surname + ' ' + email + ' ' + profileCompleted.toString();
   }
 }

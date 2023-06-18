@@ -14,6 +14,9 @@ import '../services/user_service.dart';
 class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
 
+  static String get routeName => 'signup';
+  static String get routeLocation => '/signup';
+
   @override
   ConsumerState<SignUpPage> createState() => _SignUpPageState();
 }

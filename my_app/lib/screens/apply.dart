@@ -14,6 +14,9 @@ import 'package:my_app/models/volunteer_association.dart';
 class ApplyTab extends StatelessWidget {
   const ApplyTab({super.key});
 
+  static String get routeName => 'home';
+  static String get routeLocation => '/home';
+
   @override
   Widget build(BuildContext context) {
     List<VolunteerAssociation> volunteerAssociations = [

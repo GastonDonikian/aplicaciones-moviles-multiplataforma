@@ -7,6 +7,9 @@ import 'package:my_app/models/news.dart';
 class NewsTab extends StatelessWidget {
   const NewsTab({super.key});
 
+  static String get routeName => 'news';
+  static String get routeLocation => '/news';
+
   @override
   Widget build(BuildContext context) {
     List<News> news = [myNews, myNews, myNews, myNews, myNews, myNews, myNews, myNews];
@@ -25,8 +28,8 @@ class NewsTab extends StatelessWidget {
                     cardOverlineText: news[index].newspaper,
                     cardTitle: news[index].title,
                     cardText: news[index].subtitle,
-                    onPressed: () => {
-                      GoRouter.of(context).go('/news_details')
+                    onPressed: () {
+                      context.goNamed("news_details", extra: news[index], params: {"id": news[index].id});
                     },
                   ),
                 );
@@ -41,6 +44,7 @@ class NewsTab extends StatelessWidget {
 }
 
 News myNews = News(
+  id: '1',
   imagePath: 'assets/news_card_1.png',
   newspaper: 'Reporte 2820',
   link: 'www.google.com',

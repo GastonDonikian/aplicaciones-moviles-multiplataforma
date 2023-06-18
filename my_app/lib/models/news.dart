@@ -1,4 +1,5 @@
 class News {
+  final String id;
   final String imagePath;
   final String newspaper;
   final String title;
@@ -7,6 +8,7 @@ class News {
   final String link;
 
   News({
+    required this.id,
     required this.imagePath,
     required this.newspaper,
     required this.title,
@@ -24,14 +26,15 @@ class News {
       'link': link,
     };
   }
+
   factory News.fromJson(Map<String, dynamic> json) {
     return News(
-      imagePath: json['imagePath'],
-      newspaper: json['newspaper'],
-      title: json['title'],
-      subtitle: json['subtitle'],
-      text: json['text'],
-      link: json['link']
-    );
+        id: json['id'],
+        imagePath: json['imagePath'],
+        newspaper: json['newspaper'],
+        title: json['title'],
+        subtitle: json['subtitle'],
+        text: json['text'],
+        link: json['link']);
   }
 }

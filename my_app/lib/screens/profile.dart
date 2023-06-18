@@ -18,19 +18,19 @@ import 'package:my_app/services/user_service.dart';
 class ProfileTab extends ConsumerStatefulWidget {
   const ProfileTab({super.key});
 
+  static String get routeName => 'profile';
+  static String get routeLocation => '/profile';
+
   @override
   ConsumerState<ProfileTab> createState() => _ProfileTabState();
 }
 
 class _ProfileTabState extends ConsumerState<ProfileTab> {
-  Volunteer? currentUser;
   AuthenticationService authenticationService = AuthenticationService();
 
   @override
   void initState() {
     super.initState();
-    // "ref" can be used in all life-cycles of a StatefulWidget.
-    currentUser = ref.read(userProvider);
   }
 
   void sessionOnPressed() {
@@ -46,25 +46,23 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
 
   @override
   Widget build(BuildContext context) {
-    return currentUser!.profileCompleted
+    Volunteer currentUser = ref.watch(userProvider)!;
+    // print(currentUser!.profileCompleted);
+    return currentUser.profileCompleted
         ? ProfileCompleted(
-            volunteer: currentUser!,
+            volunteer: currentUser,
             editOnPressed: editOnPressed,
             sessionOnPressed: sessionOnPressed,
           )
         : ProfileEmpty(
-            volunteer: currentUser!,
+            volunteer: currentUser,
             completeOnPressed: editOnPressed,
           );
   }
 }
 
 class ProfileCompleted extends StatelessWidget {
-  ProfileCompleted(
-      {super.key,
-      required this.volunteer,
-      required this.sessionOnPressed,
-      required this.editOnPressed});
+  ProfileCompleted({super.key, required this.volunteer, required this.sessionOnPressed, required this.editOnPressed});
 
   final void Function() sessionOnPressed;
   final void Function() editOnPressed;
@@ -112,8 +110,7 @@ class ProfileCompleted extends StatelessWidget {
                 cardTitle: "Información Personal",
                 information: {
                   "Fecha de nacimiento": formatter.format(volunteer.birthDate!),
-                  "Genero":
-                      volunteer.gender != null ? volunteer.gender!.value : ""
+                  "Genero": volunteer.gender != null ? volunteer.gender!.value : ""
                 },
               ),
               const SizedBox(
@@ -121,10 +118,7 @@ class ProfileCompleted extends StatelessWidget {
               ),
               SerManosInformationCard(
                 cardTitle: "Datos de contacto",
-                information: {
-                  "Telefono": volunteer.phone != null ? volunteer.phone! : "",
-                  "E-Mail": volunteer.email
-                },
+                information: {"Telefono": volunteer.phone != null ? volunteer.phone! : "", "E-Mail": volunteer.email},
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 32),
@@ -150,8 +144,7 @@ class ProfileCompleted extends StatelessWidget {
 }
 
 class ProfileEmpty extends StatelessWidget {
-  const ProfileEmpty(
-      {super.key, required this.completeOnPressed, required this.volunteer});
+  const ProfileEmpty({super.key, required this.completeOnPressed, required this.volunteer});
 
   final void Function() completeOnPressed;
   final Volunteer volunteer;

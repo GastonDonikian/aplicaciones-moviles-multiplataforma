@@ -8,6 +8,9 @@ import 'package:my_app/design_system/tokens/colors.dart';
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
 
+  static String get routeName => 'landing';
+  static String get routeLocation => '/landing';
+
   @override
   Widget build(BuildContext context) {
     return const RegistrationLayout(body: _LandingBody(), footer: _LandingFooter());
