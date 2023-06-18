@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/news.dart';
 
@@ -11,8 +10,19 @@ class NewsService {
     return db.collection(collectionPath).add(news.toJson());
   }
 
-  Future getAllNews() async {
-    return await db.collection(collectionPath).get();
+  Future<List<News>> getAllNews() async {
+    List<News> news = [];
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('news').get();
+      for (var doc in querySnapshot.docs) {
+        var data = doc.data() as Map<String, dynamic>;
+        var newsItem = News.fromJson(data);
+        news.add(newsItem);
+      }
+    } catch (e) {
+      return [];
+    }
+    return news;
   }
 
 }

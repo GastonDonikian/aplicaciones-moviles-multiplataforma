@@ -2,7 +2,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 import '../models/volunteer.dart';
 
@@ -28,7 +27,6 @@ class AuthenticationService {
     });
   }
 
-
   Future<Volunteer?> getUserById(String userId) async {
     try {
       var userDoc = await FirebaseFirestore.instance.collection('users').doc(
@@ -36,7 +34,6 @@ class AuthenticationService {
 
       if (userDoc.exists) {
         var userData = userDoc.data() as Map<String, dynamic>;
-
         return Volunteer.fromJson(userData);
       } else {
         return null;

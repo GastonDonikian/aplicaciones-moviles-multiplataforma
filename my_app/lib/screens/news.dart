@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/cells/cards.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/models/news.dart';
@@ -23,9 +24,9 @@ class NewsTab extends StatelessWidget {
                     imagePath: news[index].imagePath,
                     cardOverlineText: news[index].newspaper,
                     cardTitle: news[index].title,
-                    cardText: news[index].text,
+                    cardText: news[index].subtitle,
                     onPressed: () => {
-                      // TODO: go to news detail
+                      GoRouter.of(context).go('/news_details')
                     },
                   ),
                 );
@@ -42,6 +43,11 @@ class NewsTab extends StatelessWidget {
 News myNews = News(
   imagePath: 'assets/news_card_1.png',
   newspaper: 'Reporte 2820',
+  link: 'www.google.com',
   title: 'Ser Donante Voluntario',
-  text: 'Desde el Hospital Centenario recalcan la importancia de la donación voluntaria de Sangre',
+  subtitle: 'Desde el Hospital Centenario recalcan la importancia de la donación voluntaria de Sangre',
+  text: 'Desde el Hospital Centenario recalcan la importancia de la donación voluntaria de Sangre. '
+      'Desde el Hospital Centenario recalcan la importancia de la donación voluntaria de Sangre. '
+      'Desde el Hospital Centenario recalcan la importancia de la donación voluntaria de Sangre. '
+      'Desde el Hospital Centenario recalcan la importancia de la donación voluntaria de Sangre',
 );

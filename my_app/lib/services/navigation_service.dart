@@ -4,6 +4,7 @@ import 'package:my_app/models/volunteer_association.dart';
 import 'package:my_app/pages/home.dart';
 import 'package:my_app/pages/landing.dart';
 import 'package:my_app/pages/login.dart';
+import 'package:my_app/pages/news_details.dart';
 import 'package:my_app/pages/signup.dart';
 import 'package:my_app/pages/volunteer_association.dart';
 import 'package:my_app/pages/welcome.dart';
@@ -80,5 +81,10 @@ final router = GoRouter(
       path: '/welcome',
       builder: (context, state) => const WelcomePage(),
     ),
+    GoRoute(
+      name: 'news_details',
+      path: '/news_details',
+      builder: (context, state) => const DetailedNews(),
+    )
   ],
 );

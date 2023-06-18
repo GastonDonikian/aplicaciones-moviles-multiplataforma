@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
-import 'package:my_app/services/analytics_service.dart';
-import 'package:my_app/services/user_service.dart';
 import 'package:my_app/services/navigation_service.dart';
-
 import 'package:firebase_core/firebase_core.dart';
-import 'package:my_app/services/news_service.dart';
 import 'firebase_options.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-
-import 'models/news.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
