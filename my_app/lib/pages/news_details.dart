@@ -15,7 +15,7 @@ class DetailedNews extends StatelessWidget {
   final News news;
 
   static String get routeName => 'news_details';
-  static String get routeLocation => '/news_details/:id';
+  static String get routeLocation => 'news_details/:id';
 
   @override
   Widget build(BuildContext context) {

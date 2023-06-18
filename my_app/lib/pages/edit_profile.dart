@@ -23,7 +23,7 @@ class EditProfilePage extends ConsumerStatefulWidget {
   const EditProfilePage({super.key});
 
   static String get routeName => 'edit_profile';
-  static String get routeLocation => '/edit_profile';
+  static String get routeLocation => 'edit_profile';
 
   @override
   ConsumerState<EditProfilePage> createState() => _EditProfilePageState();

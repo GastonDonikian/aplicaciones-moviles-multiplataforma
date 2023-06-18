@@ -8,7 +8,6 @@ import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/molecules/components.dart';
-import 'package:my_app/design_system/tokens/colors.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/models/gender.dart';
 import 'package:my_app/models/volunteer.dart';
@@ -26,38 +25,40 @@ class ProfileTab extends ConsumerStatefulWidget {
 }
 
 class _ProfileTabState extends ConsumerState<ProfileTab> {
-  AuthenticationService authenticationService = AuthenticationService();
-
   @override
   void initState() {
     super.initState();
   }
 
   void sessionOnPressed() {
-    authenticationService.signOut().then((value) {
-      ref.read(userProvider.notifier).logOut();
-      GoRouter.of(context).go('/login');
-    });
+    ref.read(userProvider.notifier).logOut();
+    context.goNamed('landing');
   }
 
   void editOnPressed() {
-    GoRouter.of(context).go('/edit_profile');
+    context.goNamed('edit_profile');
   }
 
   @override
   Widget build(BuildContext context) {
-    Volunteer currentUser = ref.watch(userProvider)!;
-    // print(currentUser!.profileCompleted);
-    return currentUser.profileCompleted
-        ? ProfileCompleted(
-            volunteer: currentUser,
-            editOnPressed: editOnPressed,
-            sessionOnPressed: sessionOnPressed,
-          )
-        : ProfileEmpty(
-            volunteer: currentUser,
-            completeOnPressed: editOnPressed,
-          );
+    Volunteer? currentUser = ref.read(userProvider);
+    if (currentUser == null) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    } else {
+      return currentUser.profileCompleted
+          ? ProfileCompleted(
+              volunteer: currentUser,
+              editOnPressed: editOnPressed,
+              sessionOnPressed: sessionOnPressed,
+            )
+          : ProfileEmpty(
+              volunteer: currentUser,
+              completeOnPressed: editOnPressed,
+              sessionOnPressed: sessionOnPressed,
+            );
+    }
   }
 }
 
@@ -144,9 +145,11 @@ class ProfileCompleted extends StatelessWidget {
 }
 
 class ProfileEmpty extends StatelessWidget {
-  const ProfileEmpty({super.key, required this.completeOnPressed, required this.volunteer});
+  const ProfileEmpty(
+      {super.key, required this.completeOnPressed, required this.volunteer, required this.sessionOnPressed});
 
   final void Function() completeOnPressed;
+  final void Function() sessionOnPressed;
   final Volunteer volunteer;
 
   @override
@@ -184,11 +187,19 @@ class ProfileEmpty extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(bottom: 80),
+          padding: const EdgeInsets.only(bottom: 20),
           child: SerManosIconTextButton(
             label: "Completar",
             buttonIcon: SerManosIcons.addIcon,
             onPressed: completeOnPressed,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 50),
+          child: SerManosTextButton(
+            label: "Cerrar Sesión",
+            onPressed: sessionOnPressed,
+            textColorActive: SerManosColorFoundations.buttonErrorColor,
           ),
         ),
       ],

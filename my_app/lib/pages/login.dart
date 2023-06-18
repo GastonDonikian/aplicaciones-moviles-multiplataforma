@@ -38,7 +38,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             throw FirebaseAuthException(code: 'user-not-found', message: 'User not found');
           } else {
             ref.read(userProvider.notifier).setUser(user);
-            GoRouter.of(context).go('/home');
+            context.goNamed('home');
           }
         });
       }).catchError((e) {
