@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_app/models/gender.dart';
 
 import '../models/volunteer.dart';
 
@@ -56,7 +57,19 @@ class AuthenticationService {
     }
   }
 
-  void editUser(String userId, Map<String, dynamic> json) async {
-    await FirebaseFirestore.instance.collection('users').doc(userId).set(json);
+  Future<Volunteer?> editUser(DateTime birthDate, Gender gender,
+      String? imagePath, String phone) async {
+    Volunteer? currentUser = await getCurrentUser();
+    currentUser = currentUser!;
+    currentUser.birthDate = birthDate;
+    currentUser.gender = gender;
+    currentUser.imagePath = imagePath;
+    currentUser.phone = phone;
+    currentUser.profileCompleted = true;
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(_authenticator.currentUser!.uid)
+        .set(currentUser.toJson());
+    return currentUser;
   }
 }

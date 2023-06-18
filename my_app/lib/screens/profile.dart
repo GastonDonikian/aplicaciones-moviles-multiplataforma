@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:my_app/design_system/atoms/icons.dart';
 import 'package:my_app/design_system/cells/cards.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
@@ -39,23 +40,27 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
     });
   }
 
+  void editOnPressed() {
+    GoRouter.of(context).go('/edit_profile');
+  }
+
   @override
   Widget build(BuildContext context) {
     return currentUser!.profileCompleted
         ? ProfileCompleted(
             volunteer: currentUser!,
-            editOnPressed: () {},
+            editOnPressed: editOnPressed,
             sessionOnPressed: sessionOnPressed,
           )
         : ProfileEmpty(
             volunteer: currentUser!,
-            completeOnPressed: () {},
+            completeOnPressed: editOnPressed,
           );
   }
 }
 
 class ProfileCompleted extends StatelessWidget {
-  const ProfileCompleted(
+  ProfileCompleted(
       {super.key,
       required this.volunteer,
       required this.sessionOnPressed,
@@ -64,6 +69,7 @@ class ProfileCompleted extends StatelessWidget {
   final void Function() sessionOnPressed;
   final void Function() editOnPressed;
   final Volunteer volunteer;
+  final DateFormat formatter = DateFormat('DD/MM/YYYY');
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +111,7 @@ class ProfileCompleted extends StatelessWidget {
               SerManosInformationCard(
                 cardTitle: "Información Personal",
                 information: {
-                  "Fecha de nacimiento": volunteer.birthDate.toString(),
+                  "Fecha de nacimiento": formatter.format(volunteer.birthDate!),
                   "Genero":
                       volunteer.gender != null ? volunteer.gender!.value : ""
                 },

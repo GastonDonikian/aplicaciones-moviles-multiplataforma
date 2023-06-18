@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:my_app/design_system/cells/cards.dart';
 import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/molecules/inputs.dart';
@@ -35,7 +36,8 @@ class _SerManosLogInFormState extends State<SerManosLogInForm> {
   void validateForm() {
     var aux = isValid;
     setState(() {
-      isValid = emailValidation(emailController.text) == null && passwordValidation(passwordController.text) == null;
+      isValid = emailValidation(emailController.text) == null &&
+          passwordValidation(passwordController.text) == null;
     });
     if (isValid != aux) {
       widget.onValidationChanged(isValid);
@@ -200,14 +202,15 @@ class SerManosPersonalInfoForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
 
   @override
-  State<SerManosPersonalInfoForm> createState() => _SerManosPersonalInfoFormState();
+  State<SerManosPersonalInfoForm> createState() =>
+      _SerManosPersonalInfoFormState();
 }
 
 class _SerManosPersonalInfoFormState extends State<SerManosPersonalInfoForm> {
   String? gender;
   bool isValid = false;
   bool isCheckBoxValid = false;
-  TextEditingController dateController = TextEditingController();
+  late TextEditingController dateController;
 
   void setGender(String string) {
     widget.personalInfo.gender = parseGender(string);
@@ -226,6 +229,8 @@ class _SerManosPersonalInfoFormState extends State<SerManosPersonalInfoForm> {
   @override
   void initState() {
     super.initState();
+    final DateFormat formatter = DateFormat('DD/MM/YYYY');
+    dateController = TextEditingController(text: widget.personalInfo.birthDate);
     dateController.addListener(() {
       validateForm();
     });
@@ -237,7 +242,8 @@ class _SerManosPersonalInfoFormState extends State<SerManosPersonalInfoForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SerManosTexts.headline1("Datos de perfil", color: SerManosColors.black),
+          SerManosTexts.headline1("Datos de perfil",
+              color: SerManosColors.black),
           const SizedBox(height: 16),
           Form(
             key: widget.formKey,
@@ -254,11 +260,16 @@ class _SerManosPersonalInfoFormState extends State<SerManosPersonalInfoForm> {
               const SizedBox(height: 24),
               SerManosInputCard(
                 cardTitle: "Información de perfil",
-                options: [Gender.man.value, Gender.woman.value, Gender.nonBinary.value],
+                options: [
+                  Gender.man.value,
+                  Gender.woman.value,
+                  Gender.nonBinary.value
+                ],
                 onSaved: (value) {
                   setGender(value!);
                 },
-                onChangedValidity: (value) => setState(() => isCheckBoxValid = value),
+                onChangedValidity: (value) =>
+                    setState(() => isCheckBoxValid = value),
               ),
               const SizedBox(height: 24),
               SerManosPhotoInputCard(image: null),
@@ -288,14 +299,14 @@ class SerManosContactForm extends StatefulWidget {
 
 class _SerManosContactFormState extends State<SerManosContactForm> {
   bool isValid = false;
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
+  late TextEditingController phoneNumberController;
+  late TextEditingController emailController;
 
   void validateForm() {
     var aux = isValid;
     setState(() {
-      isValid =
-          phoneNumberValidation(phoneNumberController.text) == null && emailValidation(emailController.text) == null;
+      isValid = phoneNumberValidation(phoneNumberController.text) == null &&
+          emailValidation(emailController.text) == null;
     });
     if (isValid != aux) {
       widget.onValidationChanged(isValid);
@@ -305,6 +316,9 @@ class _SerManosContactFormState extends State<SerManosContactForm> {
   @override
   void initState() {
     super.initState();
+    phoneNumberController =
+        TextEditingController(text: widget.contactInfo.phoneNumber);
+    emailController = TextEditingController(text: widget.contactInfo.email);
     phoneNumberController.addListener(() {
       validateForm();
     });
@@ -319,7 +333,8 @@ class _SerManosContactFormState extends State<SerManosContactForm> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SerManosTexts.headline1("Datos de contacto", color: SerManosColors.black),
+          SerManosTexts.headline1("Datos de contacto",
+              color: SerManosColors.black),
           Padding(
             padding: const EdgeInsets.only(right: 12, top: 24, bottom: 24),
             child: SerManosTexts.subtitle1(

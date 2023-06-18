@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_app/models/volunteer_association.dart';
+import 'package:my_app/pages/edit_profile.dart';
 import 'package:my_app/pages/home.dart';
 import 'package:my_app/pages/landing.dart';
 import 'package:my_app/pages/login.dart';
@@ -13,7 +14,8 @@ import 'package:my_app/screens/news.dart';
 import 'package:my_app/screens/profile.dart';
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _shellNavigatorKey =
+    GlobalKey<NavigatorState>();
 
 final router = GoRouter(
   navigatorKey: _rootNavigatorKey,
@@ -38,7 +40,8 @@ final router = GoRouter(
                   path: 'association/:id',
                   parentNavigatorKey: _rootNavigatorKey,
                   builder: (context, state) {
-                    VolunteerAssociation association = state.extra! as VolunteerAssociation;
+                    VolunteerAssociation association =
+                        state.extra! as VolunteerAssociation;
                     return VolunteerAssociationPage(
                       id: state.params['id']!,
                       volunteerAssociation: association,
@@ -85,6 +88,11 @@ final router = GoRouter(
       name: 'news_details',
       path: '/news_details',
       builder: (context, state) => const DetailedNews(),
+    ),
+    GoRoute(
+      name: 'edit_profile',
+      path: '/edit_profile',
+      builder: (context, state) => const EditProfilePage(),
     )
   ],
 );
