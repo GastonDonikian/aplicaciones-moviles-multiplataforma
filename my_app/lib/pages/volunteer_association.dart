@@ -5,9 +5,16 @@ import 'package:my_app/design_system/cells/modal.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
-import 'package:my_app/design_system/tokens/colors.dart';
+import 'package:my_app/design_system/molecules/components.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/models/volunteer_association.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
+import '../design_system/cells/cards.dart';
+import '../models/volunteer.dart';
+import '../utils/map_utils.dart';
+
+
+
 
 class VolunteerAssociationPage extends StatefulWidget {
   final VolunteerAssociation volunteerAssociation;
@@ -35,7 +42,7 @@ class _VolunteerAssociationPageState extends State<VolunteerAssociationPage> {
           address: volunteerAssociation.address,
           onPressedCanceled: () => context.pop(),
           onPressedConfirmed: () {
-            // TODOO: Implementar postulación
+            // TODO: Implementar postulación
           },
         );
       }),
@@ -85,43 +92,59 @@ class _VolunteerAssociationPageState extends State<VolunteerAssociationPage> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 32),
                 child: SerManosGridPadding(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: SingleChildScrollView(
+                    child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: SizedBox(
-                                  child: SerManosTexts.headline1(
-                                    widget.volunteerAssociation.name,
-                                    color: cardTitleColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 24),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: SizedBox(
-                                  child: SerManosTexts.body1(
-                                    widget.volunteerAssociation.description,
-                                    color: SerManosColors.grey75,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
+                      Padding(
+                        padding: const EdgeInsets.only(top: 24),
+                        child: SerManosTexts.overline(widget.volunteerAssociation.associationType.toUpperCase(),
+                            color: SerManosColorFoundations.defaultOverlineColor),
                       ),
-                      SerManosElevatedButton(
-                        label: 'Postularme',
-                        onPressed: () => onPressedShowModal(context, widget.volunteerAssociation),
+                      SerManosTexts.headline1(
+                        widget.volunteerAssociation.name,
+                        color: cardTitleColor,
                       ),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 16),
+                          child: SerManosTexts.subtitle1(widget.volunteerAssociation.subtitle, color: SerManosColorFoundations.linkTextColor)),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 24),
+                          child: SerManosTexts.headline2('Sobre la actividad', color: SerManosColorFoundations.defaultHeadlineColor)
+                      ),
+                      SerManosTexts.body1(
+                        widget.volunteerAssociation.description,
+                        color: SerManosColorFoundations.defaultBodyColor,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 24),
+                        child: SerManosLocationCard(
+                        cardTitle: "Ubicación",
+                        location: widget.volunteerAssociation.address,
+                        onLocationPressed: () => MapUtils.openMap(widget.volunteerAssociation.location.latitude,widget.volunteerAssociation.location.longitude),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 24),
+                          child: SerManosTexts.headline2('Participar del voluntariado', color: SerManosColorFoundations.defaultHeadlineColor)
+                      ),
+                      MarkdownBody(
+                        data: widget.volunteerAssociation.requirements,
+                        listItemCrossAxisAlignment: MarkdownListItemCrossAxisAlignment.start,
+                      ),
+                      Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: SerManosVacancy(vacancy: widget.volunteerAssociation.availableCapacity)
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 24),
+                        child: SerManosElevatedButton(
+                          label: 'Postularme',
+                          onPressed: () => onPressedShowModal(context, widget.volunteerAssociation),
+                      ),
+    ),
                     ],
+                  ),
                   ),
                 ),
               ),
@@ -132,3 +155,19 @@ class _VolunteerAssociationPageState extends State<VolunteerAssociationPage> {
     );
   }
 }
+
+// class PostulationDispatcher extends StatelessWidget {
+//   PostulationDispatcher(
+//       {super.key,
+//         required this.volunteer,
+//         required this.volunteerAssociation
+//       });
+//
+//   final Volunteer volunteer;
+//   final VolunteerAssociation volunteerAssociation;
+//
+//   @override
+//   Widget build(BuildContext build){
+//     if(this.volunteerAssociation.)
+//   }
+// }

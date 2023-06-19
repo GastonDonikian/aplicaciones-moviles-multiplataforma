@@ -47,6 +47,8 @@ dependencies:
   shared_preferences: ^2.1.2
   flutter_riverpod: ^2.3.6
   intl: ^0.18.1
+  flutter_markdown: ^0.6.1
+  markdown: ^4.0.0
 
 dev_dependencies:
   flutter_test:
