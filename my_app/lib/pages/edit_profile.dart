@@ -9,6 +9,7 @@ import 'package:my_app/models/forms/contact.dart';
 import 'package:my_app/models/forms/personal_info.dart';
 import 'package:my_app/models/volunteer.dart';
 import 'package:my_app/providers/user_provider.dart';
+import 'package:my_app/services/images_service.dart';
 
 import '../services/user_service.dart';
 import 'package:intl/intl.dart';
@@ -42,7 +43,8 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
           birthDate: formatter.format(currentUser.birthDate!),
           gender: currentUser.gender,
           profileImageUrl: currentUser.imagePath);
-      contactInfo = ContactInfo(email: currentUser.email, phoneNumber: currentUser.phone);
+      contactInfo =
+          ContactInfo(email: currentUser.email, phoneNumber: currentUser.phone);
       contactIsValid = true;
       personalIsValid = true;
     } else {
@@ -52,6 +54,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   }
 
   final userService = AuthenticationService();
+  final imageService = ImagesService();
 
   void onPersonalInfoValidationChanged(bool isValid) {
     setState(() => personalIsValid = isValid);
@@ -65,16 +68,20 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     setState(() {
       loading = true;
     });
-    if (personalInfoFormKey.currentState!.validate() && contactInfoFormKey.currentState!.validate()) {
+    if (personalInfoFormKey.currentState!.validate() &&
+        contactInfoFormKey.currentState!.validate()) {
       personalInfoFormKey.currentState!.save();
       contactInfoFormKey.currentState!.save();
+
       final parsedBirthDate = personalInfo.birthDate!.split('/');
       userService
           .editUser(
-        DateTime.parse('${parsedBirthDate[2]}-${parsedBirthDate[1]}-${parsedBirthDate[0]}'),
+        DateTime.parse(
+            '${parsedBirthDate[2]}-${parsedBirthDate[1]}-${parsedBirthDate[0]}'),
         personalInfo.gender!,
         personalInfo.profileImageUrl,
         contactInfo.phoneNumber!,
+        personalInfo.profileImageFile,
       )
           .then(
         (value) {
@@ -117,10 +124,12 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _EditProfileBody(
-                      onPersonalInfoValidationChanged: onPersonalInfoValidationChanged,
+                      onPersonalInfoValidationChanged:
+                          onPersonalInfoValidationChanged,
                       personalInfo: personalInfo,
                       personalInfoformKey: personalInfoFormKey,
-                      onContactInfoValidationChanged: onContactInfoValidationChanged,
+                      onContactInfoValidationChanged:
+                          onContactInfoValidationChanged,
                       contactInfo: contactInfo,
                       contactInfoformKey: contactInfoFormKey,
                     ),
@@ -180,7 +189,11 @@ class _EditProfileBody extends StatelessWidget {
 }
 
 class _EditProfileFooter extends StatelessWidget {
-  const _EditProfileFooter({Key? key, required this.editEnabled, required this.onEditPressed, this.loading = false})
+  const _EditProfileFooter(
+      {Key? key,
+      required this.editEnabled,
+      required this.onEditPressed,
+      this.loading = false})
       : super(key: key);
 
   final bool editEnabled;
