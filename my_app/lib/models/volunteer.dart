@@ -10,12 +10,16 @@ class Volunteer {
   String? phone;
   DateTime? birthDate;
   bool profileCompleted;
+  String? currentAssociation;
+  bool? confirmedByAssociation;
 
   Volunteer(
       {required this.email,
       required this.name,
       required this.surname,
       this.imagePath,
+      this.currentAssociation,
+      this.confirmedByAssociation,
       this.gender,
       this.phone,
       this.birthDate,
@@ -29,6 +33,8 @@ class Volunteer {
       surname: json['surname'],
       gender: json['gender'] != null ? parseGender(json['gender']) : null,
       phone: json['phone'],
+      currentAssociation: json['currentAssociation'],
+      confirmedByAssociation: json['confirmedByAssociation'],
       birthDate: json['birthDate'] != null ? DateTime.parse(json['birthDate']) : null,
       profileCompleted: json['profileCompleted'],
     );
@@ -41,8 +47,10 @@ class Volunteer {
       'name': name,
       'surname': surname,
       'gender': gender != null ? gender!.value : null,
+      'confirmedByAssociation': confirmedByAssociation ?? false,
       'phone': phone,
       'birthDate': birthDate != null ? birthDate!.toIso8601String() : null,
+
       'profileCompleted': profileCompleted
     };
   }
@@ -54,6 +62,6 @@ class Volunteer {
   @override
   String toString() {
     // return a string with all the properties
-    return name + ' ' + surname + ' ' + email + ' ' + profileCompleted.toString();
+    return '$name $surname $email $profileCompleted';
   }
 }

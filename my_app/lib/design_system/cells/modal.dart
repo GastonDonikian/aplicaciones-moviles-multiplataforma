@@ -7,13 +7,14 @@ import 'package:my_app/design_system/tokens/shadows.dart';
 class SerManosModal extends StatelessWidget {
   const SerManosModal({
     super.key,
+    required this.header,
     required this.title,
     required this.schedule,
     required this.address,
     required this.onPressedCanceled,
     required this.onPressedConfirmed,
   });
-
+  final String header;
   final String title;
   final String schedule;
   final String address;
@@ -42,7 +43,7 @@ class SerManosModal extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SerManosTexts.subtitle1(
-                          "Te estas por postular a",
+                          header,
                           color: SerManosColorFoundations.modalSubtitleTextColor,
                         ),
                       ],
