@@ -47,9 +47,9 @@ class SerManosVolunteerCard extends StatelessWidget {
                 Expanded(
                   child: InkWell(
                     onTap: onPressedImage,
-                    child: Image(
+                    child: Image.network(
+                      imagePath,
                       height: 138,
-                      image: AssetImage(imagePath),
                       fit: BoxFit.fitWidth,
                     ),
                   ),

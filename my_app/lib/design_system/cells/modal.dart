@@ -9,14 +9,14 @@ class SerManosModal extends StatelessWidget {
     super.key,
     required this.title,
     required this.schedule,
-    required this.location,
+    required this.address,
     required this.onPressedCanceled,
     required this.onPressedConfirmed,
   });
 
   final String title;
   final String schedule;
-  final String location;
+  final String address;
   final void Function()? onPressedCanceled;
   final void Function()? onPressedConfirmed;
 
@@ -75,7 +75,7 @@ class SerManosModal extends StatelessWidget {
                       children: [
                         Expanded(
                           child: SerManosTexts.body1(
-                            location,
+                            address,
                             color: SerManosColorFoundations.modalBodyTextColor,
                           ),
                         ),

@@ -1,7 +1,5 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/volunteer_association.dart';
-
 
 class VolunteerAssociationService {
   final db = FirebaseFirestore.instance;
@@ -11,7 +9,14 @@ class VolunteerAssociationService {
     return db.collection(collectionPath).add(volunteerAssociation.toJson());
   }
 
-  Future getAllVolunteerAssociation() async {
-    return await db.collection(collectionPath).get();
+  Future getVolunteerAssociations(int page, int pageSize) async {
+    QuerySnapshot querySnapshot = await db.collection(collectionPath).get();
+    List<VolunteerAssociation> associations = [];
+    for (var doc in querySnapshot.docs) {
+      var data = doc.data() as Map<String, dynamic>;
+      var item = VolunteerAssociation.fromJson(data);
+      associations.add(item);
+    }
+    return associations;
   }
 }

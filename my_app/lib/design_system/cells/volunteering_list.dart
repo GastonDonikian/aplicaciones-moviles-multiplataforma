@@ -46,9 +46,9 @@ class SerManosVolunteeringList extends StatelessWidget {
                   imagePath: associations[index].imagePath,
                   cardOverlineText: associations[index].associationType,
                   cardTitle: associations[index].name,
-                  vacancy: 10,
-                  onPressedFav: () => {},
-                  onPressedLocation: () => {},
+                  vacancy: associations[index].availableCapacity,
+                  onPressedFav: () {},
+                  onPressedLocation: () => associations[index].openLocation(),
                   onPressedImage: () => onAssociationClicked(associations[index]),
                 ),
               );
