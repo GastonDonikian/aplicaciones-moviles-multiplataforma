@@ -156,7 +156,7 @@ class SerManosNewsCard extends StatelessWidget {
           child: Row(
             children: [
               Image(
-                image: AssetImage(imagePath),
+                image: NetworkImage(imagePath),
                 fit: BoxFit.cover,
               ),
               Expanded(

@@ -72,7 +72,7 @@ final routerProvider = Provider<GoRouter>((ref) {
               path: NewsTab.routeLocation,
               parentNavigatorKey: _shellNavigatorKey,
               builder: (context, state) {
-                return const NewsTab();
+                return NewsTab();
               },
               routes: [
                 GoRoute(

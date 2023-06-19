@@ -4,16 +4,32 @@ import 'package:my_app/design_system/cells/cards.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/models/news.dart';
 
-class NewsTab extends StatelessWidget {
-  const NewsTab({super.key});
+import '../services/news_service.dart';
 
+class NewsTab extends StatefulWidget {
+  const NewsTab({super.key});
   static String get routeName => 'news';
   static String get routeLocation => '/news';
 
   @override
-  Widget build(BuildContext context) {
-    List<News> news = [myNews, myNews, myNews, myNews, myNews, myNews, myNews, myNews];
+  State<StatefulWidget> createState() => NewsState();
+}
 
+class NewsState extends State<NewsTab> {
+  List<News> news = [];
+  @override
+  void initState() {
+    super.initState();
+
+    NewsService().getAllNews().then((value) {
+      setState(() {
+        news = value;
+      });
+    });
+
+  }
+  @override
+  Widget build(BuildContext context) {
     return Column(
       children: [
         Expanded(

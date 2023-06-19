@@ -16,6 +16,7 @@ class NewsService {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('news').get();
       for (var doc in querySnapshot.docs) {
         var data = doc.data() as Map<String, dynamic>;
+        data['id'] = doc.id;
         var newsItem = News.fromJson(data);
         news.add(newsItem);
       }
