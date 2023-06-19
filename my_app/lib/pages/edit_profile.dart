@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -73,7 +71,6 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
       personalInfoFormKey.currentState!.save();
       contactInfoFormKey.currentState!.save();
       final parsedBirthDate = personalInfo.birthDate!.split('/');
-      print(parsedBirthDate);
       userService
           .editUser(
         DateTime.parse(
@@ -85,7 +82,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
           .then(
         (value) {
           ref.read(userProvider.notifier).setUser(value!);
-          context.goNamed('profile');
+          context.pop();
         },
       );
     } else {

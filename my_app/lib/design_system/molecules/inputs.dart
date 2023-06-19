@@ -55,25 +55,33 @@ class _CustomGenericInputState extends State<CustomGenericInput> {
   @override
   Widget build(BuildContext context) {
     InputBorder? errorBorder = hasError
-        ? const OutlineInputBorder(borderSide: BorderSide(color: SerManosColorFoundations.inputErrorColor, width: 1))
+        ? const OutlineInputBorder(
+            borderSide: BorderSide(
+                color: SerManosColorFoundations.inputErrorColor, width: 1))
         : null;
 
     InputDecoration defaultDecoration = InputDecoration(
       labelText: widget.label,
       hintText: widget.placeholder,
       helperText: myFocusNode.hasFocus ? widget.helperText : null,
-      helperStyle: const SerManosTextStyles.caption(color: SerManosColorFoundations.inputDefaultColor),
+      helperStyle: const SerManosTextStyles.caption(
+          color: SerManosColorFoundations.inputDefaultColor),
       suffixIcon: buildSuffixIcon(hasError),
-      border:
-          const OutlineInputBorder(borderSide: BorderSide(color: SerManosColorFoundations.inputDefaultColor, width: 1)),
+      border: const OutlineInputBorder(
+          borderSide: BorderSide(
+              color: SerManosColorFoundations.inputDefaultColor, width: 1)),
       errorBorder: errorBorder,
       focusColor: SerManosColorFoundations.inputFocusColor,
-      focusedBorder:
-          const OutlineInputBorder(borderSide: BorderSide(color: SerManosColorFoundations.inputFocusColor, width: 1)),
+      focusedBorder: const OutlineInputBorder(
+          borderSide: BorderSide(
+              color: SerManosColorFoundations.inputFocusColor, width: 1)),
       labelStyle: SerManosTextStyles.subtitle1(color: labelColor(hasError)),
-      floatingLabelBehavior: widget.placeholder != null ? FloatingLabelBehavior.always : FloatingLabelBehavior.auto,
+      floatingLabelBehavior: widget.placeholder != null
+          ? FloatingLabelBehavior.always
+          : FloatingLabelBehavior.auto,
       disabledBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: SerManosColorFoundations.inputDisabledColor, width: 1),
+        borderSide: BorderSide(
+            color: SerManosColorFoundations.inputDisabledColor, width: 1),
       ),
     );
 
@@ -82,7 +90,9 @@ class _CustomGenericInputState extends State<CustomGenericInput> {
       focusNode: myFocusNode,
       decoration: defaultDecoration,
       controller: widget.controller,
-      cursorColor: !hasError ? SerManosColorFoundations.inputFocusColor : SerManosColorFoundations.inputErrorColor,
+      cursorColor: !hasError
+          ? SerManosColorFoundations.inputFocusColor
+          : SerManosColorFoundations.inputErrorColor,
       obscureText: widget.obscureText,
       inputFormatters: widget.inputFormatters,
       onChanged: (value) => setState(() {
@@ -95,7 +105,8 @@ class _CustomGenericInputState extends State<CustomGenericInput> {
 
   Widget? buildSuffixIcon(bool hasError) {
     if (hasError) {
-      return const Icon(SerManosIcons.errorIcon, color: SerManosColorFoundations.inputErrorColor);
+      return const Icon(SerManosIcons.errorIcon,
+          color: SerManosColorFoundations.inputErrorColor);
     } else {
       return widget.suffixIcon;
     }
@@ -189,7 +200,9 @@ class _CustomPasswordInputState extends State<CustomPasswordInput> {
       placeholder: widget.placeholder,
       label: widget.label,
       suffixIcon: SerManosIconButton(
-        icon: isPasswordVisible ? SerManosIcons.visibilityIconSharp : SerManosIcons.visibilityOffIcon,
+        icon: isPasswordVisible
+            ? SerManosIcons.visibilityIconSharp
+            : SerManosIcons.visibilityOffIcon,
         iconColor: SerManosColorFoundations.inputDefaultColor,
         onPressed: () => setState(() => isPasswordVisible = !isPasswordVisible),
       ),
@@ -253,7 +266,8 @@ class _CustomSearchInputState extends State<CustomSearchInput> {
       prefixIcon: Icon(widget.defaultIcon, color: SerManosColors.grey75),
       border: InputBorder.none,
       contentPadding: const EdgeInsets.symmetric(vertical: 12),
-      hintStyle: const SerManosTextStyles.subtitle1(color: SerManosColors.grey75),
+      hintStyle:
+          const SerManosTextStyles.subtitle1(color: SerManosColors.grey75),
     );
 
     return Container(
@@ -310,7 +324,8 @@ class _CustomDateInputState extends State<CustomDateInput> {
     return CustomGenericInput(
       placeholder: widget.placeholder,
       label: widget.label,
-      suffixIcon: const Icon(SerManosIcons.calendarIcon, color: SerManosColorFoundations.inputSufficIconColor),
+      suffixIcon: const Icon(SerManosIcons.calendarIcon,
+          color: SerManosColorFoundations.inputSufficIconColor),
       validator: (value) {
         var res = dateValidation(value);
         if (res == null) {
@@ -348,14 +363,16 @@ class SerManosCheckboxFormField extends FormField<String> {
                     Row(
                       children: [
                         Checkbox(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
                             value: state.value == option,
-                            fillColor: MaterialStateProperty.all(SerManosColors.primary100),
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            fillColor: MaterialStateProperty.all(
+                                SerManosColors.primary100),
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
                             onChanged: (value) {
-                              state.didChange(option);
                               var aux = state.isValid;
-                              state.validate();
+                              state.didChange(option);
                               if (aux != state.isValid) {
                                 onChangeValidity(state.isValid);
                               }
