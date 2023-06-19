@@ -63,12 +63,16 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
 }
 
 class ProfileCompleted extends StatelessWidget {
-  ProfileCompleted({super.key, required this.volunteer, required this.sessionOnPressed, required this.editOnPressed});
+  ProfileCompleted(
+      {super.key,
+      required this.volunteer,
+      required this.sessionOnPressed,
+      required this.editOnPressed});
 
   final void Function() sessionOnPressed;
   final void Function() editOnPressed;
   final Volunteer volunteer;
-  final DateFormat formatter = DateFormat('DD/MM/YYYY');
+  final DateFormat formatter = DateFormat.yMd();
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +97,7 @@ class ProfileCompleted extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: SerManosTexts.subtitle1(
-                  volunteer.name,
+                  volunteer.getFullname(),
                   color: SerManosColorFoundations.defaultBodyColor,
                 ),
               ),
@@ -111,7 +115,8 @@ class ProfileCompleted extends StatelessWidget {
                 cardTitle: "Información Personal",
                 information: {
                   "Fecha de nacimiento": formatter.format(volunteer.birthDate!),
-                  "Genero": volunteer.gender != null ? volunteer.gender!.value : ""
+                  "Genero":
+                      volunteer.gender != null ? volunteer.gender!.value : ""
                 },
               ),
               const SizedBox(
@@ -119,7 +124,10 @@ class ProfileCompleted extends StatelessWidget {
               ),
               SerManosInformationCard(
                 cardTitle: "Datos de contacto",
-                information: {"Telefono": volunteer.phone != null ? volunteer.phone! : "", "E-Mail": volunteer.email},
+                information: {
+                  "Telefono": volunteer.phone != null ? volunteer.phone! : "",
+                  "E-Mail": volunteer.email
+                },
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 32),
@@ -146,7 +154,10 @@ class ProfileCompleted extends StatelessWidget {
 
 class ProfileEmpty extends StatelessWidget {
   const ProfileEmpty(
-      {super.key, required this.completeOnPressed, required this.volunteer, required this.sessionOnPressed});
+      {super.key,
+      required this.completeOnPressed,
+      required this.volunteer,
+      required this.sessionOnPressed});
 
   final void Function() completeOnPressed;
   final void Function() sessionOnPressed;
@@ -171,7 +182,7 @@ class ProfileEmpty extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: SerManosTexts.subtitle1(
-                  '${volunteer.name} ${volunteer.surname}',
+                  volunteer.getFullname(),
                   color: SerManosColorFoundations.defaultBodyColor,
                 ),
               ),

@@ -42,12 +42,13 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     super.initState();
     Volunteer currentUser = ref.read(userProvider)!;
     if (currentUser.profileCompleted) {
-      final DateFormat formatter = DateFormat('DD/MM/YYYY');
+      final DateFormat formatter = DateFormat.yMd();
       personalInfo = PersonalInfo(
           birthDate: formatter.format(currentUser.birthDate!),
           gender: currentUser.gender,
           profileImageUrl: currentUser.imagePath);
-      contactInfo = ContactInfo(email: currentUser.email, phoneNumber: currentUser.phone);
+      contactInfo =
+          ContactInfo(email: currentUser.email, phoneNumber: currentUser.phone);
     } else {
       personalInfo = PersonalInfo();
       contactInfo = ContactInfo(email: currentUser.email);
@@ -65,13 +66,15 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   }
 
   void onEditPressed() {
-    if (personalInfoFormKey.currentState!.validate() && contactInfoFormKey.currentState!.validate()) {
+    if (personalInfoFormKey.currentState!.validate() &&
+        contactInfoFormKey.currentState!.validate()) {
       personalInfoFormKey.currentState!.save();
       contactInfoFormKey.currentState!.save();
       final parsedBirthDate = personalInfo.birthDate!.split('/');
       userService
           .editUser(
-        DateTime(int.parse(parsedBirthDate[2]), int.parse(parsedBirthDate[1]), int.parse(parsedBirthDate[1])),
+        DateTime(int.parse(parsedBirthDate[2]), int.parse(parsedBirthDate[1]),
+            int.parse(parsedBirthDate[0])),
         personalInfo.gender!,
         personalInfo.profileImageUrl,
         contactInfo.phoneNumber!,
@@ -107,16 +110,20 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _EditProfileBody(
-                      onPersonalInfoValidationChanged: onPersonalInfoValidationChanged,
+                      onPersonalInfoValidationChanged:
+                          onPersonalInfoValidationChanged,
                       personalInfo: personalInfo,
                       personalInfoformKey: personalInfoFormKey,
-                      onContactInfoValidationChanged: onContactInfoValidationChanged,
+                      onContactInfoValidationChanged:
+                          onContactInfoValidationChanged,
                       contactInfo: contactInfo,
                       contactInfoformKey: contactInfoFormKey,
                     ),
                   ],
                 ),
-                _EditProfileFooter(editEnabled: (contactIsValid && personalIsValid), onEditPressed: onEditPressed),
+                _EditProfileFooter(
+                    editEnabled: (contactIsValid && personalIsValid),
+                    onEditPressed: onEditPressed),
               ],
             ),
           ),
@@ -167,7 +174,10 @@ class _EditProfileBody extends StatelessWidget {
 
 class _EditProfileFooter extends StatelessWidget {
   const _EditProfileFooter(
-      {Key? key, required this.editEnabled, this.editInProgress = false, required this.onEditPressed})
+      {Key? key,
+      required this.editEnabled,
+      this.editInProgress = false,
+      required this.onEditPressed})
       : super(key: key);
 
   final bool editEnabled;
@@ -179,7 +189,10 @@ class _EditProfileFooter extends StatelessWidget {
     return Column(
       children: [
         SizedBox(height: 40),
-        SerManosElevatedButton(label: 'Guardar Datos', disabled: !editEnabled, onPressed: onEditPressed),
+        SerManosElevatedButton(
+            label: 'Guardar Datos',
+            disabled: !editEnabled,
+            onPressed: onEditPressed),
       ],
     );
   }
