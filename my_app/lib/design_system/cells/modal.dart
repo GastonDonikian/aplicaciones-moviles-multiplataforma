@@ -158,14 +158,14 @@ class SerManosImageModal extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: SerManosTextButton(
-                        label: "Tomar Foto",
+                        label: "Camara",
                         onPressed: onPressedCamera,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: SerManosTextButton(
-                        label: "Subir de Galería",
+                        label: "Galería",
                         onPressed: onPressedGallery,
                       ),
                     ),
