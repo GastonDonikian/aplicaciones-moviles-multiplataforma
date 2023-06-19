@@ -26,8 +26,12 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   LogInInfo logInInfo = LogInInfo();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final userService = AuthenticationService();
+  bool loading = false;
 
   void onLoginPressed() {
+    setState(() {
+      loading = true;
+    });
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       var email = logInInfo.email!;
@@ -39,6 +43,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           } else {
             ref.read(userProvider.notifier).setUser(user);
             context.goNamed('home');
+            setState(() {
+              loading = false;
+            });
           }
         });
       }).catchError((e) {
@@ -50,10 +57,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             ),
           );
         }
+        setState(() {
+          loading = false;
+        });
       });
     } else {
       setState(() {
         isValid = false;
+        loading = false;
       });
     }
   }
@@ -70,7 +81,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         logInInfo: logInInfo,
         formKey: formKey,
       ),
-      footer: _LoginFooter(loginEnabled: isValid, onLoginPressed: onLoginPressed),
+      footer: _LoginFooter(loginEnabled: isValid, onLoginPressed: onLoginPressed, loginInProgress: loading),
     );
   }
 }
@@ -105,7 +116,12 @@ class _LoginFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SerManosElevatedButton(label: 'Iniciar Sesión', disabled: !loginEnabled, onPressed: onLoginPressed),
+        SerManosElevatedButton(
+          label: 'Iniciar Sesión',
+          disabled: !loginEnabled,
+          onPressed: onLoginPressed,
+          loading: loginInProgress,
+        ),
         const SizedBox(height: 28),
         SerManosTextButton(label: "No tengo cuenta", onPressed: () => context.goNamed("signup")),
       ],

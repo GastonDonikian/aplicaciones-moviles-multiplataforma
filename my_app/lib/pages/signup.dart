@@ -23,11 +23,15 @@ class SignUpPage extends ConsumerStatefulWidget {
 
 class _SignUpPageState extends ConsumerState<SignUpPage> {
   bool isValid = false;
+  bool loading = false;
   SignUpInfo signUpInfo = SignUpInfo();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final userService = AuthenticationService();
 
   void onSignUpPressed() {
+    setState(() {
+      loading = true;
+    });
     if (formKey.currentState!.validate()) {
       formKey.currentState!.save();
       var name = signUpInfo.firstName!;
@@ -42,6 +46,9 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
           } else {
             ref.read(userProvider.notifier).setUser(user);
             context.goNamed('welcome');
+            setState(() {
+              loading = false;
+            });
           }
         });
       }).catchError((e) {
@@ -51,10 +58,14 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
             backgroundColor: SerManosColorFoundations.buttonErrorColor,
           ));
         }
+        setState(() {
+          loading = false;
+        });
       });
     } else {
       setState(() {
         isValid = false;
+        loading = false;
       });
     }
   }
@@ -71,7 +82,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
           signUpInfo: signUpInfo,
           formKey: formKey,
         ),
-        footer: _SignUpFooter(signUpEnabled: isValid, onSignUpPressed: onSignUpPressed));
+        footer: _SignUpFooter(signUpEnabled: isValid, onSignUpPressed: onSignUpPressed, isLoading: loading));
   }
 }
 
@@ -117,6 +128,7 @@ class _SignUpFooter extends StatelessWidget {
           label: 'Registrarse',
           disabled: !signUpEnabled,
           onPressed: onSignUpPressed,
+          loading: isLoading,
         ),
         const SizedBox(height: 28),
         SerManosTextButton(label: "Ya tengo cuenta", onPressed: () => context.goNamed("login")),
