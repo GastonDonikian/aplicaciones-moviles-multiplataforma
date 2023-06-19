@@ -49,6 +49,7 @@ dependencies:
   intl: ^0.18.1
   flutter_markdown: ^0.6.1
   markdown: ^4.0.0
+  image_picker: ^0.8.9
 
 dev_dependencies:
   flutter_test:

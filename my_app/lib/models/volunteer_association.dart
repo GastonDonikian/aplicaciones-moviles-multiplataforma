@@ -1,6 +1,3 @@
-
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_app/utils/map_utils.dart';
 import 'package:markdown/markdown.dart' as md;
@@ -66,7 +63,6 @@ class VolunteerAssociation {
       volunteers: json['volunteers'],
     );
   }
-
 
   int get availableCapacity => capacity - volunteers;
 

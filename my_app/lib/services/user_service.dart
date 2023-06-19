@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:my_app/models/gender.dart';
+import 'package:my_app/services/images_service.dart';
 
 import '../models/volunteer.dart';
 
@@ -8,6 +12,7 @@ const collection = "users";
 
 class AuthenticationService {
   final FirebaseAuth _authenticator = FirebaseAuth.instance;
+  final ImagesService _imagesService = ImagesService();
 
   Future signIn(String email, String password) async {
     return await _authenticator.signInWithEmailAndPassword(
@@ -58,17 +63,26 @@ class AuthenticationService {
   }
 
   Future<Volunteer?> editUser(DateTime birthDate, Gender gender,
-      String? imagePath, String phone) async {
+      String? imagePath, String phone, File? imageFile) async {
     Volunteer? currentUser = await getCurrentUser();
     currentUser = currentUser!;
     currentUser.birthDate = birthDate;
     currentUser.gender = gender;
-    currentUser.imagePath = imagePath;
     currentUser.phone = phone;
     currentUser.profileCompleted = true;
+
+    var currentUid = _authenticator.currentUser!.uid;
+    if (imageFile != null) {
+      var newImagePath =
+          await _imagesService.uploadUserImage(currentUid, imageFile);
+      if (newImagePath != null) {
+        currentUser.imagePath = newImagePath;
+      }
+    }
+
     await FirebaseFirestore.instance
         .collection('users')
-        .doc(_authenticator.currentUser!.uid)
+        .doc(currentUid)
         .set(currentUser.toJson());
     return currentUser;
   }

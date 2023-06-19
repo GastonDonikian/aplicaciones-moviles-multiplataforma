@@ -11,17 +11,16 @@ class ImagesService {
   final volunteerAssociationRef =
       FirebaseStorage.instance.ref().child('volunteer_association_images');
 
-  final userService = AuthenticationService();
-  //TODO fix implementation to match the edit profile flow
-  // Future<void> uploadUserImage(String userId, File imageFile) async {
-  //   try {
-  //     final storageRef = userRef.child(userId);
-  //     List<int> imageBytes = await imageFile.readAsBytes();
-  //     TaskSnapshot storageTask = await storageRef.putData(Uint8List.fromList(imageBytes));
-  //     String downloadUrl = await storageTask.ref.getDownloadURL();
-  //     userService.editUser(userId, {'imagePath': downloadUrl});
-  //   } catch (e) {
-  //     return;
-  //   }
-  // }
+  Future<String?> uploadUserImage(String userId, File imageFile) async {
+    try {
+      final storageRef = userRef.child(userId);
+      List<int> imageBytes = await imageFile.readAsBytes();
+      TaskSnapshot storageTask =
+          await storageRef.putData(Uint8List.fromList(imageBytes));
+      String downloadUrl = await storageTask.ref.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      print('Error when saving image');
+    }
+  }
 }

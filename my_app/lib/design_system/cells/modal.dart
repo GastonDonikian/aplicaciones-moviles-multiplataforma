@@ -44,7 +44,8 @@ class SerManosModal extends StatelessWidget {
                       children: [
                         SerManosTexts.subtitle1(
                           header,
-                          color: SerManosColorFoundations.modalSubtitleTextColor,
+                          color:
+                              SerManosColorFoundations.modalSubtitleTextColor,
                         ),
                       ],
                     ),
@@ -54,7 +55,8 @@ class SerManosModal extends StatelessWidget {
                       children: [
                         SerManosTexts.headline2(
                           title,
-                          color: SerManosColorFoundations.modalHeadlineTextColor,
+                          color:
+                              SerManosColorFoundations.modalHeadlineTextColor,
                         ),
                       ],
                     ),
@@ -102,6 +104,71 @@ class SerManosModal extends StatelessWidget {
                         onPressed: onPressedConfirmed,
                       ),
                     )
+                  ],
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SerManosImageModal extends StatelessWidget {
+  const SerManosImageModal({
+    super.key,
+    required this.onPressedCanceled,
+    required this.onPressedGallery,
+    required this.onPressedCamera,
+  });
+
+  final void Function()? onPressedCanceled;
+  final void Function()? onPressedGallery;
+  final void Function()? onPressedCamera;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              color: SerManosColorFoundations.modalBackgroundColor,
+              borderRadius: BorderRadius.all(Radius.circular(2.0)),
+              boxShadow: SerManosShadows.boxShadows3,
+            ),
+            padding: const EdgeInsets.all(16),
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Column(
+                  children: [
+                    SerManosTexts.headline2(
+                      "Elegí el metodo para subir la foto",
+                      color: SerManosColorFoundations.modalHeadlineTextColor,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: SerManosTextButton(
+                        label: "Tomar Foto",
+                        onPressed: onPressedCamera,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: SerManosTextButton(
+                        label: "Subir de Galería",
+                        onPressed: onPressedGallery,
+                      ),
+                    ),
                   ],
                 )
               ],

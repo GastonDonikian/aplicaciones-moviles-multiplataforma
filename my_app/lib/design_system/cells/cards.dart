@@ -1,5 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:my_app/design_system/atoms/icons.dart';
+import 'package:my_app/design_system/cells/modal.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
@@ -24,7 +30,8 @@ class SerManosVolunteerCard extends StatelessWidget {
   final String cardTitle;
   final int vacancy;
   final String cardOverlineText;
-  final Color cardOverlineTextColor = SerManosColorFoundations.cardOverlineTextColor;
+  final Color cardOverlineTextColor =
+      SerManosColorFoundations.cardOverlineTextColor;
   final Color cardTitleColor = SerManosColorFoundations.cardTitleColor;
   final void Function()? onPressedFav;
   final void Function()? onPressedLocation;
@@ -58,7 +65,8 @@ class SerManosVolunteerCard extends StatelessWidget {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(right: 16, left: 16, bottom: 16, top: 8),
+              padding: const EdgeInsets.only(
+                  right: 16, left: 16, bottom: 16, top: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -90,7 +98,9 @@ class SerManosVolunteerCard extends StatelessWidget {
                       Row(
                         children: [
                           SerManosIconButton(
-                            icon: isFavorite ? SerManosIcons.favoriteIcon : SerManosIcons.favoriteIconOutline,
+                            icon: isFavorite
+                                ? SerManosIcons.favoriteIcon
+                                : SerManosIcons.favoriteIconOutline,
                             iconColor: SerManosColorFoundations.iconActiveColor,
                             onPressed: onPressedFav,
                           ),
@@ -128,7 +138,8 @@ class SerManosNewsCard extends StatelessWidget {
   final String cardTitle;
   final String cardText;
   final String cardOverlineText;
-  final Color cardOverlineTextColor = SerManosColorFoundations.cardOverlineTextColor;
+  final Color cardOverlineTextColor =
+      SerManosColorFoundations.cardOverlineTextColor;
   final Color cardTitleColor = SerManosColorFoundations.cardTitleColor;
   final Color cardTextColor = SerManosColorFoundations.cardTextColor;
 
@@ -158,8 +169,9 @@ class SerManosNewsCard extends StatelessWidget {
                         Row(
                           children: [
                             Expanded(
-                              child:
-                                  SerManosTexts.overline(cardOverlineText.toUpperCase(), color: cardOverlineTextColor),
+                              child: SerManosTexts.overline(
+                                  cardOverlineText.toUpperCase(),
+                                  color: cardOverlineTextColor),
                             ),
                           ],
                         ),
@@ -192,7 +204,8 @@ class SerManosNewsCard extends StatelessWidget {
                         children: [
                           Padding(
                               padding: const EdgeInsets.only(right: 8),
-                              child: SerManosTextButton(label: "Leer Más", onPressed: onPressed)),
+                              child: SerManosTextButton(
+                                  label: "Leer Más", onPressed: onPressed)),
                         ],
                       )
                     ],
@@ -209,11 +222,15 @@ class SerManosNewsCard extends StatelessWidget {
 
 class SerManosCurrentVolunteeringCard extends StatelessWidget {
   const SerManosCurrentVolunteeringCard(
-      {super.key, required this.cardOverlineText, required this.cardTitle, required this.onLocationPressed});
+      {super.key,
+      required this.cardOverlineText,
+      required this.cardTitle,
+      required this.onLocationPressed});
 
   final String cardTitle;
   final String cardOverlineText;
-  final Color cardOverlineTextColor = SerManosColorFoundations.cardOverlineTextColor;
+  final Color cardOverlineTextColor =
+      SerManosColorFoundations.cardOverlineTextColor;
   final Color cardTitleColor = SerManosColorFoundations.cardTitleColor;
   final void Function()? onLocationPressed;
 
@@ -224,7 +241,8 @@ class SerManosCurrentVolunteeringCard extends StatelessWidget {
         color: SerManosColors.primary5,
         borderRadius: BorderRadius.all(Radius.circular(6)),
         boxShadow: SerManosShadows.boxShadows2,
-        border: Border.fromBorderSide(BorderSide(color: SerManosColors.primary100, width: 2)),
+        border: Border.fromBorderSide(
+            BorderSide(color: SerManosColors.primary100, width: 2)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -316,16 +334,49 @@ class SerManosInputCard extends StatelessWidget {
 }
 
 class SerManosPhotoInputCard extends StatefulWidget {
-  const SerManosPhotoInputCard({super.key, required this.image});
+  SerManosPhotoInputCard(
+      {super.key, required this.image, required this.onSaved});
 
   final String? image;
+  final Function(File) onSaved;
 
   @override
   State<SerManosPhotoInputCard> createState() => _SerManosPhotoInputCardState();
 }
 
 class _SerManosPhotoInputCardState extends State<SerManosPhotoInputCard> {
-  // TODO: implement photo upload
+  File? imageFile;
+  void pickImage(ImageSource source, BuildContext context) async {
+    try {
+      final image = await ImagePicker()
+          .pickImage(source: source, preferredCameraDevice: CameraDevice.front);
+      if (image == null) {
+        print('Image was null');
+        return;
+      }
+      setState(() {
+        print('Setting image');
+        imageFile = File(image.path);
+        widget.onSaved(imageFile!);
+        context.pop();
+      });
+    } on PlatformException catch (e) {
+      print('Missing permissions');
+    }
+  }
+
+  onPressedShowModal(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: ((BuildContext context) {
+        return SerManosImageModal(
+          onPressedCanceled: () => context.pop(),
+          onPressedGallery: () => pickImage(ImageSource.gallery, context),
+          onPressedCamera: () => pickImage(ImageSource.camera, context),
+        );
+      }),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -343,16 +394,29 @@ class _SerManosPhotoInputCardState extends State<SerManosPhotoInputCard> {
             children: [
               SerManosTexts.subtitle1("Foto de perfil", color: Colors.black),
               if (widget.image != null) const SizedBox(height: 8),
-              if (widget.image != null) SerManosButton(label: "Cambiar foto", onPressed: () {})
+              if (widget.image != null || imageFile != null)
+                SerManosButton(
+                    label: "Cambiar foto",
+                    onPressed: () {
+                      // pickImage(ImageSource.gallery);
+                      onPressedShowModal(context);
+                    })
             ],
           ),
-          if (widget.image == null)
+          if (widget.image == null && imageFile == null)
             SerManosButton(
               label: "Subir foto",
-              onPressed: () {},
+              onPressed: () {
+                // pickImage(ImageSource.gallery);
+                onPressedShowModal(context);
+              },
             )
           else
-            SerManosAvatar(imageUrl: widget.image!),
+            imageFile != null
+                ? SerManosAvatarFromFile(imageFile: imageFile!)
+                : SerManosAvatar(
+                    imageUrl: widget.image,
+                  )
         ],
       ),
     );
@@ -360,7 +424,8 @@ class _SerManosPhotoInputCardState extends State<SerManosPhotoInputCard> {
 }
 
 class SerManosInformationCard extends StatelessWidget {
-  const SerManosInformationCard({super.key, required this.cardTitle, required this.information});
+  const SerManosInformationCard(
+      {super.key, required this.cardTitle, required this.information});
 
   final String cardTitle;
   final Map<String, String> information;
@@ -425,7 +490,8 @@ class SerManosLocationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SerManosBasicCard(cardTitle: cardTitle, child: _buildLocationCard(context, location));
+    return SerManosBasicCard(
+        cardTitle: cardTitle, child: _buildLocationCard(context, location));
   }
 
   Widget _buildLocationCard(BuildContext context, String location) {
@@ -461,7 +527,8 @@ class SerManosLocationCard extends StatelessWidget {
           ),
           IconButton(
             onPressed: onLocationPressed,
-            icon: const Icon(SerManosIcons.locationIcon, color: SerManosColorFoundations.buttonActiveColor),
+            icon: const Icon(SerManosIcons.locationIcon,
+                color: SerManosColorFoundations.buttonActiveColor),
           )
         ],
       ),
@@ -470,7 +537,8 @@ class SerManosLocationCard extends StatelessWidget {
 }
 
 class SerManosBasicCard extends StatelessWidget {
-  const SerManosBasicCard({super.key, required this.cardTitle, required this.child});
+  const SerManosBasicCard(
+      {super.key, required this.cardTitle, required this.child});
 
   final Widget child;
   final String cardTitle;

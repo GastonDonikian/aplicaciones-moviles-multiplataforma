@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:my_app/design_system/atoms/icons.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
@@ -49,7 +51,8 @@ class SerManosVacancy extends StatelessWidget {
 }
 
 class SerManosAvatar extends StatelessWidget {
-  const SerManosAvatar({Key? key, this.imageUrl, this.big = false}) : super(key: key);
+  const SerManosAvatar({Key? key, this.imageUrl, this.big = false})
+      : super(key: key);
 
   final String? imageUrl;
   final bool big;
@@ -70,6 +73,27 @@ class SerManosAvatar extends StatelessWidget {
               : Image.network(
                   imageUrl!,
                 ),
+        ));
+  }
+}
+
+class SerManosAvatarFromFile extends StatelessWidget {
+  const SerManosAvatarFromFile(
+      {Key? key, required this.imageFile, this.big = false})
+      : super(key: key);
+
+  final File imageFile;
+  final bool big;
+
+  @override
+  Widget build(BuildContext context) {
+    var radius = big ? 55.0 : 42.0;
+
+    return CircleAvatar(
+        backgroundColor: Colors.transparent,
+        radius: radius,
+        child: ClipOval(
+          child: Image.file(imageFile),
         ));
   }
 }
