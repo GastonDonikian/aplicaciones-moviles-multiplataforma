@@ -62,18 +62,19 @@ class SerManosAvatar extends StatelessWidget {
     var radius = big ? 55.0 : 42.0;
     radius = imageUrl == null ? 50 : radius;
 
-    return CircleAvatar(
+    if (imageUrl == null) {
+      return CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: radius,
-        child: ClipOval(
-          child: imageUrl == null
-              ? const Image(
-                  image: AssetImage("assets/profile_image.png"),
-                )
-              : Image.network(
-                  imageUrl!,
-                ),
-        ));
+        backgroundImage: const AssetImage("assets/profile_image.png"),
+      );
+    } else {
+      return CircleAvatar(
+        backgroundColor: Colors.transparent,
+        radius: radius,
+        backgroundImage: NetworkImage(imageUrl!),
+      );
+    }
   }
 }
 
@@ -90,10 +91,9 @@ class SerManosAvatarFromFile extends StatelessWidget {
     var radius = big ? 55.0 : 42.0;
 
     return CircleAvatar(
-        backgroundColor: Colors.transparent,
-        radius: radius,
-        child: ClipOval(
-          child: Image.file(imageFile),
-        ));
+      backgroundColor: Colors.transparent,
+      radius: radius,
+      backgroundImage: FileImage(imageFile),
+    );
   }
 }

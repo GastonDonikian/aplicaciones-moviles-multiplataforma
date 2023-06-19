@@ -50,6 +50,9 @@ dependencies:
   flutter_markdown: ^0.6.1
   markdown: ^4.0.0
   image_picker: ^0.8.9
+  http: ^0.13.6
+  flutter_share: ^2.0.0
+  path_provider: ^2.0.15
 
 dev_dependencies:
   flutter_test:
