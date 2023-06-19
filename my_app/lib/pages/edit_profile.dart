@@ -71,7 +71,6 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
       personalInfoFormKey.currentState!.save();
       contactInfoFormKey.currentState!.save();
       final parsedBirthDate = personalInfo.birthDate!.split('/');
-      print(parsedBirthDate);
       userService
           .editUser(
         DateTime.parse(
@@ -83,7 +82,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
           .then(
         (value) {
           ref.read(userProvider.notifier).setUser(value!);
-          context.goNamed('profile');
+          context.pop();
         },
       );
     } else {

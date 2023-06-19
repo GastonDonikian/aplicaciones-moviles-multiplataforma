@@ -30,7 +30,8 @@ class Volunteer {
       surname: json['surname'],
       gender: json['gender'] != null ? parseGender(json['gender']) : null,
       phone: json['phone'],
-      birthDate: json['birthDate'] != null ? json['birthDate']!.toDate() : null,
+      birthDate:
+          json['birthDate'] != null ? DateTime.parse(json['birthDate']) : null,
       profileCompleted: json['profileCompleted'],
     );
   }
@@ -43,7 +44,7 @@ class Volunteer {
       'surname': surname,
       'gender': gender != null ? gender!.value : null,
       'phone': phone,
-      'birthDate': birthDate,
+      'birthDate': birthDate != null ? birthDate!.toIso8601String() : null,
       'profileCompleted': profileCompleted
     };
   }
