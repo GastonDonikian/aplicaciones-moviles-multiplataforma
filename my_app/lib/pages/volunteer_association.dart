@@ -32,7 +32,7 @@ class _VolunteerAssociationPageState extends State<VolunteerAssociationPage> {
         return SerManosModal(
           title: volunteerAssociation.name,
           schedule: volunteerAssociation.schedule,
-          location: volunteerAssociation.location,
+          address: volunteerAssociation.address,
           onPressedCanceled: () => context.pop(),
           onPressedConfirmed: () {
             // TODOO: Implementar postulación

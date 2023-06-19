@@ -7,23 +7,40 @@ import 'package:my_app/design_system/cells/volunteering_list.dart';
 import 'package:my_app/design_system/molecules/inputs.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/models/volunteer_association.dart';
+import 'package:my_app/services/volunteer_service.dart';
 
-class ApplyTab extends StatelessWidget {
+class ApplyTab extends StatefulWidget {
   const ApplyTab({super.key});
 
   static String get routeName => 'home';
   static String get routeLocation => '/home';
 
   @override
-  Widget build(BuildContext context) {
-    List<VolunteerAssociation> volunteerAssociations = [
-      myVolunteerAssociation,
-      myVolunteerAssociation,
-      myVolunteerAssociation,
-      myVolunteerAssociation,
-      myVolunteerAssociation,
-    ];
+  State<ApplyTab> createState() => _ApplyTabState();
+}
 
+class _ApplyTabState extends State<ApplyTab> {
+  List<VolunteerAssociation> volunteerAssociations = [];
+  VolunteerAssociation? currentActitivy;
+  final int pageSize = 10;
+  int page = 0;
+
+  void loadVolunteerAssociations() {
+    VolunteerAssociationService().getVolunteerAssociations(page, pageSize).then((value) {
+      setState(() {
+        volunteerAssociations = value;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    loadVolunteerAssociations();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     void goToVolunteerAssociation(VolunteerAssociation volunteerAssociation) {
       context.goNamed("association", extra: volunteerAssociation, params: {"id": volunteerAssociation.name});
     }
@@ -31,8 +48,6 @@ class ApplyTab extends StatelessWidget {
     void onSearchEnter(String query) {
       // TODO: query search
     }
-
-    void loadVolunteerAssociations() {}
 
     return Column(
       children: [
@@ -51,12 +66,13 @@ class ApplyTab extends StatelessWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SerManosGridPadding(
-                  child: SerManosCurrentActivityWidget(
-                    association: myVolunteerAssociation,
-                    onAssociationPressed: goToVolunteerAssociation,
+                if (currentActitivy != null)
+                  SerManosGridPadding(
+                    child: SerManosCurrentActivityWidget(
+                      association: currentActitivy!,
+                      onAssociationPressed: goToVolunteerAssociation,
+                    ),
                   ),
-                ),
                 SerManosVolunteeringList(
                   associations: volunteerAssociations,
                   onAssociationClicked: goToVolunteerAssociation,
@@ -69,13 +85,3 @@ class ApplyTab extends StatelessWidget {
     );
   }
 }
-
-VolunteerAssociation myVolunteerAssociation = VolunteerAssociation(
-  imagePath: 'assets/volunteer_card_1.png',
-  associationType: 'Acción Social',
-  name: 'Un Techo Para mi Pais',
-  schedule: 'Días sábados de 9.00 a 17.00 horas.',
-  address: 'A dos horas al sur de Vicente López en la ciudad de Buenos',
-  location: 'Caballito',
-  description: 'A dos horas al sur de Vicente López en la ciudad de Buenos Aires.',
-);
