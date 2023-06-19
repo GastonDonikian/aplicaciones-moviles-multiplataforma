@@ -1,9 +1,13 @@
+import 'package:flutter_share/flutter_share.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:my_app/design_system/cells/headers.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 
 import '../design_system/foundations/texts.dart';
 import '../models/news.dart';
@@ -62,23 +66,24 @@ class DetailedNews extends StatelessWidget {
                     child: SerManosTexts.headline2('Comparte esta nota',
                         color: SerManosColorFoundations.defaultHeadlineColor)),
               ),
-              Align(
-                alignment: Alignment.center,
-                child: Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    //TODO : Sendo to link
-                    child: SerManosElevatedButton(
-                      label: 'Compartir',
-                      disabled: false,
-                      onPressed: () async {
-                        final url = 'https://www.google.com';
-                        if (await canLaunch(url)) {
-                          await launch(url);
-                        } else {
-                          throw 'Could not launch $url';
-                        }
-                      },
-                    )),
+              const SizedBox(height: 16),
+              SerManosElevatedButton(
+                label: 'Compartir',
+                onPressed: () async {
+                  final urlImage =
+                      'https://firebasestorage.googleapis.com/v0/b/sermanos-f8b2f.appspot.com/o/volunteer_association_images%2FImagen.png?alt=media&token=2cce6365-a8ac-4bf1-b9e0-4b6aa52bf8e7';
+                  final url = Uri.parse(urlImage);
+                  final response = await http.get(url);
+                  final bytes = response.bodyBytes;
+                  final temp = await getTemporaryDirectory();
+                  final path = '${temp.path}/image.png';
+                  File(path).writeAsBytes(bytes);
+                  await FlutterShare.shareFile(
+                    title: news.title,
+                    text: news.subtitle,
+                    filePath: path,
+                  );
+                },
               ),
             ],
           ),
