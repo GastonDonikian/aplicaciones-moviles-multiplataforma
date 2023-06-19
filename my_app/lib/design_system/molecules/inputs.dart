@@ -219,6 +219,7 @@ class CustomSearchInput extends StatefulWidget {
     required this.defaultIcon,
     this.onEnter,
     this.onChanged,
+    this.onClear,
   });
 
   final String placeholder;
@@ -226,6 +227,7 @@ class CustomSearchInput extends StatefulWidget {
   final IconData eraseIcon;
   final IconData defaultIcon;
   final void Function(String)? onEnter;
+  final void Function()? onClear;
   final void Function(String)? onChanged;
 
   @override
@@ -237,6 +239,7 @@ class _CustomSearchInputState extends State<CustomSearchInput> {
 
   void clear() {
     controller.clear();
+    widget.onClear?.call();
   }
 
   @override
@@ -267,7 +270,10 @@ class _CustomSearchInputState extends State<CustomSearchInput> {
           TextFormField(
             controller: controller,
             decoration: defaultDecoration,
-            onChanged: widget.onChanged,
+            onChanged: (value) {
+              setState(() {});
+              widget.onChanged?.call(value);
+            },
             onFieldSubmitted: widget.onEnter,
           ),
         ],

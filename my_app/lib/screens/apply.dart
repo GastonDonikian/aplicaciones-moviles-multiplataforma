@@ -22,11 +22,9 @@ class ApplyTab extends StatefulWidget {
 class _ApplyTabState extends State<ApplyTab> {
   List<VolunteerAssociation> volunteerAssociations = [];
   VolunteerAssociation? currentActitivy;
-  final int pageSize = 10;
-  int page = 0;
 
-  void loadVolunteerAssociations() {
-    VolunteerAssociationService().getVolunteerAssociations(page, pageSize).then((value) {
+  void loadVolunteerAssociations(String? query) {
+    VolunteerAssociationService().getVolunteerAssociations(query).then((value) {
       setState(() {
         volunteerAssociations = value;
       });
@@ -35,7 +33,7 @@ class _ApplyTabState extends State<ApplyTab> {
 
   @override
   void initState() {
-    loadVolunteerAssociations();
+    loadVolunteerAssociations(null);
     super.initState();
   }
 
@@ -46,7 +44,7 @@ class _ApplyTabState extends State<ApplyTab> {
     }
 
     void onSearchEnter(String query) {
-      // TODO: query search
+      loadVolunteerAssociations(query);
     }
 
     return Column(
@@ -59,6 +57,7 @@ class _ApplyTabState extends State<ApplyTab> {
             eraseIcon: SerManosIcons.closeIcon,
             defaultIcon: SerManosIcons.searchIcon,
             onEnter: onSearchEnter,
+            onClear: () => loadVolunteerAssociations(null),
           ),
         ),
         const SizedBox(height: 32),
