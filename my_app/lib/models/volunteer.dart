@@ -43,7 +43,7 @@ class Volunteer {
       'surname': surname,
       'gender': gender != null ? gender!.value : null,
       'phone': phone,
-      'birthDate': birthDate != null ? birthDate!.millisecondsSinceEpoch : null,
+      'birthDate': birthDate,
       'profileCompleted': profileCompleted
     };
   }

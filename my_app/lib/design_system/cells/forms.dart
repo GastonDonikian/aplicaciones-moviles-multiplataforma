@@ -229,7 +229,6 @@ class _SerManosPersonalInfoFormState extends State<SerManosPersonalInfoForm> {
   @override
   void initState() {
     super.initState();
-    final DateFormat formatter = DateFormat.yMd();
     dateController = TextEditingController(text: widget.personalInfo.birthDate);
     isCheckBoxValid = widget.personalInfo.gender == null ? false : true;
     dateController.addListener(() {

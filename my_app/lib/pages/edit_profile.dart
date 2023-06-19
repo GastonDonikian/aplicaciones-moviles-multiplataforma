@@ -42,13 +42,15 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     super.initState();
     Volunteer currentUser = ref.read(userProvider)!;
     if (currentUser.profileCompleted) {
-      final DateFormat formatter = DateFormat.yMd();
+      final DateFormat formatter = DateFormat('dd/MM/yyy');
       personalInfo = PersonalInfo(
           birthDate: formatter.format(currentUser.birthDate!),
           gender: currentUser.gender,
           profileImageUrl: currentUser.imagePath);
       contactInfo =
           ContactInfo(email: currentUser.email, phoneNumber: currentUser.phone);
+      contactIsValid = true;
+      personalIsValid = true;
     } else {
       personalInfo = PersonalInfo();
       contactInfo = ContactInfo(email: currentUser.email);
@@ -71,10 +73,11 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
       personalInfoFormKey.currentState!.save();
       contactInfoFormKey.currentState!.save();
       final parsedBirthDate = personalInfo.birthDate!.split('/');
+      print(parsedBirthDate);
       userService
           .editUser(
-        DateTime(int.parse(parsedBirthDate[2]), int.parse(parsedBirthDate[1]),
-            int.parse(parsedBirthDate[0])),
+        DateTime.parse(
+            '${parsedBirthDate[2]}-${parsedBirthDate[1]}-${parsedBirthDate[0]}'),
         personalInfo.gender!,
         personalInfo.profileImageUrl,
         contactInfo.phoneNumber!,
@@ -82,7 +85,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
           .then(
         (value) {
           ref.read(userProvider.notifier).setUser(value!);
-          GoRouter.of(context).go('/home/profile');
+          context.goNamed('profile');
         },
       );
     } else {

@@ -72,7 +72,7 @@ class ProfileCompleted extends StatelessWidget {
   final void Function() sessionOnPressed;
   final void Function() editOnPressed;
   final Volunteer volunteer;
-  final DateFormat formatter = DateFormat.yMd();
+  final DateFormat formatter = DateFormat('dd/MM/yyy');
 
   @override
   Widget build(BuildContext context) {
