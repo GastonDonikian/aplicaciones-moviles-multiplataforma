@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_app/models/gender.dart';
 
 class Volunteer {
@@ -21,6 +22,7 @@ class Volunteer {
       this.profileCompleted = false});
 
   factory Volunteer.fromJson(Map<String, dynamic> json) {
+    print(json['birthDate']);
     return Volunteer(
       imagePath: json['imagePath'],
       email: json['email'],
@@ -28,7 +30,7 @@ class Volunteer {
       surname: json['surname'],
       gender: json['gender'] != null ? parseGender(json['gender']) : null,
       phone: json['phone'],
-      birthDate: json['birthDate'],
+      birthDate: json['birthDate'] != null ? json['birthDate']!.toDate() : null,
       profileCompleted: json['profileCompleted'],
     );
   }
@@ -39,16 +41,26 @@ class Volunteer {
       'email': email,
       'name': name,
       'surname': surname,
-      'gender': gender,
+      'gender': gender != null ? gender!.value : null,
       'phone': phone,
       'birthDate': birthDate,
       'profileCompleted': profileCompleted
     };
   }
 
+  String getFullname() {
+    return "$name $surname";
+  }
+
   @override
   String toString() {
     // return a string with all the properties
-    return name + ' ' + surname + ' ' + email + ' ' + profileCompleted.toString();
+    return name +
+        ' ' +
+        surname +
+        ' ' +
+        email +
+        ' ' +
+        profileCompleted.toString();
   }
 }

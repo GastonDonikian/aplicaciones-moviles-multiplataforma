@@ -1,14 +1,16 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_app/models/volunteer.dart';
+import 'package:my_app/services/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserNotifier extends StateNotifier<Volunteer?> {
   UserNotifier() : super(null) {
-    _loadUserFromPrefs();
+    loadUserFromPrefs();
   }
 
-  void _loadUserFromPrefs() async {
+  Future<void> loadUserFromPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userData')) {
       return;
@@ -17,20 +19,25 @@ class UserNotifier extends StateNotifier<Volunteer?> {
     state = Volunteer.fromJson(extractedUserData);
   }
 
-  void _saveUserToPrefs(Volunteer user) async {
+  Future<void> _saveUserToPrefs(Volunteer user) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('userData', json.encode(state!.toJson()));
   }
 
-  void setUser(Volunteer user) async {
+  Future<void> setUser(Volunteer user) async {
     state = user;
-    _saveUserToPrefs(user);
+    await _saveUserToPrefs(user);
   }
 
-  void logOut() async {
+  void logOut() {
+    AuthenticationService().signOut();
+    state = null;
+    clearPersistedUser();
+  }
+
+  void clearPersistedUser() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove('userData');
-    state = null;
   }
 }
 

@@ -41,7 +41,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
             throw FirebaseAuthException(code: 'user-not-found', message: 'User not found');
           } else {
             ref.read(userProvider.notifier).setUser(user);
-            GoRouter.of(context).go('/home');
+            context.goNamed('welcome');
           }
         });
       }).catchError((e) {

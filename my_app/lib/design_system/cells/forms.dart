@@ -229,8 +229,8 @@ class _SerManosPersonalInfoFormState extends State<SerManosPersonalInfoForm> {
   @override
   void initState() {
     super.initState();
-    final DateFormat formatter = DateFormat('DD/MM/YYYY');
     dateController = TextEditingController(text: widget.personalInfo.birthDate);
+    isCheckBoxValid = widget.personalInfo.gender == null ? false : true;
     dateController.addListener(() {
       validateForm();
     });
@@ -259,6 +259,9 @@ class _SerManosPersonalInfoFormState extends State<SerManosPersonalInfoForm> {
               ),
               const SizedBox(height: 24),
               SerManosInputCard(
+                initialValue: widget.personalInfo.gender == null
+                    ? null
+                    : widget.personalInfo.gender!.value,
                 cardTitle: "Información de perfil",
                 options: [
                   Gender.man.value,

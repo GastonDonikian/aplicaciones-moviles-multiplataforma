@@ -2,12 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/atoms/icons.dart';
-import 'package:my_app/design_system/cells/cards.dart';
 import 'package:my_app/design_system/cells/current_activities.dart';
 import 'package:my_app/design_system/cells/volunteering_list.dart';
-import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/molecules/inputs.dart';
-import 'package:my_app/design_system/tokens/colors.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/models/volunteer_association.dart';
 
