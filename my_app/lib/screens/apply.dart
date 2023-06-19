@@ -1,5 +1,6 @@
 //ONLY FOR TESTING PURPOSE, will be deleted later
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/atoms/icons.dart';
 import 'package:my_app/design_system/cells/current_activities.dart';
@@ -7,19 +8,20 @@ import 'package:my_app/design_system/cells/volunteering_list.dart';
 import 'package:my_app/design_system/molecules/inputs.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/models/volunteer_association.dart';
+import 'package:my_app/providers/favorites_provider.dart';
 import 'package:my_app/services/volunteer_service.dart';
 
-class ApplyTab extends StatefulWidget {
+class ApplyTab extends ConsumerStatefulWidget {
   const ApplyTab({super.key});
 
   static String get routeName => 'home';
   static String get routeLocation => '/home';
 
   @override
-  State<ApplyTab> createState() => _ApplyTabState();
+  ConsumerState<ApplyTab> createState() => _ApplyTabState();
 }
 
-class _ApplyTabState extends State<ApplyTab> {
+class _ApplyTabState extends ConsumerState<ApplyTab> {
   List<VolunteerAssociation> volunteerAssociations = [];
   VolunteerAssociation? currentActitivy;
 
@@ -39,6 +41,11 @@ class _ApplyTabState extends State<ApplyTab> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> favorites = ref.watch(favoritesProvider);
+    for (VolunteerAssociation association in volunteerAssociations) {
+      association.isFavorite = favorites.contains(association.id);
+    }
+
     void goToVolunteerAssociation(VolunteerAssociation volunteerAssociation) {
       context.goNamed("association", extra: volunteerAssociation, params: {"id": volunteerAssociation.name});
     }

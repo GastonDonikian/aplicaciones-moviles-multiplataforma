@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_app/utils/map_utils.dart';
 
 class VolunteerAssociation {
+  final String id;
   final String imagePath;
   final String associationType;
   final String name;
@@ -11,8 +12,10 @@ class VolunteerAssociation {
   final String description;
   final int capacity;
   final int volunteers;
+  bool isFavorite;
 
   VolunteerAssociation({
+    required this.id,
     required this.imagePath,
     required this.associationType,
     required this.name,
@@ -22,9 +25,11 @@ class VolunteerAssociation {
     required this.description,
     required this.capacity,
     required this.volunteers,
+    this.isFavorite = false,
   });
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'imagePath': imagePath,
       'associationType': associationType,
       'name': name,
@@ -37,6 +42,7 @@ class VolunteerAssociation {
 
   factory VolunteerAssociation.fromJson(Map<String, dynamic> json) {
     return VolunteerAssociation(
+      id: json['id'],
       imagePath: json['imagePath'],
       associationType: json['associationType'],
       name: json['name'],

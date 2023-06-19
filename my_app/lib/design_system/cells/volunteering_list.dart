@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_app/design_system/cells/cards.dart';
 import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/tokens/colors.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/models/volunteer_association.dart';
+import 'package:my_app/providers/favorites_provider.dart';
 
-class SerManosVolunteeringList extends StatelessWidget {
+class SerManosVolunteeringList extends ConsumerWidget {
   const SerManosVolunteeringList({super.key, required this.associations, required this.onAssociationClicked});
 
   final List<VolunteerAssociation> associations;
   final Function(VolunteerAssociation) onAssociationClicked;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -47,7 +49,10 @@ class SerManosVolunteeringList extends StatelessWidget {
                   cardOverlineText: associations[index].associationType,
                   cardTitle: associations[index].name,
                   vacancy: associations[index].availableCapacity,
-                  onPressedFav: () {},
+                  isFavorite: associations[index].isFavorite,
+                  onPressedFav: () {
+                    ref.read(favoritesProvider.notifier).changeFavorite(associations[index]);
+                  },
                   onPressedLocation: () => associations[index].openLocation(),
                   onPressedImage: () => onAssociationClicked(associations[index]),
                 ),

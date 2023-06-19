@@ -14,6 +14,7 @@ class VolunteerAssociationService {
     List<VolunteerAssociation> associations = [];
     for (var doc in querySnapshot.docs) {
       var data = doc.data() as Map<String, dynamic>;
+      data['id'] = doc.id;
       var item = VolunteerAssociation.fromJson(data);
       if (query == null) {
         associations.add(item);
