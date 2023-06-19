@@ -1,19 +1,15 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/cells/forms.dart';
 import 'package:my_app/design_system/cells/headers.dart';
-import 'package:my_app/design_system/cells/registration_squeleton.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/models/forms/contact.dart';
-import 'package:my_app/models/forms/login.dart';
 import 'package:my_app/models/forms/personal_info.dart';
 import 'package:my_app/models/volunteer.dart';
 import 'package:my_app/providers/user_provider.dart';
 
-import '../design_system/foundations/colors.dart';
 import '../services/user_service.dart';
 import 'package:intl/intl.dart';
 
@@ -30,6 +26,7 @@ class EditProfilePage extends ConsumerStatefulWidget {
 class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   bool personalIsValid = false;
   bool contactIsValid = false;
+  bool loading = false;
   late PersonalInfo personalInfo;
   late ContactInfo contactInfo;
   GlobalKey<FormState> personalInfoFormKey = GlobalKey<FormState>();
@@ -45,8 +42,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
           birthDate: formatter.format(currentUser.birthDate!),
           gender: currentUser.gender,
           profileImageUrl: currentUser.imagePath);
-      contactInfo =
-          ContactInfo(email: currentUser.email, phoneNumber: currentUser.phone);
+      contactInfo = ContactInfo(email: currentUser.email, phoneNumber: currentUser.phone);
       contactIsValid = true;
       personalIsValid = true;
     } else {
@@ -66,15 +62,16 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   }
 
   void onEditPressed() {
-    if (personalInfoFormKey.currentState!.validate() &&
-        contactInfoFormKey.currentState!.validate()) {
+    setState(() {
+      loading = true;
+    });
+    if (personalInfoFormKey.currentState!.validate() && contactInfoFormKey.currentState!.validate()) {
       personalInfoFormKey.currentState!.save();
       contactInfoFormKey.currentState!.save();
       final parsedBirthDate = personalInfo.birthDate!.split('/');
       userService
           .editUser(
-        DateTime.parse(
-            '${parsedBirthDate[2]}-${parsedBirthDate[1]}-${parsedBirthDate[0]}'),
+        DateTime.parse('${parsedBirthDate[2]}-${parsedBirthDate[1]}-${parsedBirthDate[0]}'),
         personalInfo.gender!,
         personalInfo.profileImageUrl,
         contactInfo.phoneNumber!,
@@ -82,9 +79,16 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
           .then(
         (value) {
           ref.read(userProvider.notifier).setUser(value!);
+          setState(() {
+            loading = false;
+          });
           context.pop();
         },
-      );
+      ).catchError((error) {
+        setState(() {
+          loading = false;
+        });
+      });
     } else {
       if (!personalIsValid) {
         setState(() {
@@ -95,6 +99,9 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
           contactIsValid = false;
         });
       }
+      setState(() {
+        loading = false;
+      });
     }
   }
 
@@ -110,20 +117,20 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _EditProfileBody(
-                      onPersonalInfoValidationChanged:
-                          onPersonalInfoValidationChanged,
+                      onPersonalInfoValidationChanged: onPersonalInfoValidationChanged,
                       personalInfo: personalInfo,
                       personalInfoformKey: personalInfoFormKey,
-                      onContactInfoValidationChanged:
-                          onContactInfoValidationChanged,
+                      onContactInfoValidationChanged: onContactInfoValidationChanged,
                       contactInfo: contactInfo,
                       contactInfoformKey: contactInfoFormKey,
                     ),
                   ],
                 ),
                 _EditProfileFooter(
-                    editEnabled: (contactIsValid && personalIsValid),
-                    onEditPressed: onEditPressed),
+                  editEnabled: (contactIsValid && personalIsValid),
+                  onEditPressed: onEditPressed,
+                  loading: loading,
+                ),
               ],
             ),
           ),
@@ -173,26 +180,24 @@ class _EditProfileBody extends StatelessWidget {
 }
 
 class _EditProfileFooter extends StatelessWidget {
-  const _EditProfileFooter(
-      {Key? key,
-      required this.editEnabled,
-      this.editInProgress = false,
-      required this.onEditPressed})
+  const _EditProfileFooter({Key? key, required this.editEnabled, required this.onEditPressed, this.loading = false})
       : super(key: key);
 
   final bool editEnabled;
-  final bool editInProgress;
   final Function() onEditPressed;
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 40),
+        const SizedBox(height: 40),
         SerManosElevatedButton(
-            label: 'Guardar Datos',
-            disabled: !editEnabled,
-            onPressed: onEditPressed),
+          label: 'Guardar Datos',
+          disabled: !editEnabled,
+          onPressed: onEditPressed,
+          loading: loading,
+        ),
       ],
     );
   }

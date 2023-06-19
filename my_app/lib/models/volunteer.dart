@@ -22,7 +22,6 @@ class Volunteer {
       this.profileCompleted = false});
 
   factory Volunteer.fromJson(Map<String, dynamic> json) {
-    print(json['birthDate']);
     return Volunteer(
       imagePath: json['imagePath'],
       email: json['email'],
@@ -30,8 +29,7 @@ class Volunteer {
       surname: json['surname'],
       gender: json['gender'] != null ? parseGender(json['gender']) : null,
       phone: json['phone'],
-      birthDate:
-          json['birthDate'] != null ? DateTime.parse(json['birthDate']) : null,
+      birthDate: json['birthDate'] != null ? DateTime.parse(json['birthDate']) : null,
       profileCompleted: json['profileCompleted'],
     );
   }
@@ -56,12 +54,6 @@ class Volunteer {
   @override
   String toString() {
     // return a string with all the properties
-    return name +
-        ' ' +
-        surname +
-        ' ' +
-        email +
-        ' ' +
-        profileCompleted.toString();
+    return name + ' ' + surname + ' ' + email + ' ' + profileCompleted.toString();
   }
 }

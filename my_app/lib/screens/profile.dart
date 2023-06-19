@@ -12,7 +12,6 @@ import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:my_app/models/gender.dart';
 import 'package:my_app/models/volunteer.dart';
 import 'package:my_app/providers/user_provider.dart';
-import 'package:my_app/services/user_service.dart';
 
 class ProfileTab extends ConsumerStatefulWidget {
   const ProfileTab({super.key});
@@ -63,11 +62,7 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
 }
 
 class ProfileCompleted extends StatelessWidget {
-  ProfileCompleted(
-      {super.key,
-      required this.volunteer,
-      required this.sessionOnPressed,
-      required this.editOnPressed});
+  ProfileCompleted({super.key, required this.volunteer, required this.sessionOnPressed, required this.editOnPressed});
 
   final void Function() sessionOnPressed;
   final void Function() editOnPressed;
@@ -76,75 +71,74 @@ class ProfileCompleted extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: SerManosGridPadding(
-        child: Center(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 32),
-                child: SerManosAvatar(
-                  imageUrl: volunteer.imagePath,
+    return SafeArea(
+      top: false,
+      child: SingleChildScrollView(
+        child: SerManosGridPadding(
+          child: Center(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 32),
+                  child: SerManosAvatar(
+                    imageUrl: volunteer.imagePath,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 26),
-                child: SerManosTexts.overline(
-                  "Voluntario".toUpperCase(),
-                  color: SerManosColorFoundations.defaultOverlineColor,
+                Padding(
+                  padding: const EdgeInsets.only(top: 26),
+                  child: SerManosTexts.overline(
+                    "Voluntario".toUpperCase(),
+                    color: SerManosColorFoundations.defaultOverlineColor,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8),
-                child: SerManosTexts.subtitle1(
-                  volunteer.getFullname(),
-                  color: SerManosColorFoundations.defaultBodyColor,
+                Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: SerManosTexts.subtitle1(
+                    volunteer.getFullname(),
+                    color: SerManosColorFoundations.defaultBodyColor,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 2),
-                child: SerManosTexts.body1(
-                  volunteer.email,
-                  color: SerManosColorFoundations.linkTextColor,
+                Padding(
+                  padding: const EdgeInsets.only(top: 2),
+                  child: SerManosTexts.body1(
+                    volunteer.email,
+                    color: SerManosColorFoundations.linkTextColor,
+                  ),
                 ),
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              SerManosInformationCard(
-                cardTitle: "Información Personal",
-                information: {
-                  "Fecha de nacimiento": formatter.format(volunteer.birthDate!),
-                  "Genero":
-                      volunteer.gender != null ? volunteer.gender!.value : ""
-                },
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              SerManosInformationCard(
-                cardTitle: "Datos de contacto",
-                information: {
-                  "Telefono": volunteer.phone != null ? volunteer.phone! : "",
-                  "E-Mail": volunteer.email
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 32),
-                child: SerManosElevatedButton(
-                  label: "Editar Perfil",
-                  onPressed: editOnPressed,
+                const SizedBox(
+                  height: 32,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: SerManosTextButton(
-                  label: "Cerrar Sesión",
-                  onPressed: sessionOnPressed,
-                  textColorActive: SerManosColorFoundations.buttonErrorColor,
+                SerManosInformationCard(
+                  cardTitle: "Información Personal",
+                  information: {
+                    "Fecha de nacimiento": formatter.format(volunteer.birthDate!),
+                    "Genero": volunteer.gender != null ? volunteer.gender!.value : ""
+                  },
                 ),
-              ),
-            ],
+                const SizedBox(
+                  height: 32,
+                ),
+                SerManosInformationCard(
+                  cardTitle: "Datos de contacto",
+                  information: {"Telefono": volunteer.phone != null ? volunteer.phone! : "", "E-Mail": volunteer.email},
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 32),
+                  child: SerManosElevatedButton(
+                    label: "Editar Perfil",
+                    onPressed: editOnPressed,
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: SerManosTextButton(
+                    label: "Cerrar Sesión",
+                    onPressed: sessionOnPressed,
+                    textColorActive: SerManosColorFoundations.buttonErrorColor,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -154,10 +148,7 @@ class ProfileCompleted extends StatelessWidget {
 
 class ProfileEmpty extends StatelessWidget {
   const ProfileEmpty(
-      {super.key,
-      required this.completeOnPressed,
-      required this.volunteer,
-      required this.sessionOnPressed});
+      {super.key, required this.completeOnPressed, required this.volunteer, required this.sessionOnPressed});
 
   final void Function() completeOnPressed;
   final void Function() sessionOnPressed;

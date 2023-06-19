@@ -6,6 +6,7 @@ import 'package:my_app/utils/map_utils.dart';
 import 'package:markdown/markdown.dart' as md;
 
 class VolunteerAssociation {
+  final String id;
   final String imagePath;
   final String associationType;
   final String name;
@@ -17,8 +18,10 @@ class VolunteerAssociation {
   final int capacity;
   final int volunteers;
   final String requirements;
+  bool isFavorite;
 
   VolunteerAssociation({
+    required this.id,
     required this.imagePath,
     required this.associationType,
     required this.name,
@@ -29,10 +32,12 @@ class VolunteerAssociation {
     required this.description,
     required this.capacity,
     required this.volunteers,
-    required this.requirements
+    required this.requirements,
+    this.isFavorite = false,
   });
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'imagePath': imagePath,
       'associationType': associationType,
       'name': name,
@@ -47,6 +52,7 @@ class VolunteerAssociation {
 
   factory VolunteerAssociation.fromJson(Map<String, dynamic> json) {
     return VolunteerAssociation(
+      id: json['id'],
       imagePath: json['imagePath'],
       associationType: json['associationType'],
       name: json['name'],

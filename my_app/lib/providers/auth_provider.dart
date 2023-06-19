@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_app/providers/favorites_provider.dart';
 import 'package:my_app/providers/user_provider.dart';
 
 class AuthNotifier extends StateNotifier<bool> {
@@ -6,8 +7,10 @@ class AuthNotifier extends StateNotifier<bool> {
   AuthNotifier(this.ref) : super(false) {
     ref.listen(userProvider, (previousState, nextState) {
       if (previousState == null && nextState != null) {
+        ref.read(favoritesProvider.notifier).getFavorites();
         state = true;
       } else if (previousState != null && nextState == null) {
+        ref.read(favoritesProvider.notifier).clearFavorites();
         state = false;
       }
     });
