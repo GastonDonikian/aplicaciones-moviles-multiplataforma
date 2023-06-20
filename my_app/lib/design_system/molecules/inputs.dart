@@ -311,12 +311,31 @@ class _CustomDateInputState extends State<CustomDateInput> {
     type: MaskAutoCompletionType.lazy,
   );
 
+  DateTime firstDate = DateTime.now().subtract(const Duration(days: 365 * 100));
+  DateTime lastDate = DateTime.now().subtract(const Duration(days: 365 * 16));
+
   @override
   Widget build(BuildContext context) {
     return CustomGenericInput(
       placeholder: widget.placeholder,
       label: widget.label,
-      suffixIcon: const Icon(SerManosIcons.calendarIcon, color: SerManosColorFoundations.inputSufficIconColor),
+      suffixIcon: SerManosIconButton(
+        icon: SerManosIcons.calendarIcon,
+        iconColor: SerManosColorFoundations.inputSufficIconColor,
+        onPressed: () async {
+          DateTime? date = await showDatePicker(
+            context: context,
+            initialDate: lastDate,
+            firstDate: firstDate,
+            lastDate: lastDate,
+          );
+          if (date != null) {
+            var dateStr =
+                '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}/${date.year}';
+            widget.controller.text = dateStr;
+          }
+        },
+      ),
       validator: (value) {
         var res = dateValidation(value);
         if (res == null) {
