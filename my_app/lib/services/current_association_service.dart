@@ -6,7 +6,6 @@ import 'package:my_app/services/volunteer_service.dart';
 import 'analytics_service.dart';
 
 class CurrentAssociationService {
-  final db = FirebaseFirestore.instance;
   final String userId;
   late final String collectionPath;
 
@@ -15,7 +14,7 @@ class CurrentAssociationService {
   }
 
   Future<CurrentAssociation?> getCurrentAssociation() async {
-    QuerySnapshot querySnapshot = await db.collection(collectionPath).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(collectionPath).get();
     if (querySnapshot.size == 0) {
       return null;
     }
@@ -32,7 +31,7 @@ class CurrentAssociationService {
   }
 
   Future deleteCurrentAssociation() async {
-    QuerySnapshot querySnapshot = await db.collection(collectionPath).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(collectionPath).get();
     if (querySnapshot.size == 0) {
       return null;
     }
@@ -44,7 +43,7 @@ class CurrentAssociationService {
           .changeCurrentVolunteers(data['id'], -1);
     }
     AnalyticsService().unsubscribeToActivityEvent(data['id'], userId);
-    await db.collection(collectionPath).doc(doc.id).delete();
+    await FirebaseFirestore.instance.collection(collectionPath).doc(doc.id).delete();
     return null;
   }
 
@@ -60,7 +59,7 @@ class CurrentAssociationService {
     AnalyticsService().subscribeToActivityEvent(associationId, userId);
     CurrentAssociation currentAssociation =
         CurrentAssociation(currentAssociation: vol, confirmed: false);
-    await db.collection(collectionPath).add(currentAssociation.toJson());
+    await FirebaseFirestore.instance.collection(collectionPath).add(currentAssociation.toJson());
     return currentAssociation;
   }
 }

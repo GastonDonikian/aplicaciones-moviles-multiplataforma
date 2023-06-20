@@ -3,7 +3,6 @@ import 'package:my_app/models/volunteer_association.dart';
 import 'package:my_app/services/volunteer_service.dart';
 
 class FavoritesService {
-  final db = FirebaseFirestore.instance;
   late final String collectionPath;
   final String userId;
 
@@ -12,7 +11,7 @@ class FavoritesService {
   }
 
   Future getFavorites() async {
-    QuerySnapshot querySnapshot = await db.collection(collectionPath).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(collectionPath).get();
     List<String> favorites = [];
     for (var doc in querySnapshot.docs) {
       var data = doc.data() as Map<String, dynamic>;
@@ -23,7 +22,7 @@ class FavoritesService {
 
   Future changeFavorite(VolunteerAssociation association) async {
     if (association.isFavorite) {
-      return db
+      return FirebaseFirestore.instance
           .collection(collectionPath)
           .where('volunteer_association', isEqualTo: association.id)
           .get()
@@ -31,7 +30,7 @@ class FavoritesService {
         snapshot.docs.first.reference.delete();
       });
     } else {
-      return db.collection(collectionPath).add({'volunteer_association': association.id});
+      return FirebaseFirestore.instance.collection(collectionPath).add({'volunteer_association': association.id});
     }
   }
 }

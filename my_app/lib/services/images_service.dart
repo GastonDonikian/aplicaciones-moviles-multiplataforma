@@ -7,13 +7,13 @@ import 'package:my_app/services/user_service.dart';
 import 'analytics_service.dart';
 
 class ImagesService {
-  final storage = FirebaseStorage.instance;
-  final userRef = FirebaseStorage.instance.ref().child('users_images');
-  final newsRef = FirebaseStorage.instance.ref().child('news_images');
-  final volunteerAssociationRef =
-      FirebaseStorage.instance.ref().child('volunteer_association_images');
+
 
   Future<String?> uploadUserImage(String userId, File imageFile) async {
+    var storage = FirebaseStorage.instance;
+    var userRef = FirebaseStorage.instance.ref().child('users_images');
+    var newsRef = FirebaseStorage.instance.ref().child('news_images');
+    var volunteerAssociationRef = FirebaseStorage.instance.ref().child('volunteer_association_images');
     try {
       AnalyticsService().uploadImage(userId);
       final storageRef = userRef.child(userId);

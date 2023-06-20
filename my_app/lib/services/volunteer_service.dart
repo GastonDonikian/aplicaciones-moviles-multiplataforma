@@ -3,15 +3,14 @@ import 'package:latlng/latlng.dart';
 import '../models/volunteer_association.dart';
 
 class VolunteerAssociationService {
-  final db = FirebaseFirestore.instance;
   final collectionPath = 'volunteer_association';
 
   Future createVolunteerAssociation(VolunteerAssociation volunteerAssociation) async {
-    return db.collection(collectionPath).add(volunteerAssociation.toJson());
+    return FirebaseFirestore.instance.collection(collectionPath).add(volunteerAssociation.toJson());
   }
 
   Future getVolunteerAssociations(String? query, LatLng? userPosition) async {
-    QuerySnapshot querySnapshot = await db.collection(collectionPath).orderBy('date_creation', descending: true).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(collectionPath).orderBy('date_creation', descending: true).get();
     List<VolunteerAssociation> associations = [];
     for (var doc in querySnapshot.docs) {
       var data = doc.data() as Map<String, dynamic>;
