@@ -28,11 +28,21 @@ class ApplyTab extends ConsumerStatefulWidget {
 class _ApplyTabState extends ConsumerState<ApplyTab> {
   List<VolunteerAssociation> volunteerAssociations = [];
   CurrentAssociation? currentAssociation;
+  bool refreshing = false;
+  LatLng? userLocation;
 
   void loadVolunteerAssociations(String? query, LatLng? userPosition) {
+    setState(() {
+      refreshing = true;
+    });
     VolunteerAssociationService().getVolunteerAssociations(query, userPosition).then((value) {
       setState(() {
+        refreshing = false;
         volunteerAssociations = value;
+      });
+    }).catchError((error) {
+      setState(() {
+        refreshing = false;
       });
     });
   }
@@ -43,11 +53,15 @@ class _ApplyTabState extends ConsumerState<ApplyTab> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     currentAssociation = ref.read(currentAssociationProvider);
-    LatLng? userLocation = ref.watch(locationProvider);
+    userLocation = ref.watch(locationProvider);
     loadVolunteerAssociations(null, userLocation);
+  }
 
+  @override
+  Widget build(BuildContext context) {
     List<String> favorites = ref.watch(favoritesProvider);
     for (VolunteerAssociation association in volunteerAssociations) {
       association.isFavorite = favorites.contains(association.id);
@@ -91,6 +105,7 @@ class _ApplyTabState extends ConsumerState<ApplyTab> {
                 SerManosVolunteeringList(
                   associations: volunteerAssociations,
                   onAssociationClicked: goToVolunteerAssociation,
+                  refreshing: refreshing,
                 ),
               ],
             ),
