@@ -14,12 +14,13 @@ class CurrentAssociationService {
 
   Future<CurrentAssociation?> getCurrentAssociation() async {
     QuerySnapshot querySnapshot = await db.collection(collectionPath).get();
-    if(querySnapshot.size == 0){
+    if (querySnapshot.size == 0) {
       return null;
     }
     var data = querySnapshot.docs[0].data() as Map<String, dynamic>;
-    data['currentAssociation'] = await VolunteerAssociationService().getVolunteerById(data['id']);
-    if(data['currentAssociation'] == null) {
+    data['currentAssociation'] =
+        await VolunteerAssociationService().getVolunteerById(data['id']);
+    if (data['currentAssociation'] == null) {
       return null;
     }
     return CurrentAssociation(
@@ -30,25 +31,31 @@ class CurrentAssociationService {
 
   Future deleteCurrentAssociation() async {
     QuerySnapshot querySnapshot = await db.collection(collectionPath).get();
-    if(querySnapshot.size == 0){
+    if (querySnapshot.size == 0) {
       return null;
     }
 
     var doc = querySnapshot.docs[0];
     var data = doc.data() as Map<String, dynamic>;
-    await VolunteerAssociationService().changeCurrentVolunteers(data['id'], -1);
+    if (data['confirmed']) {
+      await VolunteerAssociationService()
+          .changeCurrentVolunteers(data['id'], -1);
+    }
     await db.collection(collectionPath).doc(doc.id).delete();
     return null;
   }
 
-  Future<CurrentAssociation?> setCurrentAssociation(String associationId) async {
-    await VolunteerAssociationService().changeCurrentVolunteers(associationId, 1);
-    VolunteerAssociation? vol = await VolunteerAssociationService().getVolunteerById(associationId);
-    if (vol == null){
+  Future<CurrentAssociation?> setCurrentAssociation(
+    String associationId,
+  ) async {
+    VolunteerAssociation? vol =
+        await VolunteerAssociationService().getVolunteerById(associationId);
+    if (vol == null) {
       return null;
     }
     await deleteCurrentAssociation();
-    CurrentAssociation currentAssociation = CurrentAssociation(currentAssociation: vol, confirmed: false);
+    CurrentAssociation currentAssociation =
+        CurrentAssociation(currentAssociation: vol, confirmed: false);
     await db.collection(collectionPath).add(currentAssociation.toJson());
     return currentAssociation;
   }

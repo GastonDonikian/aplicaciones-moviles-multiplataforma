@@ -26,20 +26,51 @@ class VolunteerAssociationPage extends ConsumerStatefulWidget {
   static String get routeName => 'association';
   static String get routeLocation => 'association/:id';
 
-  const VolunteerAssociationPage({super.key, required this.maybeVolunteerAssociation, required this.id});
+  const VolunteerAssociationPage(
+      {super.key, required this.maybeVolunteerAssociation, required this.id});
 
   @override
-  ConsumerState<VolunteerAssociationPage> createState() => _VolunteerAssociationPageState();
+  ConsumerState<VolunteerAssociationPage> createState() =>
+      _VolunteerAssociationPageState();
 }
 
-class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationPage> {
+class _VolunteerAssociationPageState
+    extends ConsumerState<VolunteerAssociationPage> {
   final Color cardTitleColor = SerManosColorFoundations.cardTitleColor;
   CurrentAssociation? currentAssociation;
   Volunteer? currentUser;
   VolunteerAssociation? volunteerAssociation;
 
+  onPressedPostulate(BuildContext context) async {
+    await ref
+        .read(currentAssociationProvider.notifier)
+        .subscribeToAssociation(volunteerAssociation!.id);
+    setState(() {
+      currentAssociation = ref.read(currentAssociationProvider)!;
+    });
+  }
+
+  onPressedAbandonPostulate(BuildContext context) async {
+    var currentAssociationId = currentAssociation!.currentAssociation.id;
+    await ref
+        .read(currentAssociationProvider.notifier)
+        .unsubscribeFromCurrentAssociation();
+    var newVolunteerAsociation = volunteerAssociation;
+    if (currentAssociationId == volunteerAssociation!.id) {
+      newVolunteerAsociation = await VolunteerAssociationService()
+          .getVolunteerById(currentAssociationId);
+    }
+    setState(() {
+      currentAssociation = null;
+      volunteerAssociation = newVolunteerAsociation;
+    });
+  }
+
   onPressedShowModal(
-      BuildContext context, VolunteerAssociation volunteerAssociation, String header, Function confirmAction) {
+      BuildContext context,
+      VolunteerAssociation volunteerAssociation,
+      String header,
+      Function confirmAction) {
     showDialog(
       context: context,
       builder: ((BuildContext context) {
@@ -51,6 +82,7 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
           onPressedCanceled: () => context.pop(),
           onPressedConfirmed: () {
             confirmAction();
+            context.pop();
           },
         );
       }),
@@ -58,7 +90,8 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
   }
 
   void loadVolunteerAssociation() async {
-    VolunteerAssociation? association = await VolunteerAssociationService().getVolunteerById(widget.id);
+    VolunteerAssociation? association =
+        await VolunteerAssociationService().getVolunteerById(widget.id);
     if (association == null) {
       context.goNamed(ApplyTab.routeName);
     } else {
@@ -131,8 +164,11 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(top: 24),
-                              child: SerManosTexts.overline(volunteerAssociation!.associationType.toUpperCase(),
-                                  color: SerManosColorFoundations.defaultOverlineColor),
+                              child: SerManosTexts.overline(
+                                  volunteerAssociation!.associationType
+                                      .toUpperCase(),
+                                  color: SerManosColorFoundations
+                                      .defaultOverlineColor),
                             ),
                             SerManosTexts.headline1(
                               volunteerAssociation!.name,
@@ -140,17 +176,22 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
                             ),
                             Padding(
                                 padding: const EdgeInsets.only(top: 16),
-                                child: SerManosTexts.body1(volunteerAssociation!.subtitle,
-                                    color: SerManosColorFoundations.linkTextColor)),
+                                child: SerManosTexts.body1(
+                                    volunteerAssociation!.subtitle,
+                                    color: SerManosColorFoundations
+                                        .linkTextColor)),
                             Padding(
                                 padding: const EdgeInsets.only(top: 24),
-                                child: SerManosTexts.headline2('Sobre la actividad',
-                                    color: SerManosColorFoundations.defaultHeadlineColor)),
+                                child: SerManosTexts.headline2(
+                                    'Sobre la actividad',
+                                    color: SerManosColorFoundations
+                                        .defaultHeadlineColor)),
                             Padding(
                               padding: const EdgeInsets.only(top: 8),
                               child: SerManosTexts.body1(
                                 volunteerAssociation!.description,
-                                color: SerManosColorFoundations.defaultBodyColor,
+                                color:
+                                    SerManosColorFoundations.defaultBodyColor,
                               ),
                             ),
                             Padding(
@@ -159,42 +200,46 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
                                 cardTitle: "Ubicación",
                                 location: volunteerAssociation!.address,
                                 onLocationPressed: () => MapUtils.openMap(
-                                    volunteerAssociation!.location.latitude, volunteerAssociation!.location.longitude),
+                                    volunteerAssociation!.location.latitude,
+                                    volunteerAssociation!.location.longitude),
                               ),
                             ),
                             Padding(
                                 padding: const EdgeInsets.only(top: 24),
-                                child: SerManosTexts.headline2('Participar del voluntariado',
-                                    color: SerManosColorFoundations.defaultHeadlineColor)),
+                                child: SerManosTexts.headline2(
+                                    'Participar del voluntariado',
+                                    color: SerManosColorFoundations
+                                        .defaultHeadlineColor)),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               child: MarkdownBody(
                                 data: volunteerAssociation!.requirements,
-                                listItemCrossAxisAlignment: MarkdownListItemCrossAxisAlignment.start,
+                                listItemCrossAxisAlignment:
+                                    MarkdownListItemCrossAxisAlignment.start,
                               ),
                             ),
-                            SerManosVacancy(vacancy: volunteerAssociation!.availableCapacity),
+                            SerManosVacancy(
+                                vacancy:
+                                    volunteerAssociation!.availableCapacity),
                             //TODO: Implement abandonCurrentPostulate, abandonOtherPostulate and confirm
                             PostulationDispatcher(
                               currentAssociation: currentAssociation,
                               volunteerAssociation: volunteerAssociation!,
-                              onPressedPostulate: () =>
-                                  onPressedShowModal(context, volunteerAssociation!, 'Te estas por postular a', () {
-                                ref
-                                    .read(currentAssociationProvider.notifier)
-                                    .subscribeToAssociation(volunteerAssociation!.id);
-                                context.pop();
-                              }),
-                              abandonCurrentPostulate: () =>
-                                  onPressedShowModal(context, volunteerAssociation!, 'Estas por dejar', () {
-                                ref.read(currentAssociationProvider.notifier).unsubscribeFromCurrentAssociation();
-                                context.pop();
-                              }),
-                              abandonOtherPostulate: () =>
-                                  onPressedShowModal(context, volunteerAssociation!, 'Estas por dejar', () {
-                                ref.read(currentAssociationProvider.notifier).unsubscribeFromCurrentAssociation();
-                                context.pop();
-                              }),
+                              onPressedPostulate: () => onPressedShowModal(
+                                  context,
+                                  volunteerAssociation!,
+                                  'Te estas por postular a',
+                                  () => onPressedPostulate(context)),
+                              abandonCurrentPostulate: () => onPressedShowModal(
+                                  context,
+                                  volunteerAssociation!,
+                                  'Estas por dejar',
+                                  () => onPressedAbandonPostulate(context)),
+                              abandonOtherPostulate: () => onPressedShowModal(
+                                  context,
+                                  volunteerAssociation!,
+                                  'Estas por dejar',
+                                  () => onPressedAbandonPostulate(context)),
                             )
                           ],
                         ),
@@ -284,7 +329,8 @@ class PostulationDispatcher extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 24),
-            child: SerManosTexts.headline2('Estas participando', color: SerManosColorFoundations.defaultHeadlineColor),
+            child: SerManosTexts.headline2('Estas participando',
+                color: SerManosColorFoundations.defaultHeadlineColor),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8),
@@ -307,7 +353,8 @@ class PostulationDispatcher extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 24),
-            child: SerManosTexts.headline2('Te has postulado', color: SerManosColorFoundations.defaultHeadlineColor),
+            child: SerManosTexts.headline2('Te has postulado',
+                color: SerManosColorFoundations.defaultHeadlineColor),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8),

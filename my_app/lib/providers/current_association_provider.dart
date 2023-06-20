@@ -4,7 +4,7 @@ import 'package:my_app/models/current_association.dart';
 import 'package:my_app/services/current_association_service.dart';
 
 class CurrentAssociationNotifier extends StateNotifier<CurrentAssociation?> {
-  CurrentAssociationNotifier() : super (null) {
+  CurrentAssociationNotifier() : super(null) {
     getCurrentAssociation();
   }
 
@@ -33,15 +33,17 @@ class CurrentAssociationNotifier extends StateNotifier<CurrentAssociation?> {
       return;
     }
     String userId = user.uid;
-    var currentAssoc = await CurrentAssociationService(userId).setCurrentAssociation(associationId);
-    if(currentAssoc == null){
+    var currentAssoc = await CurrentAssociationService(userId)
+        .setCurrentAssociation(associationId);
+    if (currentAssoc == null) {
       return null;
     }
     state = currentAssoc;
   }
-
 }
 
-final currentAssociationProvider = StateNotifierProvider<CurrentAssociationNotifier, CurrentAssociation?>((ref) {
+final currentAssociationProvider =
+    StateNotifierProvider<CurrentAssociationNotifier, CurrentAssociation?>(
+        (ref) {
   return CurrentAssociationNotifier();
 });
