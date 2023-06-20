@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:latlng/latlng.dart';
 import '../models/volunteer_association.dart';
 
 class VolunteerAssociationService {
@@ -9,7 +10,7 @@ class VolunteerAssociationService {
     return db.collection(collectionPath).add(volunteerAssociation.toJson());
   }
 
-  Future getVolunteerAssociations(String? query) async {
+  Future getVolunteerAssociations(String? query, LatLng? userPosition) async {
     QuerySnapshot querySnapshot = await db.collection(collectionPath).orderBy('date_creation', descending: true).get();
     List<VolunteerAssociation> associations = [];
     for (var doc in querySnapshot.docs) {
@@ -23,16 +24,21 @@ class VolunteerAssociationService {
           associations.add(item);
         }
       }
+      if (userPosition != null) {
+        item.distance = item.calculateDistance(userPosition.latitude, userPosition.longitude);
+      }
     }
+
+    if (userPosition != null) {
+      associations.sort((a, b) => a.distance!.compareTo(b.distance!));
+    }
+
     return associations;
   }
 
   Future<VolunteerAssociation?> getVolunteerById(String id) async {
     try {
-      var volunteerDoc = await FirebaseFirestore.instance
-          .collection(collectionPath)
-          .doc(id)
-          .get();
+      var volunteerDoc = await FirebaseFirestore.instance.collection(collectionPath).doc(id).get();
       if (volunteerDoc.exists) {
         var volunteerData = volunteerDoc.data() as Map<String, dynamic>;
         volunteerData['id'] = volunteerDoc.id;
@@ -47,7 +53,7 @@ class VolunteerAssociationService {
 
   Future<void> changeCurrentVolunteers(String associationId, int add) async {
     VolunteerAssociation? currentAssoc = await getVolunteerById(associationId);
-    if(currentAssoc == null) {
+    if (currentAssoc == null) {
       return;
     }
     currentAssoc.volunteers += add;

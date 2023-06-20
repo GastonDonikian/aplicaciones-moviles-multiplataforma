@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_app/utils/map_utils.dart';
+import 'dart:math' show cos, sqrt, asin;
 
 class VolunteerAssociation {
   final String id;
@@ -15,6 +16,7 @@ class VolunteerAssociation {
   int volunteers;
   final String requirements;
   bool isFavorite;
+  double? distance;
 
   VolunteerAssociation({
     required this.id,
@@ -71,5 +73,14 @@ class VolunteerAssociation {
 
   void openLocation() {
     MapUtils.openMap(location.latitude, location.longitude);
+  }
+
+  double calculateDistance(lat, lon) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((location.latitude - lat) * p) / 2 +
+        c(lat * p) * c(location.latitude * p) * (1 - c((location.longitude - lon) * p)) / 2;
+    return 12742 * asin(sqrt(a));
   }
 }

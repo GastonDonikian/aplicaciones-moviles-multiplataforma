@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/cells/registration_squeleton.dart';
-import 'package:my_app/design_system/foundations/text_styles.dart';
 import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/tokens/colors.dart';
