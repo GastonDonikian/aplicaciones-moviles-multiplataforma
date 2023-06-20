@@ -204,12 +204,14 @@ class _EditProfileFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 40),
-        SerManosElevatedButton(
-          label: 'Guardar Datos',
-          disabled: !editEnabled,
-          onPressed: onEditPressed,
-          loading: loading,
+        Padding(
+          padding: const EdgeInsets.only(top: 40, bottom: 33),
+          child: SerManosElevatedButton(
+            label: 'Guardar Datos',
+            disabled: !editEnabled,
+            onPressed: onEditPressed,
+            loading: loading,
+          ),
         ),
       ],
     );

@@ -124,7 +124,7 @@ class SerManosImageModal extends StatelessWidget {
               children: [
                 Column(
                   children: [
-                    SerManosTexts.headline2(
+                    SerManosTexts.subtitle1(
                       "Elegí el metodo para subir la foto",
                       color: SerManosColorFoundations.modalHeadlineTextColor,
                     ),
@@ -209,6 +209,69 @@ class SerManosSessionModal extends StatelessWidget {
                       child: SerManosTextButton(
                         label: "Cerrar Sesión",
                         onPressed: onPressedCloseSession,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SerManosIncompleteProfileModal extends StatelessWidget {
+  const SerManosIncompleteProfileModal({
+    super.key,
+    required this.onPressedCanceled,
+    required this.onPressedEditProfile,
+  });
+
+  final void Function()? onPressedCanceled;
+  final void Function()? onPressedEditProfile;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              color: SerManosColorFoundations.modalBackgroundColor,
+              borderRadius: BorderRadius.all(Radius.circular(2.0)),
+              boxShadow: SerManosShadows.boxShadows3,
+            ),
+            padding: const EdgeInsets.all(16),
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Column(
+                  children: [
+                    SerManosTexts.subtitle1(
+                      "Para postularte primero debes primero completar tus datos",
+                      color: SerManosColorFoundations.modalSubtitleTextColor,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: SerManosTextButton(
+                        label: "Cancelar",
+                        onPressed: onPressedCanceled,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: SerManosTextButton(
+                        label: "Completar datos",
+                        onPressed: onPressedEditProfile,
                       ),
                     ),
                   ],
