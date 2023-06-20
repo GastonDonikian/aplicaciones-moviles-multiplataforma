@@ -1,10 +1,7 @@
-
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_app/models/current_association.dart';
 import 'package:my_app/services/current_association_service.dart';
-import 'package:my_app/services/volunteer_service.dart';
 
 class CurrentAssociationNotifier extends StateNotifier<CurrentAssociation?> {
   CurrentAssociationNotifier() : super (null) {
@@ -26,7 +23,8 @@ class CurrentAssociationNotifier extends StateNotifier<CurrentAssociation?> {
       return;
     }
     String userId = user.uid;
-    state = await CurrentAssociationService(userId).deleteCurrentAssociation();
+    await CurrentAssociationService(userId).deleteCurrentAssociation();
+    state = null;
   }
 
   subscribeToAssociation(String associationId) async {
@@ -35,10 +33,11 @@ class CurrentAssociationNotifier extends StateNotifier<CurrentAssociation?> {
       return;
     }
     String userId = user.uid;
-    await CurrentAssociationService(userId).setCurrentAssociation(associationId);
-    state = CurrentAssociation(
-        currentAssociation: VolunteerAssociationService().getVolunteerById(associationId),
-        confirmed: false);
+    var currentAssoc = await CurrentAssociationService(userId).setCurrentAssociation(associationId);
+    if(currentAssoc == null){
+      return null;
+    }
+    state = currentAssoc;
   }
 
 }

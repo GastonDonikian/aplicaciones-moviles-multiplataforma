@@ -183,17 +183,17 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
                                 ref
                                     .read(currentAssociationProvider.notifier)
                                     .subscribeToAssociation(volunteerAssociation!.id);
-                                context.goNamed('home');
+                                context.pop();
                               }),
                               abandonCurrentPostulate: () =>
                                   onPressedShowModal(context, volunteerAssociation!, 'Estas por dejar', () {
                                 ref.read(currentAssociationProvider.notifier).unsubscribeFromCurrentAssociation();
-                                context.goNamed('home');
+                                context.pop();
                               }),
                               abandonOtherPostulate: () =>
                                   onPressedShowModal(context, volunteerAssociation!, 'Estas por dejar', () {
                                 ref.read(currentAssociationProvider.notifier).unsubscribeFromCurrentAssociation();
-                                context.goNamed('home');
+                                context.pop();
                               }),
                             )
                           ],

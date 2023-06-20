@@ -79,7 +79,6 @@ class AuthenticationService {
         currentUser.imagePath = newImagePath;
       }
     }
-
     await FirebaseFirestore.instance
         .collection('users')
         .doc(currentUid)

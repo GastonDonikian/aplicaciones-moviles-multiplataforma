@@ -27,7 +27,7 @@ class VolunteerAssociationService {
     return associations;
   }
 
-  getVolunteerById(String id) async {
+  Future<VolunteerAssociation?> getVolunteerById(String id) async {
     try {
       var volunteerDoc = await FirebaseFirestore.instance
           .collection(collectionPath)
@@ -45,12 +45,15 @@ class VolunteerAssociationService {
     }
   }
 
-  changeCurrentCapacity(String associationId, int add) async {
-    VolunteerAssociation currentAssoc = getVolunteerById(associationId);
+  Future<void> changeCurrentVolunteers(String associationId, int add) async {
+    VolunteerAssociation? currentAssoc = await getVolunteerById(associationId);
+    if(currentAssoc == null) {
+      return;
+    }
     currentAssoc.volunteers += add;
     await FirebaseFirestore.instance
         .collection(collectionPath)
         .doc(associationId)
-        .set(currentAssoc.toJson());
+        .update({'volunteers': currentAssoc.volunteers});
   }
 }

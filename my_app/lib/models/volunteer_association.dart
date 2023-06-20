@@ -12,7 +12,7 @@ class VolunteerAssociation {
   final String schedule;
   final String description;
   final int capacity;
-  late final int volunteers;
+  int volunteers;
   final String requirements;
   bool isFavorite;
 
@@ -38,11 +38,14 @@ class VolunteerAssociation {
       'associationType': associationType,
       'name': name,
       'subtitle': subtitle,
-      'schedule': schedule,
       'location': location,
       'address': address,
+      'schedule': schedule,
       'description': description,
+      'capacity': capacity,
+      'volunteers': volunteers,
       'requirements': requirements.replaceAll('\n', r'\n'),
+      'isFavorite': isFavorite,
     };
   }
 
@@ -60,6 +63,7 @@ class VolunteerAssociation {
       requirements: json['requirements'].replaceAll(r'\n', '\n'),
       capacity: json['capacity'],
       volunteers: json['volunteers'],
+      isFavorite: json['isFavorite'] ?? false,
     );
   }
 
