@@ -7,7 +7,9 @@ import 'package:my_app/design_system/cells/current_activities.dart';
 import 'package:my_app/design_system/cells/volunteering_list.dart';
 import 'package:my_app/design_system/molecules/inputs.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
+import 'package:my_app/models/current_association.dart';
 import 'package:my_app/models/volunteer_association.dart';
+import 'package:my_app/providers/current_association_provider.dart';
 import 'package:my_app/providers/favorites_provider.dart';
 import 'package:my_app/services/volunteer_service.dart';
 
@@ -23,7 +25,7 @@ class ApplyTab extends ConsumerStatefulWidget {
 
 class _ApplyTabState extends ConsumerState<ApplyTab> {
   List<VolunteerAssociation> volunteerAssociations = [];
-  VolunteerAssociation? currentActitivy;
+  CurrentAssociation? currentAssociation;
 
   void loadVolunteerAssociations(String? query) {
     VolunteerAssociationService().getVolunteerAssociations(query).then((value) {
@@ -41,13 +43,17 @@ class _ApplyTabState extends ConsumerState<ApplyTab> {
 
   @override
   Widget build(BuildContext context) {
+    currentAssociation = ref.read(currentAssociationProvider);
+
     List<String> favorites = ref.watch(favoritesProvider);
     for (VolunteerAssociation association in volunteerAssociations) {
       association.isFavorite = favorites.contains(association.id);
     }
 
     void goToVolunteerAssociation(VolunteerAssociation volunteerAssociation) {
-      context.goNamed("association", extra: volunteerAssociation, params: {"id": volunteerAssociation.id});
+      context.pushNamed("association", extra: volunteerAssociation, params: {
+        "id": volunteerAssociation.id
+      }).then((value) => loadVolunteerAssociations(null));
     }
 
     void onSearchEnter(String query) {
@@ -72,10 +78,10 @@ class _ApplyTabState extends ConsumerState<ApplyTab> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                if (currentActitivy != null)
+                if (currentAssociation != null)
                   SerManosGridPadding(
                     child: SerManosCurrentActivityWidget(
-                      association: currentActitivy!,
+                      association: currentAssociation!.currentAssociation,
                       onAssociationPressed: goToVolunteerAssociation,
                     ),
                   ),

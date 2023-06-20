@@ -41,11 +41,14 @@ class SerManosModal extends StatelessWidget {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        SerManosTexts.subtitle1(
-                          header,
-                          color:
-                              SerManosColorFoundations.modalSubtitleTextColor,
+                        Expanded(
+                          child: SerManosTexts.subtitle1(
+                            header,
+                            color:
+                                SerManosColorFoundations.modalSubtitleTextColor,
+                          ),
                         ),
                       ],
                     ),
@@ -57,30 +60,6 @@ class SerManosModal extends StatelessWidget {
                           title,
                           color:
                               SerManosColorFoundations.modalHeadlineTextColor,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: SerManosTexts.body1(
-                            schedule,
-                            color: SerManosColorFoundations.modalBodyTextColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 2),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: SerManosTexts.body1(
-                            address,
-                            color: SerManosColorFoundations.modalBodyTextColor,
-                          ),
                         ),
                       ],
                     ),

@@ -233,12 +233,16 @@ class _VolunteerAssociationPageState
                               abandonCurrentPostulate: () => onPressedShowModal(
                                   context,
                                   volunteerAssociation!,
-                                  'Estas por dejar',
+                                  currentAssociation!.confirmed
+                                      ? '¿Estás seguro que querés abandonar tu voluntariado?'
+                                      : '¿Estás seguro que querés retirar tu postulación?',
                                   () => onPressedAbandonPostulate(context)),
                               abandonOtherPostulate: () => onPressedShowModal(
                                   context,
                                   volunteerAssociation!,
-                                  'Estas por dejar',
+                                  currentAssociation!.confirmed
+                                      ? '¿Estás seguro que querés abandonar tu voluntariado?'
+                                      : '¿Estás seguro que querés retirar tu postulación?',
                                   () => onPressedAbandonPostulate(context)),
                             )
                           ],
@@ -306,6 +310,7 @@ class PostulationDispatcher extends StatelessWidget {
             child: SerManosTexts.body1(
               'Ya estas participando en otro voluntariado, debes abandonarlo primero para postularte a este.',
               color: SerManosColorFoundations.defaultBodyColor,
+              textAlign: TextAlign.center,
             )),
         Padding(
           padding: const EdgeInsets.only(top: 20),
@@ -337,6 +342,7 @@ class PostulationDispatcher extends StatelessWidget {
             child: SerManosTexts.body1(
               'La organización confirmó que ya estas participando de este voluntariado',
               color: SerManosColorFoundations.defaultBodyColor,
+              textAlign: TextAlign.center,
             ),
           ),
           Padding(
@@ -361,6 +367,7 @@ class PostulationDispatcher extends StatelessWidget {
             child: SerManosTexts.body1(
               'Pronto la organización se pondrá en contacto contigo y te inscribirá como participante.',
               color: SerManosColorFoundations.defaultBodyColor,
+              textAlign: TextAlign.center,
             ),
           ),
           Padding(
