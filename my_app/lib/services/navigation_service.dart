@@ -25,7 +25,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   return GoRouter(
       navigatorKey: _rootNavigatorKey,
-      initialLocation: '/landing',
+      initialLocation: LandingPage.routeLocation,
       routes: [
         ShellRoute(
           navigatorKey: _shellNavigatorKey,
@@ -37,28 +37,31 @@ final routerProvider = Provider<GoRouter>((ref) {
                 name: ApplyTab.routeName,
                 path: ApplyTab.routeLocation,
                 parentNavigatorKey: _shellNavigatorKey,
-                builder: (context, state) {
-                  return const ApplyTab();
+                pageBuilder: (context, state) {
+                  return const NoTransitionPage(child: ApplyTab());
                 },
                 routes: [
                   GoRoute(
-                      name: VolunteerAssociationPage.routeName,
-                      path: VolunteerAssociationPage.routeLocation,
-                      parentNavigatorKey: _rootNavigatorKey,
-                      builder: (context, state) {
-                        VolunteerAssociation? association = state.extra as VolunteerAssociation?;
-                        return VolunteerAssociationPage(
+                    name: VolunteerAssociationPage.routeName,
+                    path: VolunteerAssociationPage.routeLocation,
+                    parentNavigatorKey: _rootNavigatorKey,
+                    pageBuilder: (context, state) {
+                      VolunteerAssociation? association = state.extra as VolunteerAssociation?;
+                      return NoTransitionPage(
+                        child: VolunteerAssociationPage(
                           id: state.params['id']!,
                           maybeVolunteerAssociation: association,
-                        );
-                      }),
+                        ),
+                      );
+                    },
+                  ),
                 ]),
             GoRoute(
                 name: ProfileTab.routeName,
                 path: ProfileTab.routeLocation,
                 parentNavigatorKey: _shellNavigatorKey,
-                builder: (context, state) {
-                  return const ProfileTab();
+                pageBuilder: (context, state) {
+                  return const NoTransitionPage(child: ProfileTab());
                 },
                 routes: [
                   GoRoute(
@@ -72,8 +75,8 @@ final routerProvider = Provider<GoRouter>((ref) {
                 name: NewsTab.routeName,
                 path: NewsTab.routeLocation,
                 parentNavigatorKey: _shellNavigatorKey,
-                builder: (context, state) {
-                  return const NewsTab();
+                pageBuilder: (context, state) {
+                  return const NoTransitionPage(child: NewsTab());
                 },
                 routes: [
                   GoRoute(
@@ -121,14 +124,9 @@ final routerProvider = Provider<GoRouter>((ref) {
 
         if (!needsAuth && isLogged) return ApplyTab.routeLocation;
 
-        print(state.error);
-        // if (state.)
-
         return null;
       },
       errorBuilder: (context, state) {
-        print("Error: ${state.error}");
-        // context.goNamed(LandingPage.routeName);
         return const NotFoundPage();
       });
 });

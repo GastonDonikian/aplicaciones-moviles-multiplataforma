@@ -3,6 +3,9 @@ import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/cells/app_bar.dart';
 import 'package:my_app/design_system/cells/tab_bar.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
+import 'package:my_app/screens/apply.dart';
+import 'package:my_app/screens/news.dart';
+import 'package:my_app/screens/profile.dart';
 
 class HomePage extends StatefulWidget {
   final String location;
@@ -18,9 +21,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   late TabController _tabController;
 
   final tabs = [
-    {'path': 'home', 'title': 'Postularse'},
-    {'path': 'profile', 'title': 'Mi perfil'},
-    {'path': 'news', 'title': 'Novedades'},
+    {'path': ApplyTab.routeName, 'title': 'Postularse'},
+    {'path': ProfileTab.routeName, 'title': 'Mi perfil'},
+    {'path': NewsTab.routeName, 'title': 'Novedades'},
   ];
 
   @override
@@ -35,7 +38,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     _tabController.dispose();
   }
 
-  void _tap(int index) => context.go('/${tabs[index]['path']}');
+  void _tap(int index) => context.goNamed(tabs[index]['path']!);
 
   @override
   Widget build(BuildContext context) {

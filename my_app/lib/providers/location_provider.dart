@@ -13,7 +13,6 @@ class LocationNotifier extends StateNotifier<LatLng> {
     await Geolocator.requestPermission();
     Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     state = LatLng(position.latitude, position.longitude);
-    print(state);
   }
 }
 

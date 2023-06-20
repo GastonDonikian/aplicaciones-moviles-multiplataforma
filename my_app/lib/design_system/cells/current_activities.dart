@@ -11,7 +11,7 @@ class SerManosCurrentActivityWidget extends StatelessWidget {
   final Function(VolunteerAssociation) onAssociationPressed;
 
   void onLocationPressed() {
-    print("Location pressed");
+    association.openLocation();
   }
 
   @override
