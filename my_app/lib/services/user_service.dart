@@ -13,24 +13,22 @@ import 'analytics_service.dart';
 const collection = "users";
 
 class AuthenticationService {
-  final FirebaseAuth _authenticator = FirebaseAuth.instance;
-  final ImagesService _imagesService = ImagesService();
 
   Future signIn(String email, String password) async {
 
-    UserCredential user = await _authenticator.signInWithEmailAndPassword(
+    UserCredential user = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email, password: password);
     AnalyticsService().loginEvent(user.user!.uid);
     return user;
   }
 
   Future signOut() async {
-    return await _authenticator.signOut();
+    return await FirebaseAuth.instance.signOut();
   }
 
   Future signUp(
       String name, String surname, String email, String password) async {
-    var userCredentials = await _authenticator.createUserWithEmailAndPassword(
+    var userCredentials = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email, password: password);
     String userId = userCredentials.user!.uid;
     AnalyticsService().signupEvent(userId);
@@ -43,7 +41,7 @@ class AuthenticationService {
   }
 
   Future<Volunteer?> getCurrentUser() async {
-    final currentUser = _authenticator.currentUser;
+    final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
       return getUserById(currentUser.uid);
     }
@@ -77,10 +75,10 @@ class AuthenticationService {
     currentUser.phone = phone;
     currentUser.profileCompleted = true;
 
-    var currentUid = _authenticator.currentUser!.uid;
+    var currentUid = FirebaseAuth.instance.currentUser!.uid;
     if (imageFile != null) {
       var newImagePath =
-          await _imagesService.uploadUserImage(currentUid, imageFile);
+          await ImagesService().uploadUserImage(currentUid, imageFile);
       if (newImagePath != null) {
         currentUser.imagePath = newImagePath;
       }

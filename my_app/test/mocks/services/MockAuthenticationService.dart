@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:mockito/mockito.dart';
 import 'package:my_app/models/gender.dart';
 import 'package:my_app/models/volunteer.dart';
 import 'package:my_app/services/user_service.dart';
@@ -9,6 +10,7 @@ const collection = "users";
 
 class MockAuthenticationService extends AuthenticationService {
   final Volunteer volunteer = Volunteer(email: "gastondonikian@gmail.com", name: 'Gaston', surname: 'Donikian');
+
   @override
   Future signIn(String email, String password) async {
     // Empty implementation

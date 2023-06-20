@@ -13,10 +13,13 @@ import '../services/user_service.dart';
 import '../utils/error_utils.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
-  const LoginPage({super.key});
+
+  LoginPage({super.key, this.authService});
 
   static String get routeName => 'login';
   static String get routeLocation => '/login';
+  AuthenticationService? authService;
+
 
   @override
   ConsumerState<LoginPage> createState() => _LoginPageState();
@@ -26,9 +29,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   bool isValid = false;
   LogInInfo logInInfo = LogInInfo();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final userService = AuthenticationService();
+  var userService;
   bool loading = false;
 
+  @override
+  void initState() {
+    super.initState();
+    if(widget.authService == null) {
+      userService = AuthenticationService();
+    }
+    else {
+      userService = widget.authService;
+    }
+  }
 
   void onLoginPressed() {
     setState(() {
