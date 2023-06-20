@@ -12,7 +12,8 @@ class NewsService {
   Future<List<News>> getAllNews() async {
     List<News> news = [];
     try {
-      QuerySnapshot querySnapshot = await db.collection(collectionPath).get();
+      QuerySnapshot querySnapshot =
+          await db.collection(collectionPath).orderBy('date_creation', descending: true).get();
       for (var doc in querySnapshot.docs) {
         var data = doc.data() as Map<String, dynamic>;
         data['id'] = doc.id;

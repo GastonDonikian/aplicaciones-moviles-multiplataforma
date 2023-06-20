@@ -10,7 +10,7 @@ class VolunteerAssociationService {
   }
 
   Future getVolunteerAssociations(String? query) async {
-    QuerySnapshot querySnapshot = await db.collection(collectionPath).get();
+    QuerySnapshot querySnapshot = await db.collection(collectionPath).orderBy('date_creation', descending: true).get();
     List<VolunteerAssociation> associations = [];
     for (var doc in querySnapshot.docs) {
       var data = doc.data() as Map<String, dynamic>;
