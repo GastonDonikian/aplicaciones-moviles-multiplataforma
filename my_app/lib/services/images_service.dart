@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:my_app/services/user_service.dart';
 
+import 'analytics_service.dart';
+
 class ImagesService {
   final storage = FirebaseStorage.instance;
   final userRef = FirebaseStorage.instance.ref().child('users_images');
@@ -13,6 +15,7 @@ class ImagesService {
 
   Future<String?> uploadUserImage(String userId, File imageFile) async {
     try {
+      AnalyticsService().uploadImage(userId);
       final storageRef = userRef.child(userId);
       List<int> imageBytes = await imageFile.readAsBytes();
       TaskSnapshot storageTask =

@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 
 import '../design_system/foundations/texts.dart';
 import '../models/news.dart';
+import '../services/analytics_service.dart';
 
 class DetailedNews extends StatefulWidget {
   const DetailedNews({Key? key, required this.id, required this.maybeNews}) : super(key: key);
@@ -56,6 +57,7 @@ class _DetailedNewsState extends State<DetailedNews> {
   }
 
   void shareNews() async {
+    AnalyticsService().shareEvent(news!.id);
     final urlImage = news!.imagePath;
     final url = Uri.parse(urlImage);
     final response = await http.get(url);

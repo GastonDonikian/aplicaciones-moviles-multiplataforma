@@ -10,6 +10,7 @@ import 'package:my_app/models/forms/signup.dart';
 import 'package:my_app/providers/user_provider.dart';
 
 import '../services/user_service.dart';
+import '../utils/error_utils.dart';
 
 class SignUpPage extends ConsumerStatefulWidget {
   const SignUpPage({super.key});
@@ -54,7 +55,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       }).catchError((e) {
         if (e is FirebaseAuthException) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(e.message.toString()),
+            content: Text(ErrorUtils.translateErrorMessage(e.code.toString())),
             backgroundColor: SerManosColorFoundations.buttonErrorColor,
           ));
         }

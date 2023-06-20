@@ -3,6 +3,8 @@ import 'package:my_app/models/current_association.dart';
 import 'package:my_app/models/volunteer_association.dart';
 import 'package:my_app/services/volunteer_service.dart';
 
+import 'analytics_service.dart';
+
 class CurrentAssociationService {
   final db = FirebaseFirestore.instance;
   final String userId;
@@ -41,6 +43,7 @@ class CurrentAssociationService {
       await VolunteerAssociationService()
           .changeCurrentVolunteers(data['id'], -1);
     }
+    AnalyticsService().unsubscribeToActivityEvent(data['id'], userId);
     await db.collection(collectionPath).doc(doc.id).delete();
     return null;
   }
@@ -54,6 +57,7 @@ class CurrentAssociationService {
       return null;
     }
     await deleteCurrentAssociation();
+    AnalyticsService().subscribeToActivityEvent(associationId, userId);
     CurrentAssociation currentAssociation =
         CurrentAssociation(currentAssociation: vol, confirmed: false);
     await db.collection(collectionPath).add(currentAssociation.toJson());

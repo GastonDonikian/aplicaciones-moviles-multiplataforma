@@ -10,6 +10,7 @@ import 'package:my_app/providers/user_provider.dart';
 
 import '../design_system/foundations/colors.dart';
 import '../services/user_service.dart';
+import '../utils/error_utils.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -27,6 +28,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final userService = AuthenticationService();
   bool loading = false;
+
 
   void onLoginPressed() {
     setState(() {
@@ -52,7 +54,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         if (e is FirebaseAuthException) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(e.message.toString()),
+              content: Text(ErrorUtils.translateErrorMessage(e.code.toString())),
               backgroundColor: SerManosColorFoundations.buttonErrorColor,
             ),
           );
