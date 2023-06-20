@@ -5,6 +5,7 @@ import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:mockito/annotations.dart';
 import 'package:my_app/models/volunteer.dart';
 import 'package:my_app/pages/login.dart';
+import 'package:my_app/pages/signup.dart';
 import 'package:my_app/providers/user_provider.dart';
 import 'package:my_app/services/user_service.dart';
 
@@ -13,7 +14,7 @@ import '../mocks/services/MockAuthenticationService.dart';
 import 'package:mockito/mockito.dart';
 
 void main() {
-  testGoldens('Login golden test', (WidgetTester tester) async {
+  testGoldens('Signup golden test', (WidgetTester tester) async {
     // Create the mock provider
     final mockUserNotifier = MockUserNotifier();
     final mockAuthService = MockAuthenticationService();
@@ -26,10 +27,10 @@ void main() {
           userProvider.overrideWithProvider(mockUserProvider),
         ],
         child: MaterialApp(
-          home: LoginPage(authService: mockAuthService),
+          home: SignUpPage(authService: mockAuthService),
         ),
       ),
     );
-    await screenMatchesGolden(tester, 'login_page_golden'); // Compare with golden image
+    await screenMatchesGolden(tester, 'signup_page_golden'); // Compare with golden image
   });
 }

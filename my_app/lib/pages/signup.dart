@@ -13,11 +13,11 @@ import '../services/user_service.dart';
 import '../utils/error_utils.dart';
 
 class SignUpPage extends ConsumerStatefulWidget {
-  const SignUpPage({super.key});
+  SignUpPage({super.key, this.authService});
 
   static String get routeName => 'signup';
   static String get routeLocation => '/signup';
-
+  AuthenticationService? authService;
   @override
   ConsumerState<SignUpPage> createState() => _SignUpPageState();
 }
@@ -27,7 +27,19 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   bool loading = false;
   SignUpInfo signUpInfo = SignUpInfo();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final userService = AuthenticationService();
+  var userService;
+
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.authService == null) {
+      userService = AuthenticationService();
+    }
+    else {
+      userService = widget.authService;
+    }
+  }
 
   void onSignUpPressed() {
     setState(() {
