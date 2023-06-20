@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:my_app/design_system/atoms/icons.dart';
 import 'package:my_app/design_system/cells/cards.dart';
+import 'package:my_app/design_system/cells/modal.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
@@ -62,12 +63,28 @@ class _ProfileTabState extends ConsumerState<ProfileTab> {
 }
 
 class ProfileCompleted extends StatelessWidget {
-  ProfileCompleted({super.key, required this.volunteer, required this.sessionOnPressed, required this.editOnPressed});
+  ProfileCompleted(
+      {super.key,
+      required this.volunteer,
+      required this.sessionOnPressed,
+      required this.editOnPressed});
 
   final void Function() sessionOnPressed;
   final void Function() editOnPressed;
   final Volunteer volunteer;
   final DateFormat formatter = DateFormat('dd/MM/yyy');
+
+  onPressedShowModal(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: ((BuildContext context) {
+        return SerManosSessionModal(
+          onPressedCanceled: () => context.pop(),
+          onPressedCloseSession: () => sessionOnPressed(),
+        );
+      }),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +128,10 @@ class ProfileCompleted extends StatelessWidget {
                 SerManosInformationCard(
                   cardTitle: "Información Personal",
                   information: {
-                    "Fecha de nacimiento": formatter.format(volunteer.birthDate!),
-                    "Genero": volunteer.gender != null ? volunteer.gender!.value : ""
+                    "Fecha de nacimiento":
+                        formatter.format(volunteer.birthDate!),
+                    "Genero":
+                        volunteer.gender != null ? volunteer.gender!.value : ""
                   },
                 ),
                 const SizedBox(
@@ -120,7 +139,10 @@ class ProfileCompleted extends StatelessWidget {
                 ),
                 SerManosInformationCard(
                   cardTitle: "Datos de contacto",
-                  information: {"Telefono": volunteer.phone != null ? volunteer.phone! : "", "E-Mail": volunteer.email},
+                  information: {
+                    "Telefono": volunteer.phone != null ? volunteer.phone! : "",
+                    "E-Mail": volunteer.email
+                  },
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 32),
@@ -133,7 +155,9 @@ class ProfileCompleted extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 20),
                   child: SerManosTextButton(
                     label: "Cerrar Sesión",
-                    onPressed: sessionOnPressed,
+                    onPressed: () {
+                      onPressedShowModal(context);
+                    },
                     textColorActive: SerManosColorFoundations.buttonErrorColor,
                   ),
                 ),
@@ -148,7 +172,10 @@ class ProfileCompleted extends StatelessWidget {
 
 class ProfileEmpty extends StatelessWidget {
   const ProfileEmpty(
-      {super.key, required this.completeOnPressed, required this.volunteer, required this.sessionOnPressed});
+      {super.key,
+      required this.completeOnPressed,
+      required this.volunteer,
+      required this.sessionOnPressed});
 
   final void Function() completeOnPressed;
   final void Function() sessionOnPressed;

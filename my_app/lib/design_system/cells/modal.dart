@@ -158,15 +158,78 @@ class SerManosImageModal extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: SerManosTextButton(
-                        label: "Tomar Foto",
+                        label: "Camara",
                         onPressed: onPressedCamera,
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: SerManosTextButton(
-                        label: "Subir de Galería",
+                        label: "Galería",
                         onPressed: onPressedGallery,
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SerManosSessionModal extends StatelessWidget {
+  const SerManosSessionModal({
+    super.key,
+    required this.onPressedCanceled,
+    required this.onPressedCloseSession,
+  });
+
+  final void Function()? onPressedCanceled;
+  final void Function()? onPressedCloseSession;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              color: SerManosColorFoundations.modalBackgroundColor,
+              borderRadius: BorderRadius.all(Radius.circular(2.0)),
+              boxShadow: SerManosShadows.boxShadows3,
+            ),
+            padding: const EdgeInsets.all(16),
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Column(
+                  children: [
+                    SerManosTexts.subtitle1(
+                      "¿Estás seguro que quieres cerrar sesión?",
+                      color: SerManosColorFoundations.modalSubtitleTextColor,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: SerManosTextButton(
+                        label: "Cancelar",
+                        onPressed: onPressedCanceled,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: SerManosTextButton(
+                        label: "Cerrar Sesión",
+                        onPressed: onPressedCloseSession,
                       ),
                     ),
                   ],
