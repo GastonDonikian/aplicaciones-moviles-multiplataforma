@@ -14,6 +14,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:my_app/providers/current_association_provider.dart';
 import 'package:my_app/providers/user_provider.dart';
 import 'package:my_app/screens/apply.dart';
+import 'package:my_app/screens/profile.dart';
 import 'package:my_app/services/volunteer_service.dart';
 import '../design_system/cells/cards.dart';
 import '../models/volunteer.dart';
@@ -40,6 +41,33 @@ class _VolunteerAssociationPageState
   CurrentAssociation? currentAssociation;
   Volunteer? currentUser;
   VolunteerAssociation? volunteerAssociation;
+
+  onPressedShowProfileModal(
+      BuildContext context,
+      VolunteerAssociation volunteerAssociation,
+      String header,
+      Function confirmAction) {
+    showDialog(
+      context: context,
+      builder: ((BuildContext context) {
+        return SerManosIncompleteProfileModal(
+          onPressedCanceled: () => context.pop(),
+          onPressedEditProfile: (() {
+            context.pushNamed('edit_profile').then((value) {
+              currentUser = ref.read(userProvider);
+              if (currentUser!.profileCompleted) {
+                context.pop();
+                onPressedShowModal(
+                    context, volunteerAssociation, header, confirmAction);
+              } else {
+                context.pop();
+              }
+            });
+          }),
+        );
+      }),
+    );
+  }
 
   onPressedPostulate(BuildContext context) async {
     await ref
@@ -221,24 +249,43 @@ class _VolunteerAssociationPageState
                             SerManosVacancy(
                                 vacancy:
                                     volunteerAssociation!.availableCapacity),
-                            //TODO: Implement abandonCurrentPostulate, abandonOtherPostulate and confirm
                             PostulationDispatcher(
                               currentAssociation: currentAssociation,
                               volunteerAssociation: volunteerAssociation!,
-                              onPressedPostulate: () => onPressedShowModal(
-                                  context,
-                                  volunteerAssociation!,
-                                  'Te estas por postular a',
-                                  () => onPressedPostulate(context)),
+                              onPressedPostulate: () {
+                                if (currentUser!.profileCompleted) {
+                                  onPressedShowModal(
+                                    context,
+                                    volunteerAssociation!,
+                                    'Te estas por postular a',
+                                    () => onPressedPostulate(context),
+                                  );
+                                } else {
+                                  onPressedShowProfileModal(
+                                      context,
+                                      volunteerAssociation!,
+                                      'Te estas por postular a',
+                                      () => onPressedPostulate(context));
+                                }
+                              },
+                              // onPressedPostulate: () => onPressedShowModal(
+                              //     context,
+                              //     volunteerAssociation!,
+                              //     'Te estas por postular a',
+                              //     () => onPressedPostulate(context)),
                               abandonCurrentPostulate: () => onPressedShowModal(
                                   context,
                                   volunteerAssociation!,
-                                  'Estas por dejar',
+                                  currentAssociation!.confirmed
+                                      ? '¿Estás seguro que querés abandonar tu voluntariado?'
+                                      : '¿Estás seguro que querés retirar tu postulación?',
                                   () => onPressedAbandonPostulate(context)),
                               abandonOtherPostulate: () => onPressedShowModal(
                                   context,
                                   volunteerAssociation!,
-                                  'Estas por dejar',
+                                  currentAssociation!.confirmed
+                                      ? '¿Estás seguro que querés abandonar tu voluntariado?'
+                                      : '¿Estás seguro que querés retirar tu postulación?',
                                   () => onPressedAbandonPostulate(context)),
                             )
                           ],
@@ -306,6 +353,7 @@ class PostulationDispatcher extends StatelessWidget {
             child: SerManosTexts.body1(
               'Ya estas participando en otro voluntariado, debes abandonarlo primero para postularte a este.',
               color: SerManosColorFoundations.defaultBodyColor,
+              textAlign: TextAlign.center,
             )),
         Padding(
           padding: const EdgeInsets.only(top: 20),
@@ -337,6 +385,7 @@ class PostulationDispatcher extends StatelessWidget {
             child: SerManosTexts.body1(
               'La organización confirmó que ya estas participando de este voluntariado',
               color: SerManosColorFoundations.defaultBodyColor,
+              textAlign: TextAlign.center,
             ),
           ),
           Padding(
@@ -361,6 +410,7 @@ class PostulationDispatcher extends StatelessWidget {
             child: SerManosTexts.body1(
               'Pronto la organización se pondrá en contacto contigo y te inscribirá como participante.',
               color: SerManosColorFoundations.defaultBodyColor,
+              textAlign: TextAlign.center,
             ),
           ),
           Padding(

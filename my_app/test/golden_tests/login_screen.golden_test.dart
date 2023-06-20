@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:mockito/annotations.dart';
 import 'package:my_app/models/volunteer.dart';
 import 'package:my_app/pages/login.dart';
 import 'package:my_app/providers/user_provider.dart';
@@ -9,8 +10,9 @@ import 'package:my_app/services/user_service.dart';
 
 import '../mocks/providers/MockUserProvider.dart';
 import '../mocks/services/MockAuthenticationService.dart';
+import 'package:mockito/mockito.dart';
 
-
+@GenerateMocks([AuthenticationService])
 void main() {
   testGoldens('Login golden test', (WidgetTester tester) async {
     const widget = LoginPage(); // Instantiate your HomeScreen widget
@@ -31,6 +33,7 @@ void main() {
             ),
         ),
     );
+    when(AuthenticationService()).thenAnswer((_) => mockAuthService);
     await screenMatchesGolden(tester, 'login_page_golden'); // Compare with golden image
   });
 }
