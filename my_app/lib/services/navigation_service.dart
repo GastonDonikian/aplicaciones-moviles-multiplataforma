@@ -45,10 +45,10 @@ final routerProvider = Provider<GoRouter>((ref) {
                     path: VolunteerAssociationPage.routeLocation,
                     parentNavigatorKey: _rootNavigatorKey,
                     builder: (context, state) {
-                      VolunteerAssociation association = state.extra! as VolunteerAssociation;
+                      VolunteerAssociation? association = state.extra as VolunteerAssociation?;
                       return VolunteerAssociationPage(
                         id: state.params['id']!,
-                        volunteerAssociation: association,
+                        maybeVolunteerAssociation: association,
                       );
                     }),
               ]),
@@ -72,7 +72,7 @@ final routerProvider = Provider<GoRouter>((ref) {
               path: NewsTab.routeLocation,
               parentNavigatorKey: _shellNavigatorKey,
               builder: (context, state) {
-                return NewsTab();
+                return const NewsTab();
               },
               routes: [
                 GoRoute(
@@ -80,10 +80,10 @@ final routerProvider = Provider<GoRouter>((ref) {
                   path: DetailedNews.routeLocation,
                   parentNavigatorKey: _rootNavigatorKey,
                   builder: (context, state) {
-                    News news = state.extra! as News;
+                    News? news = state.extra as News?;
                     return DetailedNews(
                       id: state.params['id']!,
-                      news: news,
+                      maybeNews: news,
                     );
                   },
                 ),

@@ -47,7 +47,7 @@ class _ApplyTabState extends ConsumerState<ApplyTab> {
     }
 
     void goToVolunteerAssociation(VolunteerAssociation volunteerAssociation) {
-      context.goNamed("association", extra: volunteerAssociation, params: {"id": volunteerAssociation.name});
+      context.goNamed("association", extra: volunteerAssociation, params: {"id": volunteerAssociation.id});
     }
 
     void onSearchEnter(String query) {

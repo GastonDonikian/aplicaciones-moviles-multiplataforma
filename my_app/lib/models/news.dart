@@ -16,8 +16,10 @@ class News {
     required this.text,
     required this.link,
   });
+
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'imagePath': imagePath,
       'newspaper': newspaper,
       'title': title,
