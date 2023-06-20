@@ -26,4 +26,31 @@ class VolunteerAssociationService {
     }
     return associations;
   }
+
+  getVolunteerById(String id) async {
+    try {
+      var volunteerDoc = await FirebaseFirestore.instance
+          .collection(collectionPath)
+          .doc(id)
+          .get();
+      if (volunteerDoc.exists) {
+        var volunteerData = volunteerDoc.data() as Map<String, dynamic>;
+        volunteerData['id'] = volunteerDoc.id;
+        return VolunteerAssociation.fromJson(volunteerData);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
+
+  changeCurrentCapacity(String associationId, int add) async {
+    VolunteerAssociation currentAssoc = getVolunteerById(associationId);
+    currentAssoc.volunteers += add;
+    await FirebaseFirestore.instance
+        .collection(collectionPath)
+        .doc(associationId)
+        .set(currentAssoc.toJson());
+  }
 }

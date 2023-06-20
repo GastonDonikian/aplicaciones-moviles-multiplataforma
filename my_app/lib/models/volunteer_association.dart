@@ -12,7 +12,7 @@ class VolunteerAssociation {
   final String schedule;
   final String description;
   final int capacity;
-  final int volunteers;
+  late final int volunteers;
   final String requirements;
   bool isFavorite;
 
