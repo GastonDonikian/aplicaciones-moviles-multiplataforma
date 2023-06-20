@@ -26,8 +26,7 @@ class CurrentAssociationNotifier extends StateNotifier<CurrentAssociation?> {
       return;
     }
     String userId = user.uid;
-    await CurrentAssociationService(userId).deleteCurrentAssociation();
-    state = null;
+    state = await CurrentAssociationService(userId).deleteCurrentAssociation();
   }
 
   subscribeToAssociation(String associationId) async {

@@ -8,8 +8,10 @@ import 'package:my_app/design_system/foundations/texts.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/molecules/components.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
+import 'package:my_app/models/current_association.dart';
 import 'package:my_app/models/volunteer_association.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:my_app/providers/current_association_provider.dart';
 import 'package:my_app/providers/user_provider.dart';
 import 'package:my_app/services/user_service.dart';
 import '../design_system/cells/cards.dart';
@@ -34,7 +36,7 @@ class VolunteerAssociationPage extends ConsumerStatefulWidget {
 
 class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationPage> {
   final Color cardTitleColor = SerManosColorFoundations.cardTitleColor;
-  Volunteer? currentUser;
+  CurrentAssociation? currentAssociation;
   onPressedShowModal(BuildContext context, VolunteerAssociation volunteerAssociation, String header, Function confirmAction) {
     showDialog(
       context: context,
@@ -57,7 +59,7 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
   void initState() {
     // TODO: implement initState
     super.initState();
-    currentUser = ref.read(userProvider);
+    currentAssociation = ref.read(currentAssociationProvider);
   }
 
   @override
@@ -148,10 +150,13 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
                             child: SerManosVacancy(vacancy: widget.volunteerAssociation.availableCapacity)
                         ),
                           //TODO: Implement abandonCurrentPostulate, abandonOtherPostulate and confirm
-                        PostulationDispatcher(volunteer: currentUser! ,volunteerAssociation: widget.volunteerAssociation,
-                              onPressedPostulate: () => onPressedShowModal(context, widget.volunteerAssociation, 'Te estas por postular a',() {}),
-                              abandonCurrentPostulate: () => onPressedShowModal(context, widget.volunteerAssociation, 'Estas por dejar',() {}),
-                              abandonOtherPostulate: () => onPressedShowModal(context, widget.volunteerAssociation, 'Estas por dejar',() {}),
+                        PostulationDispatcher(currentAssociation: currentAssociation,volunteerAssociation: widget.volunteerAssociation,
+                              onPressedPostulate: () => onPressedShowModal(context, widget.volunteerAssociation, 'Te estas por postular a',() {
+                                ref.read(currentAssociationProvider.notifier).subscribeToAssociation(widget.volunteerAssociation.id);
+                                context.goNamed('home');
+                              }),
+                              abandonCurrentPostulate: () => onPressedShowModal(context, widget.volunteerAssociation, 'Estas por dejar',() {ref.read(currentAssociationProvider.notifier).unsubscribeFromCurrentAssociation(); context.goNamed('home');}),
+                              abandonOtherPostulate: () => onPressedShowModal(context, widget.volunteerAssociation, 'Estas por dejar',() {ref.read(currentAssociationProvider.notifier).unsubscribeFromCurrentAssociation(); context.goNamed('home');}),
                         )
 
                       ],
@@ -170,14 +175,14 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
 class PostulationDispatcher extends StatelessWidget {
   const PostulationDispatcher(
       {super.key,
-        required this.volunteer,
+        this.currentAssociation,
         required this.volunteerAssociation,
         required this.onPressedPostulate,
         required this.abandonOtherPostulate,
         required this.abandonCurrentPostulate,
       });
 
-  final Volunteer volunteer;
+  final CurrentAssociation? currentAssociation;
   final VolunteerAssociation volunteerAssociation;
   final void Function() onPressedPostulate;
   final void Function() abandonOtherPostulate;
@@ -199,13 +204,13 @@ class PostulationDispatcher extends StatelessWidget {
         ]
       );
     }
-    if(volunteer.currentAssociation == null) {
+    if(currentAssociation == null) {
       return Padding(
         padding: const EdgeInsets.only(top: 24, bottom: 32),
         child: SerManosElevatedButton(label: 'Postularme', onPressed: () => onPressedPostulate(),),
       );
     }
-    if(volunteerAssociation.id != volunteer.currentAssociation) {
+    if(volunteerAssociation.id != currentAssociation!.currentAssociation.id) {
       return Column(
           children: [
             Padding(
@@ -224,12 +229,12 @@ class PostulationDispatcher extends StatelessWidget {
           ]
       );
     }
-    if(volunteer.confirmedByAssociation != null && volunteer.confirmedByAssociation == true) {
+    if(currentAssociation!.confirmed) {
       return Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 24),
-            child: SerManosTexts.headline2('Estas participando'),
+            child: SerManosTexts.headline2('Estas participando', color: SerManosColorFoundations.defaultHeadlineColor),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8),
@@ -248,7 +253,7 @@ class PostulationDispatcher extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 24),
-            child: SerManosTexts.headline2('Te has postulado'),
+            child: SerManosTexts.headline2('Te has postulado', color: SerManosColorFoundations.defaultHeadlineColor),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 8),
