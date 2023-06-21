@@ -30,8 +30,6 @@ FakeFirebaseFirestore getInitializedFirestoreInstance() {
 void main() {
   group('Favorites Service', () {
     late FavoritesService favoritesService;
-    const collectionPath = "users";
-    const userId = "user1";
     VolunteerAssociation assoc1 = VolunteerAssociation(
         id: "assoc1",
         imagePath: "fake.png",
@@ -40,7 +38,6 @@ void main() {
         subtitle: "Fake Subtitle 1",
         location: const GeoPoint(-35.44112875999616, -59.77390957104859),
         address: "Fake Address 1",
-        schedule: "Fake Schedule 1",
         description: "Fake Description 1",
         capacity: 10,
         volunteers: 0,
@@ -54,7 +51,6 @@ void main() {
         subtitle: "Fake Subtitle 3",
         location: const GeoPoint(-35.44112875999616, -59.77390957104859),
         address: "Fake Address 3",
-        schedule: "Fake Schedule 3",
         description: "Fake Description 3",
         capacity: 10,
         volunteers: 0,
@@ -66,67 +62,39 @@ void main() {
           FavoritesService("user1", getInitializedFirestoreInstance());
     });
 
-    group(
-      'constructor',
-      () {
-        test(
-          'constructor should be not null',
-          () {
-            expect(
-                FavoritesService("user1", FakeFirebaseFirestore()), isNotNull);
-          },
-        );
-      },
-    );
+    group('constructor', () {
+      test('constructor should be not null', () {
+        expect(FavoritesService("user1", FakeFirebaseFirestore()), isNotNull);
+      });
+    });
 
-    group(
-      'getFavorites tests',
-      () {
-        test(
-          'returned values should be two',
-          () async {
-            List<String> retrievedFavorites =
-                await favoritesService.getFavorites();
-            expect(retrievedFavorites.length, 2);
-          },
-        );
-      },
-    );
+    group('getFavorites tests', () {
+      test('returned values should be two', () async {
+        List<String> retrievedFavorites = await favoritesService.getFavorites();
+        expect(retrievedFavorites.length, 2);
+      });
+    });
 
-    group(
-      'changeFavorite tests',
-      () {
-        test(
-          'favourite for assoc1 should be eliminated',
-          () async {
-            favoritesService.changeFavorite(assoc1).then(
-              (value) async {
-                List<String> retrievedFavorites =
-                    await favoritesService.getFavorites();
-                expect(retrievedFavorites.length, 1);
-                expect(retrievedFavorites[0], "assoc2");
-              },
-            );
-          },
-        );
-        test(
-          'favourite for assoc3 should be added',
-          () async {
-            favoritesService.changeFavorite(assoc3).then(
-              (value) async {
-                List<String> retrievedFavorites =
-                    await favoritesService.getFavorites();
-                retrievedFavorites.sort(
-                  (a, b) => a.compareTo(b),
-                );
-                expect(retrievedFavorites.length, 3);
-                expect(retrievedFavorites[retrievedFavorites.length - 1],
-                    "assoc3");
-              },
-            );
-          },
-        );
-      },
-    );
+    group('changeFavorite tests', () {
+      test('favourite for assoc1 should be eliminated', () async {
+        favoritesService.changeFavorite(assoc1).then((value) async {
+          List<String> retrievedFavorites =
+              await favoritesService.getFavorites();
+          expect(retrievedFavorites.length, 1);
+          expect(retrievedFavorites[0], "assoc2");
+        });
+      });
+      test('favourite for assoc3 should be added', () async {
+        favoritesService.changeFavorite(assoc3).then((value) async {
+          List<String> retrievedFavorites =
+              await favoritesService.getFavorites();
+          retrievedFavorites.sort(
+            (a, b) => a.compareTo(b),
+          );
+          expect(retrievedFavorites.length, 3);
+          expect(retrievedFavorites[retrievedFavorites.length - 1], "assoc3");
+        });
+      });
+    });
   });
 }

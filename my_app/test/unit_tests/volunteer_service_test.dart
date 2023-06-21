@@ -19,7 +19,6 @@ FakeFirebaseFirestore getInitializaedFirestoreInstance() {
     'location': const GeoPoint(-34.44112875999616, -58.77390957104859),
     'name': "Fake Name 1",
     'requirements': "Fake Requirements",
-    'schedule': "Lunes-Martes",
     'subtitle': "Fake Subtitle 1",
     'volunteers': 0
   });
@@ -34,7 +33,6 @@ FakeFirebaseFirestore getInitializaedFirestoreInstance() {
     'location': const GeoPoint(-35.44112875999616, -59.77390957104859),
     'name': "Fake Name 2",
     'requirements': "Fake Requirements",
-    'schedule': "Lunes-Martes",
     'subtitle': "Fake Subtitle 2",
     'volunteers': 0
   });

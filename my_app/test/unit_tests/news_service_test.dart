@@ -11,7 +11,6 @@ FakeFirebaseFirestore getInitializedFirestoreInstance() {
   firestoreInstance.collection(collectionPath).doc("doc1").set({
     'date_creation': Timestamp.now(),
     'imagePath': "fakePath.png",
-    'link': 'link.com',
     'newspaper': "Fake Newspaper 1",
     'subtitle': 'Fake Subtitle 1',
     'text': 'Fake Test 1',
@@ -20,7 +19,6 @@ FakeFirebaseFirestore getInitializedFirestoreInstance() {
   firestoreInstance.collection(collectionPath).doc("doc2").set({
     'date_creation': Timestamp.now(),
     'imagePath': "fakePath.png",
-    'link': 'link.com',
     'newspaper': "Fake Newspaper 2",
     'subtitle': 'Fake Subtitle 2',
     'text': 'Fake Test 2',

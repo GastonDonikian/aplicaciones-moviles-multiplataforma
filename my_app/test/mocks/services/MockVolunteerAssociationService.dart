@@ -12,7 +12,6 @@ class MockVolunteerAssociationService extends VolunteerAssociationService {
       subtitle: 'asdf',
       location: GeoPoint(12, 23),
       address: 'asdf',
-      schedule: 'asdf',
       description: 'asdf',
       capacity: 10,
       volunteers: 2,

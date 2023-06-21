@@ -8,19 +8,44 @@ import 'analytics_service.dart';
 class CurrentAssociationService {
   final String userId;
   late final String collectionPath;
+  FirebaseFirestore? instance;
+  VolunteerAssociationService? volunteerAssociationService;
+  AnalyticsService? analyticsService;
 
-  CurrentAssociationService(this.userId) {
+  CurrentAssociationService(this.userId,
+      [this.instance,
+      this.volunteerAssociationService,
+      this.analyticsService]) {
     collectionPath = "users/$userId/currentAssociation";
+
+    if (instance == null) {
+      instance = FirebaseFirestore.instance;
+    } else {
+      instance = instance;
+    }
+
+    if (volunteerAssociationService == null) {
+      volunteerAssociationService = VolunteerAssociationService();
+    } else {
+      volunteerAssociationService = volunteerAssociationService;
+    }
+
+    if (analyticsService == null) {
+      analyticsService = AnalyticsService();
+    } else {
+      analyticsService = analyticsService;
+    }
   }
 
   Future<CurrentAssociation?> getCurrentAssociation() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(collectionPath).get();
+    QuerySnapshot querySnapshot =
+        await instance!.collection(collectionPath).get();
     if (querySnapshot.size == 0) {
       return null;
     }
     var data = querySnapshot.docs[0].data() as Map<String, dynamic>;
     data['currentAssociation'] =
-        await VolunteerAssociationService().getVolunteerById(data['id']);
+        await volunteerAssociationService!.getVolunteerById(data['id']);
     if (data['currentAssociation'] == null) {
       return null;
     }
@@ -31,7 +56,8 @@ class CurrentAssociationService {
   }
 
   Future deleteCurrentAssociation() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(collectionPath).get();
+    QuerySnapshot querySnapshot =
+        await instance!.collection(collectionPath).get();
     if (querySnapshot.size == 0) {
       return null;
     }
@@ -39,11 +65,11 @@ class CurrentAssociationService {
     var doc = querySnapshot.docs[0];
     var data = doc.data() as Map<String, dynamic>;
     if (data['confirmed']) {
-      await VolunteerAssociationService()
+      await volunteerAssociationService!
           .changeCurrentVolunteers(data['id'], -1);
     }
-    AnalyticsService().unsubscribeToActivityEvent(data['id'], userId);
-    await FirebaseFirestore.instance.collection(collectionPath).doc(doc.id).delete();
+    analyticsService!.unsubscribeToActivityEvent(data['id'], userId);
+    await instance!.collection(collectionPath).doc(doc.id).delete();
     return null;
   }
 
@@ -51,15 +77,15 @@ class CurrentAssociationService {
     String associationId,
   ) async {
     VolunteerAssociation? vol =
-        await VolunteerAssociationService().getVolunteerById(associationId);
+        await volunteerAssociationService!.getVolunteerById(associationId);
     if (vol == null) {
       return null;
     }
     await deleteCurrentAssociation();
-    AnalyticsService().subscribeToActivityEvent(associationId, userId);
+    analyticsService!.subscribeToActivityEvent(associationId, userId);
     CurrentAssociation currentAssociation =
         CurrentAssociation(currentAssociation: vol, confirmed: false);
-    await FirebaseFirestore.instance.collection(collectionPath).add(currentAssociation.toJson());
+    await instance!.collection(collectionPath).add(currentAssociation.toJson());
     return currentAssociation;
   }
 }
