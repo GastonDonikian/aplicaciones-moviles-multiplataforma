@@ -15,8 +15,7 @@ class WelcomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const RegistrationLayout(
-        body: _WelcomeBody(), footer: _WelcomeFooter());
+    return const RegistrationLayout(body: _WelcomeBody(), footer: _WelcomeFooter());
   }
 }
 
@@ -70,7 +69,7 @@ class _WelcomeFooter extends StatelessWidget {
           label: 'Comenzar',
           onPressed: () => context.goNamed("home"),
         ),
-        const SizedBox(height: 92),
+        const SizedBox(height: 48),
       ],
     );
   }

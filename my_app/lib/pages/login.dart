@@ -13,13 +13,11 @@ import '../services/user_service.dart';
 import '../utils/error_utils.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
-
   LoginPage({super.key, this.authService});
 
   static String get routeName => 'login';
   static String get routeLocation => '/login';
   AuthenticationService? authService;
-
 
   @override
   ConsumerState<LoginPage> createState() => _LoginPageState();
@@ -35,10 +33,9 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   @override
   void initState() {
     super.initState();
-    if(widget.authService == null) {
+    if (widget.authService == null) {
       userService = AuthenticationService();
-    }
-    else {
+    } else {
       userService = widget.authService;
     }
   }
@@ -54,8 +51,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       userService.signIn(email, password).then((value) {
         userService.getUserById(value.user!.uid).then((user) {
           if (user == null) {
-            throw FirebaseAuthException(
-                code: 'user-not-found', message: 'User not found');
+            throw FirebaseAuthException(code: 'user-not-found', message: 'User not found');
           } else {
             ref.read(userProvider.notifier).setUser(user);
             context.goNamed('home');
@@ -97,19 +93,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         logInInfo: logInInfo,
         formKey: formKey,
       ),
-      footer: _LoginFooter(
-          loginEnabled: isValid,
-          onLoginPressed: onLoginPressed,
-          loginInProgress: loading),
+      footer: _LoginFooter(loginEnabled: isValid, onLoginPressed: onLoginPressed, loginInProgress: loading),
     );
   }
 }
 
 class _LoginBody extends StatelessWidget {
-  const _LoginBody(
-      {required this.onValidationChanged,
-      required this.logInInfo,
-      required this.formKey});
+  const _LoginBody({required this.onValidationChanged, required this.logInInfo, required this.formKey});
 
   final LogInInfo logInInfo;
   final GlobalKey<FormState> formKey;
@@ -120,21 +110,14 @@ class _LoginBody extends StatelessWidget {
     return Column(
       children: [
         const SizedBox(height: 32),
-        SerManosLogInForm(
-            onValidationChanged: onValidationChanged,
-            logInInfo: logInInfo,
-            formKey: formKey)
+        SerManosLogInForm(onValidationChanged: onValidationChanged, logInInfo: logInInfo, formKey: formKey)
       ],
     );
   }
 }
 
 class _LoginFooter extends StatelessWidget {
-  const _LoginFooter(
-      {Key? key,
-      required this.loginEnabled,
-      this.loginInProgress = false,
-      required this.onLoginPressed})
+  const _LoginFooter({Key? key, required this.loginEnabled, this.loginInProgress = false, required this.onLoginPressed})
       : super(key: key);
 
   final bool loginEnabled;
@@ -152,10 +135,7 @@ class _LoginFooter extends StatelessWidget {
           loading: loginInProgress,
         ),
         const SizedBox(height: 28),
-        SerManosTextButton(
-            label: "No tengo cuenta",
-            onPressed: () => context.goNamed("signup")),
-        const SizedBox(height: 44),
+        SerManosTextButton(label: "No tengo cuenta", onPressed: () => context.goNamed("signup")),
       ],
     );
   }

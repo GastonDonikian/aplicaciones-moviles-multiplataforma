@@ -13,8 +13,7 @@ class LandingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const RegistrationLayout(
-        body: _LandingBody(), footer: _LandingFooter());
+    return const RegistrationLayout(body: _LandingBody(), footer: _LandingFooter());
   }
 }
 
@@ -49,12 +48,9 @@ class _LandingFooter extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SerManosElevatedButton(
-            label: 'Iniciar Sesión', onPressed: () => context.goNamed("login")),
+        SerManosElevatedButton(label: 'Iniciar Sesión', onPressed: () => context.goNamed("login")),
         const SizedBox(height: 28),
-        SerManosTextButton(
-            label: "Registrarse", onPressed: () => context.goNamed("signup")),
-        const SizedBox(height: 44),
+        SerManosTextButton(label: "Registrarse", onPressed: () => context.goNamed("signup")),
       ],
     );
   }

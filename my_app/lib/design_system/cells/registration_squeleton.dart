@@ -14,33 +14,41 @@ class RegistrationLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height * 0.9;
-
     return SerManosWhiteStatusBar(
-      body: LayoutBuilder(
-        builder: (BuildContext context, BoxConstraints constraints) {
-          return SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints.tightFor(height: height),
-              child: SerManosGridPadding(
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Image(image: AssetImage("assets/square_logo.png")),
-                          body,
-                        ],
+      body: SerManosGridPadding(
+        child: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
+                ),
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Image(image: AssetImage("assets/square_logo.png"), height: 150),
+                            body,
+                          ],
+                        ),
                       ),
-                    ),
-                    footer
-                  ],
+                      Column(
+                        children: [
+                          const SizedBox(height: 20),
+                          footer,
+                          const SizedBox(height: 44),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

@@ -29,14 +29,12 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var userService;
 
-
   @override
   void initState() {
     super.initState();
-    if(widget.authService == null) {
+    if (widget.authService == null) {
       userService = AuthenticationService();
-    }
-    else {
+    } else {
       userService = widget.authService;
     }
   }
@@ -55,8 +53,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       userService.signUp(name, surname, email, password).then((value) {
         userService.getUserById(value.user!.uid).then((user) {
           if (user == null) {
-            throw FirebaseAuthException(
-                code: 'user-not-found', message: 'User not found');
+            throw FirebaseAuthException(code: 'user-not-found', message: 'User not found');
           } else {
             ref.read(userProvider.notifier).setUser(user);
             context.goNamed('welcome');
@@ -96,10 +93,7 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
           signUpInfo: signUpInfo,
           formKey: formKey,
         ),
-        footer: _SignUpFooter(
-            signUpEnabled: isValid,
-            onSignUpPressed: onSignUpPressed,
-            isLoading: loading));
+        footer: _SignUpFooter(signUpEnabled: isValid, onSignUpPressed: onSignUpPressed, isLoading: loading));
   }
 }
 
@@ -131,11 +125,7 @@ class _SignUpBody extends StatelessWidget {
 }
 
 class _SignUpFooter extends StatelessWidget {
-  const _SignUpFooter(
-      {Key? key,
-      required this.signUpEnabled,
-      this.isLoading = false,
-      required this.onSignUpPressed});
+  const _SignUpFooter({Key? key, required this.signUpEnabled, this.isLoading = false, required this.onSignUpPressed});
 
   final bool signUpEnabled;
   final bool isLoading;
@@ -152,10 +142,7 @@ class _SignUpFooter extends StatelessWidget {
           loading: isLoading,
         ),
         const SizedBox(height: 28),
-        SerManosTextButton(
-            label: "Ya tengo cuenta",
-            onPressed: () => context.goNamed("login")),
-        const SizedBox(height: 44),
+        SerManosTextButton(label: "Ya tengo cuenta", onPressed: () => context.goNamed("login")),
       ],
     );
   }
