@@ -47,7 +47,6 @@ class VolunteerAssociation {
       'capacity': capacity,
       'volunteers': volunteers,
       'requirements': requirements.replaceAll('\n', r'\n'),
-      'isFavorite': isFavorite,
     };
   }
 
@@ -80,7 +79,10 @@ class VolunteerAssociation {
     var c = cos;
     var a = 0.5 -
         c((location.latitude - lat) * p) / 2 +
-        c(lat * p) * c(location.latitude * p) * (1 - c((location.longitude - lon) * p)) / 2;
+        c(lat * p) *
+            c(location.latitude * p) *
+            (1 - c((location.longitude - lon) * p)) /
+            2;
     return 12742 * asin(sqrt(a));
   }
 }

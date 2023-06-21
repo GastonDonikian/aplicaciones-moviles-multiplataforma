@@ -4,45 +4,50 @@ import 'package:my_app/models/news.dart';
 import 'package:my_app/services/news_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+FakeFirebaseFirestore getInitializedFirestoreInstance() {
+  final firestoreInstance = FakeFirebaseFirestore();
+  const collectionPath = "news";
+
+  firestoreInstance.collection(collectionPath).doc("doc1").set({
+    'date_creation': Timestamp.now(),
+    'imagePath': "fakePath.png",
+    'link': 'link.com',
+    'newspaper': "Fake Newspaper 1",
+    'subtitle': 'Fake Subtitle 1',
+    'text': 'Fake Test 1',
+    'title': 'Fake Title 1'
+  });
+  firestoreInstance.collection(collectionPath).doc("doc2").set({
+    'date_creation': Timestamp.now(),
+    'imagePath': "fakePath.png",
+    'link': 'link.com',
+    'newspaper': "Fake Newspaper 2",
+    'subtitle': 'Fake Subtitle 2',
+    'text': 'Fake Test 2',
+    'title': 'Fake Title 2'
+  });
+
+  return firestoreInstance;
+}
+
 void main() {
   group('News Service', () {
     late NewsService newsService;
-    final firestoreInstance = FakeFirebaseFirestore();
-    const collectionPath = "news";
-
-    firestoreInstance.collection(collectionPath).doc("doc1").set({
-      'date_creation': Timestamp.now(),
-      'imagePath': "fakePath.png",
-      'link': 'link.com',
-      'newspaper': "Fake Newspaper 1",
-      'subtitle': 'Fake Subtitle 1',
-      'text': 'Fake Test 1',
-      'title': 'Fake Title 1'
-    });
-    firestoreInstance.collection(collectionPath).doc("doc2").set({
-      'date_creation': Timestamp.now(),
-      'imagePath': "fakePath.png",
-      'link': 'link.com',
-      'newspaper': "Fake Newspaper 2",
-      'subtitle': 'Fake Subtitle 2',
-      'text': 'Fake Test 2',
-      'title': 'Fake Title 2'
-    });
 
     setUp(() {
-      newsService = NewsService(firestoreInstance);
+      newsService = NewsService(getInitializedFirestoreInstance());
     });
 
     group('constructor', () {
       test(
         'constructor should be not null',
         () {
-          expect(NewsService(firestoreInstance), isNotNull);
+          expect(NewsService(FakeFirebaseFirestore()), isNotNull);
         },
       );
     });
 
-    group('gestNewsById tests', () {
+    group('getNewsById tests', () {
       test(
         'returned value should have title = Fake Title 1',
         () async {

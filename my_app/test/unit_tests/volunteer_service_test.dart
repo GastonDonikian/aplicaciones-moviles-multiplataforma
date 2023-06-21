@@ -5,66 +5,69 @@ import 'package:latlng/latlng.dart';
 import 'package:my_app/models/volunteer_association.dart';
 import 'package:my_app/services/volunteer_service.dart';
 
+FakeFirebaseFirestore getInitializaedFirestoreInstance() {
+  final firestoreInstance = FakeFirebaseFirestore();
+  final collectionPath = 'volunteer_association';
+
+  firestoreInstance.collection(collectionPath).doc("doc1").set({
+    'address': "Fake Address 1",
+    'associationType': "Accion Social",
+    'capacity': 10,
+    'date_creation': Timestamp.now(),
+    'description': "Fake Description 1",
+    'imagePath': "fakePath.png",
+    'location': const GeoPoint(-34.44112875999616, -58.77390957104859),
+    'name': "Fake Name 1",
+    'requirements': "Fake Requirements",
+    'schedule': "Lunes-Martes",
+    'subtitle': "Fake Subtitle 1",
+    'volunteers': 0
+  });
+
+  firestoreInstance.collection(collectionPath).doc("doc2").set({
+    'address': "Fake Address 2",
+    'associationType': "Accion Social",
+    'capacity': 10,
+    'date_creation': Timestamp.now(),
+    'description': "Fake Description 2",
+    'imagePath': "fakePath.png",
+    'location': const GeoPoint(-35.44112875999616, -59.77390957104859),
+    'name': "Fake Name 2",
+    'requirements': "Fake Requirements",
+    'schedule': "Lunes-Martes",
+    'subtitle': "Fake Subtitle 2",
+    'volunteers': 0
+  });
+
+  firestoreInstance.collection(collectionPath).doc("doc3").set({
+    'address': "Fake Address 2",
+    'associationType': "Accion Social",
+    'capacity': 10,
+    'date_creation': Timestamp.now(),
+    'description': "Fake Description 2",
+    'imagePath': "fakePath.png",
+    'location': const GeoPoint(-33.44112875999616, -57.77390957104859),
+    'name': "Another Fake Name",
+    'requirements': "Fake Requirements",
+    'schedule': "Lunes-Martes",
+    'subtitle': "Fake Subtitle 2",
+    'volunteers': 0
+  });
+
+  return firestoreInstance;
+}
+
 void main() {
   group('Volunteer Association Service', () {
-    final firestoreInstance = FakeFirebaseFirestore();
-    final collectionPath = 'volunteer_association';
-
     late VolunteerAssociationService volunteerAssociationService;
-
-    firestoreInstance.collection(collectionPath).doc("doc1").set({
-      'address': "Fake Address 1",
-      'associationType': "Accion Social",
-      'capacity': 10,
-      'date_creation': Timestamp.now(),
-      'description': "Fake Description 1",
-      'imagePath': "fakePath.png",
-      'location': const GeoPoint(-34.44112875999616, -58.77390957104859),
-      'name': "Fake Name 1",
-      'requirements': "Fake Requirements",
-      'schedule': "Lunes-Martes",
-      'subtitle': "Fake Subtitle 1",
-      'volunteers': 0
-    });
-
-    firestoreInstance.collection(collectionPath).doc("doc2").set({
-      'address': "Fake Address 2",
-      'associationType': "Accion Social",
-      'capacity': 10,
-      'date_creation': Timestamp.now(),
-      'description': "Fake Description 2",
-      'imagePath': "fakePath.png",
-      'location': const GeoPoint(-35.44112875999616, -59.77390957104859),
-      'name': "Fake Name 2",
-      'requirements': "Fake Requirements",
-      'schedule': "Lunes-Martes",
-      'subtitle': "Fake Subtitle 2",
-      'volunteers': 0
-    });
-
-    firestoreInstance.collection(collectionPath).doc("doc3").set({
-      'address': "Fake Address 2",
-      'associationType': "Accion Social",
-      'capacity': 10,
-      'date_creation': Timestamp.now(),
-      'description': "Fake Description 2",
-      'imagePath': "fakePath.png",
-      'location': const GeoPoint(-33.44112875999616, -57.77390957104859),
-      'name': "Another Fake Name",
-      'requirements': "Fake Requirements",
-      'schedule': "Lunes-Martes",
-      'subtitle': "Fake Subtitle 2",
-      'volunteers': 0
-    });
-
     setUp(() {
       volunteerAssociationService =
-          VolunteerAssociationService(firestoreInstance);
+          VolunteerAssociationService(getInitializaedFirestoreInstance());
     });
 
     group('constructor', () {
       test('constructor should be not null', () {
-        expect(VolunteerAssociationService(firestoreInstance), isNotNull);
+        expect(VolunteerAssociationService(FakeFirebaseFirestore()), isNotNull);
       });
     });
 
