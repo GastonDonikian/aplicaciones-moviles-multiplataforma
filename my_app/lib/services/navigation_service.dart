@@ -38,7 +38,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: ApplyTab.routeLocation,
                 parentNavigatorKey: _shellNavigatorKey,
                 pageBuilder: (context, state) {
-                  return const NoTransitionPage(child: ApplyTab());
+                  return NoTransitionPage(child: ApplyTab());
                 },
                 routes: [
                   GoRoute(

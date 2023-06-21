@@ -16,11 +16,11 @@ import 'package:my_app/providers/location_provider.dart';
 import 'package:my_app/services/volunteer_service.dart';
 
 class ApplyTab extends ConsumerStatefulWidget {
-  const ApplyTab({super.key});
+  ApplyTab({super.key, this.volunteerAssociationService});
 
   static String get routeName => 'home';
   static String get routeLocation => '/home';
-
+  VolunteerAssociationService? volunteerAssociationService;
   @override
   ConsumerState<ApplyTab> createState() => _ApplyTabState();
 }
@@ -31,11 +31,14 @@ class _ApplyTabState extends ConsumerState<ApplyTab> {
   bool refreshing = false;
   LatLng? userLocation;
 
+  VolunteerAssociationService? volunteerAssociationService;
+
+
   void loadVolunteerAssociations(String? query, LatLng? userPosition) {
     setState(() {
       refreshing = true;
     });
-    VolunteerAssociationService().getVolunteerAssociations(query, userPosition).then((value) {
+    volunteerAssociationService!.getVolunteerAssociations(query, userPosition).then((value) {
       setState(() {
         refreshing = false;
         volunteerAssociations = value;
@@ -50,6 +53,12 @@ class _ApplyTabState extends ConsumerState<ApplyTab> {
   @override
   void initState() {
     super.initState();
+    if(widget.volunteerAssociationService == null) {
+      volunteerAssociationService = VolunteerAssociationService();
+    }
+    else {
+      volunteerAssociationService = widget.volunteerAssociationService;
+    }
   }
 
   @override
