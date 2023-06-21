@@ -68,7 +68,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                     name: EditProfilePage.routeName,
                     path: EditProfilePage.routeLocation,
                     parentNavigatorKey: _rootNavigatorKey,
-                    builder: (context, state) => const EditProfilePage(),
+                    builder: (context, state) => EditProfilePage(),
                   )
                 ]),
             GoRoute(
