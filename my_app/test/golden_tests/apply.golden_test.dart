@@ -4,11 +4,15 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:my_app/pages/not_found.dart';
 import 'package:my_app/providers/current_association_provider.dart';
+import 'package:my_app/providers/favorites_provider.dart';
+import 'package:my_app/providers/location_provider.dart';
 import 'package:my_app/screens/apply.dart';
 import 'package:my_app/screens/news.dart';
 import 'package:network_image_mock/network_image_mock.dart';
 
 import '../mocks/providers/MockCurrentVolunteerAssociationProvider.dart';
+import '../mocks/providers/MockFavoriteProvider.dart';
+import '../mocks/providers/MockLocationProvider.dart';
 import '../mocks/services/MockNewsService.dart';
 import '../mocks/services/MockVolunteerAssociationService.dart';
 
@@ -21,6 +25,8 @@ void main() {
     await mockNetworkImagesFor (() => tester.pumpWidget(
       ProviderScope(
         overrides:[
+          favoritesProvider.overrideWithProvider(mockFavoritesProvider),
+          locationProvider.overrideWithProvider(mockLocationProvider),
           currentAssociationProvider.overrideWithProvider(mockVolunteerAssociationProvider),
         ],
         child: MaterialApp(

@@ -10,7 +10,7 @@ class MockVolunteerAssociationService extends VolunteerAssociationService{
 
   @override
   Future createVolunteerAssociation(VolunteerAssociation volunteerAssociation) async {
-    return volunteerAssociation;
+    return this.volunteerAssociation;
   }
 
   @override

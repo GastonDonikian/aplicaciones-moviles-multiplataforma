@@ -19,3 +19,4 @@ class LocationNotifier extends StateNotifier<LatLng> {
 final locationProvider = StateNotifierProvider<LocationNotifier, LatLng>((ref) {
   return LocationNotifier();
 });
+
