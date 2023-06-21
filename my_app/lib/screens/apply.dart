@@ -55,13 +55,13 @@ class _ApplyTabState extends ConsumerState<ApplyTab> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    currentAssociation = ref.read(currentAssociationProvider);
     userLocation = ref.watch(locationProvider);
     loadVolunteerAssociations(null, userLocation);
   }
 
   @override
   Widget build(BuildContext context) {
+    currentAssociation = ref.watch(currentAssociationProvider);
     List<String> favorites = ref.watch(favoritesProvider);
     for (VolunteerAssociation association in volunteerAssociations) {
       association.isFavorite = favorites.contains(association.id);
