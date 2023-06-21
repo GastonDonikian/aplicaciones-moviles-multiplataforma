@@ -14,24 +14,33 @@ class RegistrationLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height * 0.9;
+
     return SerManosWhiteStatusBar(
-      body: SafeArea(
-        child: SerManosGridPadding(
-          child: Column(
-            children: [
-              Expanded(
+      body: LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints.tightFor(height: height),
+              child: SerManosGridPadding(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Image(image: AssetImage("assets/square_logo.png")),
-                    body,
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Image(image: AssetImage("assets/square_logo.png")),
+                          body,
+                        ],
+                      ),
+                    ),
+                    footer
                   ],
                 ),
               ),
-              footer
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
