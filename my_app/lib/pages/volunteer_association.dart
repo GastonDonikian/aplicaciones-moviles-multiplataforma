@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/atoms/icons.dart';
+import 'package:my_app/design_system/cells/app_bar.dart';
 import 'package:my_app/design_system/cells/modal.dart';
 import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/foundations/texts.dart';
@@ -51,7 +52,7 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
               currentUser = ref.read(userProvider);
               if (currentUser!.profileCompleted) {
                 context.pop();
-                onPressedShowModal(context, volunteerAssociation, header, confirmAction);
+                onPressedShowModal(volunteerAssociation, header, confirmAction);
               } else {
                 context.pop();
               }
@@ -73,7 +74,7 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
     });
   }
 
-  onPressedAbandonPostulate(BuildContext context) async {
+  onPressedAbandonPostulate() async {
     setState(() {
       loading = true;
     });
@@ -90,8 +91,7 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
     });
   }
 
-  onPressedShowModal(
-      BuildContext context, VolunteerAssociation volunteerAssociation, String header, Function confirmAction) {
+  onPressedShowModal(VolunteerAssociation volunteerAssociation, String header, Function confirmAction) {
     showDialog(
       context: context,
       builder: ((BuildContext context) {
@@ -139,26 +139,14 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: <Color>[Colors.black, Colors.black.withOpacity(0.0)],
-            ),
-          ),
+      appBar: SerManosOpacityAppBar(
+          leading: IconButton(
+        icon: const Icon(
+          SerManosIcons.backIcon,
+          color: Colors.white,
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(
-            SerManosIcons.backIcon,
-            color: Colors.white,
-          ),
-          onPressed: () => context.pop(),
-        ),
-      ),
+        onPressed: () => context.pop(),
+      )),
       body: volunteerAssociation == null
           ? const Center(child: CircularProgressIndicator())
           : SafeArea(
@@ -172,6 +160,7 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
                         child: Image.network(
                           volunteerAssociation!.imagePath,
                           fit: BoxFit.fitWidth,
+                          height: 243,
                         ),
                       ),
                     ],
@@ -234,7 +223,6 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
                               onPressedPostulate: () {
                                 if (currentUser!.profileCompleted) {
                                   onPressedShowModal(
-                                    context,
                                     volunteerAssociation!,
                                     'Te estas por postular a',
                                     () => onPressedPostulate(context),
@@ -245,19 +233,17 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
                                 }
                               },
                               abandonCurrentPostulate: () => onPressedShowModal(
-                                  context,
                                   volunteerAssociation!,
                                   currentAssociation!.confirmed
                                       ? '¿Estás seguro que querés abandonar tu voluntariado?'
                                       : '¿Estás seguro que querés retirar tu postulación?',
-                                  () => onPressedAbandonPostulate(context)),
+                                  onPressedAbandonPostulate),
                               abandonOtherPostulate: () => onPressedShowModal(
-                                  context,
                                   currentAssociation!.currentAssociation,
                                   currentAssociation!.confirmed
                                       ? '¿Estás seguro que querés abandonar tu voluntariado?'
                                       : '¿Estás seguro que querés retirar tu postulación?',
-                                  () => onPressedAbandonPostulate(context)),
+                                  onPressedAbandonPostulate),
                             )
                           ],
                         ),

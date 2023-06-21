@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_app/design_system/cells/registration_squeleton.dart';
 import 'package:my_app/design_system/foundations/text_styles.dart';
