@@ -64,7 +64,7 @@ class VolunteerAssociation {
       description: json['description'],
       requirements: json['requirements'].replaceAll(r'\n', '\n'),
       capacity: json['capacity'],
-      volunteers: json['volunteers'],
+      volunteers: json['volunteers'] ?? 0,
       isFavorite: json['isFavorite'] ?? false,
     );
   }

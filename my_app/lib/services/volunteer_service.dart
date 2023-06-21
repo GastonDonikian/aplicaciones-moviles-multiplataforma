@@ -10,21 +10,22 @@ class VolunteerAssociationService {
   }
 
   Future getVolunteerAssociations(String? query, LatLng? userPosition) async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(collectionPath).orderBy('date_creation', descending: true).get();
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection(collectionPath).orderBy('date_creation', descending: true).get();
     List<VolunteerAssociation> associations = [];
     for (var doc in querySnapshot.docs) {
       var data = doc.data() as Map<String, dynamic>;
       data['id'] = doc.id;
       var item = VolunteerAssociation.fromJson(data);
+      if (userPosition != null) {
+        item.distance = item.calculateDistance(userPosition.latitude, userPosition.longitude);
+      }
       if (query == null) {
         associations.add(item);
       } else {
         if (item.name.toLowerCase().contains(query.toLowerCase().trim())) {
           associations.add(item);
         }
-      }
-      if (userPosition != null) {
-        item.distance = item.calculateDistance(userPosition.latitude, userPosition.longitude);
       }
     }
 

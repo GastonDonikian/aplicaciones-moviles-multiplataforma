@@ -36,7 +36,7 @@ class SerManosVolunteeringList extends ConsumerWidget {
                     ),
                     padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
                     child: SerManosTexts.subtitle1(
-                      "Actualmente no hay voluntariados vigentes. Pronto se irán ircorporando nuevos",
+                      "Actualmente no hay voluntariados vigentes. Pronto se irán incorporando nuevos",
                       color: SerManosColors.black,
                       textAlign: TextAlign.center,
                     ),

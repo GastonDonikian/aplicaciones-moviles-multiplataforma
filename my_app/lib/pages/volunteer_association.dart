@@ -14,7 +14,6 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:my_app/providers/current_association_provider.dart';
 import 'package:my_app/providers/user_provider.dart';
 import 'package:my_app/screens/apply.dart';
-import 'package:my_app/screens/profile.dart';
 import 'package:my_app/services/volunteer_service.dart';
 import '../design_system/cells/cards.dart';
 import '../models/volunteer.dart';
@@ -27,26 +26,21 @@ class VolunteerAssociationPage extends ConsumerStatefulWidget {
   static String get routeName => 'association';
   static String get routeLocation => 'association/:id';
 
-  const VolunteerAssociationPage(
-      {super.key, required this.maybeVolunteerAssociation, required this.id});
+  const VolunteerAssociationPage({super.key, required this.maybeVolunteerAssociation, required this.id});
 
   @override
-  ConsumerState<VolunteerAssociationPage> createState() =>
-      _VolunteerAssociationPageState();
+  ConsumerState<VolunteerAssociationPage> createState() => _VolunteerAssociationPageState();
 }
 
-class _VolunteerAssociationPageState
-    extends ConsumerState<VolunteerAssociationPage> {
+class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationPage> {
   final Color cardTitleColor = SerManosColorFoundations.cardTitleColor;
   CurrentAssociation? currentAssociation;
   Volunteer? currentUser;
   VolunteerAssociation? volunteerAssociation;
+  bool loading = false;
 
   onPressedShowProfileModal(
-      BuildContext context,
-      VolunteerAssociation volunteerAssociation,
-      String header,
-      Function confirmAction) {
+      BuildContext context, VolunteerAssociation volunteerAssociation, String header, Function confirmAction) {
     showDialog(
       context: context,
       builder: ((BuildContext context) {
@@ -57,8 +51,7 @@ class _VolunteerAssociationPageState
               currentUser = ref.read(userProvider);
               if (currentUser!.profileCompleted) {
                 context.pop();
-                onPressedShowModal(
-                    context, volunteerAssociation, header, confirmAction);
+                onPressedShowModal(context, volunteerAssociation, header, confirmAction);
               } else {
                 context.pop();
               }
@@ -70,35 +63,35 @@ class _VolunteerAssociationPageState
   }
 
   onPressedPostulate(BuildContext context) async {
-    await ref
-        .read(currentAssociationProvider.notifier)
-        .subscribeToAssociation(volunteerAssociation!.id);
+    setState(() {
+      loading = true;
+    });
+    await ref.read(currentAssociationProvider.notifier).subscribeToAssociation(volunteerAssociation!.id);
     setState(() {
       currentAssociation = ref.read(currentAssociationProvider)!;
+      loading = false;
     });
   }
 
   onPressedAbandonPostulate(BuildContext context) async {
+    setState(() {
+      loading = true;
+    });
     var currentAssociationId = currentAssociation!.currentAssociation.id;
-    await ref
-        .read(currentAssociationProvider.notifier)
-        .unsubscribeFromCurrentAssociation();
+    await ref.read(currentAssociationProvider.notifier).unsubscribeFromCurrentAssociation();
     var newVolunteerAsociation = volunteerAssociation;
     if (currentAssociationId == volunteerAssociation!.id) {
-      newVolunteerAsociation = await VolunteerAssociationService()
-          .getVolunteerById(currentAssociationId);
+      newVolunteerAsociation = await VolunteerAssociationService().getVolunteerById(currentAssociationId);
     }
     setState(() {
       currentAssociation = null;
       volunteerAssociation = newVolunteerAsociation;
+      loading = false;
     });
   }
 
   onPressedShowModal(
-      BuildContext context,
-      VolunteerAssociation volunteerAssociation,
-      String header,
-      Function confirmAction) {
+      BuildContext context, VolunteerAssociation volunteerAssociation, String header, Function confirmAction) {
     showDialog(
       context: context,
       builder: ((BuildContext context) {
@@ -118,8 +111,7 @@ class _VolunteerAssociationPageState
   }
 
   void loadVolunteerAssociation() async {
-    VolunteerAssociation? association =
-        await VolunteerAssociationService().getVolunteerById(widget.id);
+    VolunteerAssociation? association = await VolunteerAssociationService().getVolunteerById(widget.id);
     if (association == null) {
       context.goNamed(ApplyTab.routeName);
     } else {
@@ -192,11 +184,8 @@ class _VolunteerAssociationPageState
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(top: 24),
-                              child: SerManosTexts.overline(
-                                  volunteerAssociation!.associationType
-                                      .toUpperCase(),
-                                  color: SerManosColorFoundations
-                                      .defaultOverlineColor),
+                              child: SerManosTexts.overline(volunteerAssociation!.associationType.toUpperCase(),
+                                  color: SerManosColorFoundations.defaultOverlineColor),
                             ),
                             SerManosTexts.headline1(
                               volunteerAssociation!.name,
@@ -204,22 +193,17 @@ class _VolunteerAssociationPageState
                             ),
                             Padding(
                                 padding: const EdgeInsets.only(top: 16),
-                                child: SerManosTexts.body1(
-                                    volunteerAssociation!.subtitle,
-                                    color: SerManosColorFoundations
-                                        .linkTextColor)),
+                                child: SerManosTexts.body1(volunteerAssociation!.subtitle,
+                                    color: SerManosColorFoundations.linkTextColor)),
                             Padding(
                                 padding: const EdgeInsets.only(top: 24),
-                                child: SerManosTexts.headline2(
-                                    'Sobre la actividad',
-                                    color: SerManosColorFoundations
-                                        .defaultHeadlineColor)),
+                                child: SerManosTexts.headline2('Sobre la actividad',
+                                    color: SerManosColorFoundations.defaultHeadlineColor)),
                             Padding(
                               padding: const EdgeInsets.only(top: 8),
                               child: SerManosTexts.body1(
                                 volunteerAssociation!.description,
-                                color:
-                                    SerManosColorFoundations.defaultBodyColor,
+                                color: SerManosColorFoundations.defaultBodyColor,
                               ),
                             ),
                             Padding(
@@ -228,28 +212,23 @@ class _VolunteerAssociationPageState
                                 cardTitle: "Ubicación",
                                 location: volunteerAssociation!.address,
                                 onLocationPressed: () => MapUtils.openMap(
-                                    volunteerAssociation!.location.latitude,
-                                    volunteerAssociation!.location.longitude),
+                                    volunteerAssociation!.location.latitude, volunteerAssociation!.location.longitude),
                               ),
                             ),
                             Padding(
                                 padding: const EdgeInsets.only(top: 24),
-                                child: SerManosTexts.headline2(
-                                    'Participar del voluntariado',
-                                    color: SerManosColorFoundations
-                                        .defaultHeadlineColor)),
+                                child: SerManosTexts.headline2('Participar del voluntariado',
+                                    color: SerManosColorFoundations.defaultHeadlineColor)),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 8),
                               child: MarkdownBody(
                                 data: volunteerAssociation!.requirements,
-                                listItemCrossAxisAlignment:
-                                    MarkdownListItemCrossAxisAlignment.start,
+                                listItemCrossAxisAlignment: MarkdownListItemCrossAxisAlignment.start,
                               ),
                             ),
-                            SerManosVacancy(
-                                vacancy:
-                                    volunteerAssociation!.availableCapacity),
+                            SerManosVacancy(vacancy: volunteerAssociation!.availableCapacity),
                             PostulationDispatcher(
+                              loading: loading,
                               currentAssociation: currentAssociation,
                               volunteerAssociation: volunteerAssociation!,
                               onPressedPostulate: () {
@@ -261,18 +240,10 @@ class _VolunteerAssociationPageState
                                     () => onPressedPostulate(context),
                                   );
                                 } else {
-                                  onPressedShowProfileModal(
-                                      context,
-                                      volunteerAssociation!,
-                                      'Te estas por postular a',
+                                  onPressedShowProfileModal(context, volunteerAssociation!, 'Te estas por postular a',
                                       () => onPressedPostulate(context));
                                 }
                               },
-                              // onPressedPostulate: () => onPressedShowModal(
-                              //     context,
-                              //     volunteerAssociation!,
-                              //     'Te estas por postular a',
-                              //     () => onPressedPostulate(context)),
                               abandonCurrentPostulate: () => onPressedShowModal(
                                   context,
                                   volunteerAssociation!,
@@ -282,7 +253,7 @@ class _VolunteerAssociationPageState
                                   () => onPressedAbandonPostulate(context)),
                               abandonOtherPostulate: () => onPressedShowModal(
                                   context,
-                                  volunteerAssociation!,
+                                  currentAssociation!.currentAssociation,
                                   currentAssociation!.confirmed
                                       ? '¿Estás seguro que querés abandonar tu voluntariado?'
                                       : '¿Estás seguro que querés retirar tu postulación?',
@@ -308,6 +279,7 @@ class PostulationDispatcher extends StatelessWidget {
     required this.onPressedPostulate,
     required this.abandonOtherPostulate,
     required this.abandonCurrentPostulate,
+    this.loading = false,
   });
 
   final CurrentAssociation? currentAssociation;
@@ -315,112 +287,99 @@ class PostulationDispatcher extends StatelessWidget {
   final void Function() onPressedPostulate;
   final void Function() abandonOtherPostulate;
   final void Function() abandonCurrentPostulate;
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 24),
+        _buildPostulationStatus(context, loading) ?? Container(),
+        _buildPostulationButton(context, loading),
+      ],
+    );
+  }
+
+  Widget? _buildPostulationStatus(BuildContext context, bool loading) {
+    bool isCurrentAssociation =
+        currentAssociation != null && currentAssociation!.currentAssociation.id == volunteerAssociation.id;
     if (volunteerAssociation.availableCapacity == 0) {
-      return Column(children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 24),
-          child: SerManosTexts.body1(
-            'No hay vacantes disponibles para postularse',
-            color: SerManosColorFoundations.defaultBodyColor,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 24, bottom: 32),
-          child: SerManosElevatedButton(
-            label: 'Postularme',
-            disabled: true,
-            onPressed: () => {},
-          ),
-        ),
-      ]);
-    }
-    if (currentAssociation == null) {
       return Padding(
-        padding: const EdgeInsets.only(top: 24, bottom: 32),
-        child: SerManosElevatedButton(
-          label: 'Postularme',
-          onPressed: () => onPressedPostulate(),
+        padding: const EdgeInsets.only(bottom: 24),
+        child: SerManosTexts.body1(
+          'No hay vacantes disponibles para postularse',
+          color: SerManosColorFoundations.defaultBodyColor,
         ),
       );
-    }
-    if (volunteerAssociation.id != currentAssociation!.currentAssociation.id) {
+    } else if (isCurrentAssociation) {
+      if (currentAssociation!.confirmed) {
+        return Column(
+          children: [
+            SerManosTexts.headline2('Estas participando', color: SerManosColorFoundations.defaultHeadlineColor),
+            Padding(
+              padding: const EdgeInsets.only(top: 8, bottom: 10),
+              child: SerManosTexts.body1(
+                'La organización confirmó que ya estas participando de este voluntariado',
+                color: SerManosColorFoundations.defaultBodyColor,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        );
+      } else {
+        return Column(
+          children: [
+            SerManosTexts.headline2('Te has postulado', color: SerManosColorFoundations.defaultHeadlineColor),
+            Padding(
+              padding: const EdgeInsets.only(top: 8, bottom: 10),
+              child: SerManosTexts.body1(
+                'Pronto la organización se pondrá en contacto contigo y te inscribirá como participante.',
+                color: SerManosColorFoundations.defaultBodyColor,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        );
+      }
+    } else if (!isCurrentAssociation && currentAssociation != null) {
       return Column(children: [
+        SerManosTexts.body1(
+          'Ya estas participando en otro voluntariado, debes abandonarlo primero para postularte a este.',
+          color: SerManosColorFoundations.defaultBodyColor,
+          textAlign: TextAlign.center,
+        ),
         Padding(
-            padding: const EdgeInsets.only(top: 24),
-            child: SerManosTexts.body1(
-              'Ya estas participando en otro voluntariado, debes abandonarlo primero para postularte a este.',
-              color: SerManosColorFoundations.defaultBodyColor,
-              textAlign: TextAlign.center,
-            )),
-        Padding(
-          padding: const EdgeInsets.only(top: 20),
+          padding: const EdgeInsets.only(top: 10, bottom: 20),
           child: SerManosTextButton(
             label: 'Abandonar voluntariado actual',
             onPressed: abandonOtherPostulate,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 24, bottom: 32),
-          child: SerManosElevatedButton(
-            label: 'Postularme',
-            disabled: true,
-            onPressed: () => {},
+            loading: loading,
           ),
         ),
       ]);
+    } else {
+      return null;
     }
-    if (currentAssociation!.confirmed) {
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 24),
-            child: SerManosTexts.headline2('Estas participando',
-                color: SerManosColorFoundations.defaultHeadlineColor),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: SerManosTexts.body1(
-              'La organización confirmó que ya estas participando de este voluntariado',
-              color: SerManosColorFoundations.defaultBodyColor,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 68),
-            child: SerManosTextButton(
-              label: 'Abandonar voluntariado',
-              onPressed: abandonCurrentPostulate,
-            ),
-          ),
-        ],
+  }
+
+  Widget _buildPostulationButton(BuildContext context, bool loading) {
+    bool isCurrentAssociation =
+        currentAssociation != null && currentAssociation!.currentAssociation.id == volunteerAssociation.id;
+    if (isCurrentAssociation) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 34),
+        child: SerManosTextButton(
+          label: currentAssociation!.confirmed ? 'Abandonar voluntariado' : 'Retirar postulación',
+          onPressed: abandonCurrentPostulate,
+          loading: loading,
+        ),
       );
     } else {
-      return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 24),
-            child: SerManosTexts.headline2('Te has postulado',
-                color: SerManosColorFoundations.defaultHeadlineColor),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: SerManosTexts.body1(
-              'Pronto la organización se pondrá en contacto contigo y te inscribirá como participante.',
-              color: SerManosColorFoundations.defaultBodyColor,
-              textAlign: TextAlign.center,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 68),
-            child: SerManosTextButton(
-              label: 'Retirar postulación',
-              onPressed: abandonCurrentPostulate,
-            ),
-          ),
-        ],
+      return SerManosElevatedButton(
+        label: 'Postularme',
+        disabled: volunteerAssociation.availableCapacity == 0 || currentAssociation != null,
+        onPressed: volunteerAssociation.availableCapacity == 0 ? null : onPressedPostulate,
+        loading: loading,
       );
     }
   }
