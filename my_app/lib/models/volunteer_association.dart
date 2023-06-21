@@ -10,7 +10,6 @@ class VolunteerAssociation {
   final String subtitle;
   final GeoPoint location;
   final String address;
-  final String schedule;
   final String description;
   final int capacity;
   int volunteers;
@@ -26,7 +25,6 @@ class VolunteerAssociation {
     required this.subtitle,
     required this.location,
     required this.address,
-    required this.schedule,
     required this.description,
     required this.capacity,
     required this.volunteers,
@@ -42,7 +40,6 @@ class VolunteerAssociation {
       'subtitle': subtitle,
       'location': location,
       'address': address,
-      'schedule': schedule,
       'description': description,
       'capacity': capacity,
       'volunteers': volunteers,
@@ -57,7 +54,6 @@ class VolunteerAssociation {
       associationType: json['associationType'],
       name: json['name'],
       subtitle: json['subtitle'],
-      schedule: json['schedule'],
       location: json['location'],
       address: json['address'],
       description: json['description'],

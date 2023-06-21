@@ -5,7 +5,6 @@ class News {
   final String title;
   final String subtitle;
   final String text;
-  final String link;
 
   News({
     required this.id,
@@ -14,7 +13,6 @@ class News {
     required this.title,
     required this.subtitle,
     required this.text,
-    required this.link,
   });
 
   Map<String, dynamic> toJson() {
@@ -25,18 +23,17 @@ class News {
       'title': title,
       'subtitle': subtitle,
       'text': text,
-      'link': link,
     };
   }
 
   factory News.fromJson(Map<String, dynamic> json) {
     return News(
-        id: json['id'],
-        imagePath: json['imagePath'],
-        newspaper: json['newspaper'],
-        title: json['title'],
-        subtitle: json['subtitle'],
-        text: json['text'],
-        link: json['link']);
+      id: json['id'],
+      imagePath: json['imagePath'],
+      newspaper: json['newspaper'],
+      title: json['title'],
+      subtitle: json['subtitle'],
+      text: json['text'],
+    );
   }
 }

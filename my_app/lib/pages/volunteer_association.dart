@@ -98,7 +98,6 @@ class _VolunteerAssociationPageState extends ConsumerState<VolunteerAssociationP
         return SerManosModal(
           header: header,
           title: volunteerAssociation.name,
-          schedule: volunteerAssociation.schedule,
           address: volunteerAssociation.address,
           onPressedCanceled: () => context.pop(),
           onPressedConfirmed: () {
