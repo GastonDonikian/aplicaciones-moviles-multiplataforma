@@ -4,21 +4,36 @@ import '../models/volunteer_association.dart';
 
 class VolunteerAssociationService {
   final collectionPath = 'volunteer_association';
+  FirebaseFirestore? instance;
 
-  Future createVolunteerAssociation(VolunteerAssociation volunteerAssociation) async {
-    return FirebaseFirestore.instance.collection(collectionPath).add(volunteerAssociation.toJson());
+  VolunteerAssociationService([this.instance]) {
+    if (instance == null) {
+      instance = FirebaseFirestore.instance;
+    } else {
+      this.instance = instance;
+    }
+  }
+
+  Future createVolunteerAssociation(
+      VolunteerAssociation volunteerAssociation) async {
+    return instance!
+        .collection(collectionPath)
+        .add(volunteerAssociation.toJson());
   }
 
   Future getVolunteerAssociations(String? query, LatLng? userPosition) async {
-    QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection(collectionPath).orderBy('date_creation', descending: true).get();
+    QuerySnapshot querySnapshot = await instance!
+        .collection(collectionPath)
+        .orderBy('date_creation', descending: true)
+        .get();
     List<VolunteerAssociation> associations = [];
     for (var doc in querySnapshot.docs) {
       var data = doc.data() as Map<String, dynamic>;
       data['id'] = doc.id;
       var item = VolunteerAssociation.fromJson(data);
       if (userPosition != null) {
-        item.distance = item.calculateDistance(userPosition.latitude, userPosition.longitude);
+        item.distance = item.calculateDistance(
+            userPosition.latitude, userPosition.longitude);
       }
       if (query == null) {
         associations.add(item);
@@ -38,7 +53,8 @@ class VolunteerAssociationService {
 
   Future<VolunteerAssociation?> getVolunteerById(String id) async {
     try {
-      var volunteerDoc = await FirebaseFirestore.instance.collection(collectionPath).doc(id).get();
+      var volunteerDoc =
+          await instance!.collection(collectionPath).doc(id).get();
       if (volunteerDoc.exists) {
         var volunteerData = volunteerDoc.data() as Map<String, dynamic>;
         volunteerData['id'] = volunteerDoc.id;
@@ -57,7 +73,7 @@ class VolunteerAssociationService {
       return;
     }
     currentAssoc.volunteers += add;
-    await FirebaseFirestore.instance
+    await instance!
         .collection(collectionPath)
         .doc(associationId)
         .update({'volunteers': currentAssoc.volunteers});

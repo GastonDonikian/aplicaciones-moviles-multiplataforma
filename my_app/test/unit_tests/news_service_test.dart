@@ -8,7 +8,9 @@ void main() {
   group('News Service', () {
     late NewsService newsService;
     final firestoreInstance = FakeFirebaseFirestore();
-    firestoreInstance.collection("news").doc("doc1").set({
+    const collectionPath = "news";
+
+    firestoreInstance.collection(collectionPath).doc("doc1").set({
       'date_creation': Timestamp.now(),
       'imagePath': "fakePath.png",
       'link': 'link.com',
@@ -17,7 +19,7 @@ void main() {
       'text': 'Fake Test 1',
       'title': 'Fake Title 1'
     });
-    firestoreInstance.collection("news").doc("doc2").set({
+    firestoreInstance.collection(collectionPath).doc("doc2").set({
       'date_creation': Timestamp.now(),
       'imagePath': "fakePath.png",
       'link': 'link.com',
@@ -32,32 +34,42 @@ void main() {
     });
 
     group('constructor', () {
-      test('constructor should be not null', () {
-        expect(NewsService(firestoreInstance), isNotNull);
-      });
+      test(
+        'constructor should be not null',
+        () {
+          expect(NewsService(firestoreInstance), isNotNull);
+        },
+      );
     });
 
     group('gestNewsById tests', () {
-      test('returned value should have title = Fake Title 1', () async {
-        News? retrievedNews = await newsService.getNewsById("doc1");
-        expect(retrievedNews != null, true);
-        expect(retrievedNews!.title, "Fake Title 1");
-      });
-      test('returned value should be null', () async {
-        News? retrievedNews = await newsService.getNewsById("doc99");
-        expect(retrievedNews == null, true);
-      });
+      test(
+        'returned value should have title = Fake Title 1',
+        () async {
+          News? retrievedNews = await newsService.getNewsById("doc1");
+          expect(retrievedNews != null, true);
+          expect(retrievedNews!.title, "Fake Title 1");
+        },
+      );
+      test(
+        'returned value should be null',
+        () async {
+          News? retrievedNews = await newsService.getNewsById("doc99");
+          expect(retrievedNews == null, true);
+        },
+      );
     });
 
     group('getAllNews tests', () {
       test(
-          'returned values should be two and the first one have title = Fake Title 1',
-          () async {
-        List<News> retrievedNewsList = await newsService.getAllNews();
-        retrievedNewsList.sort((a, b) => a.title.compareTo(b.title));
-        expect(retrievedNewsList.length, 2);
-        expect(retrievedNewsList[0].title, "Fake Title 1");
-      });
+        'returned values should be two and the first one have title = Fake Title 1',
+        () async {
+          List<News> retrievedNewsList = await newsService.getAllNews();
+          retrievedNewsList.sort((a, b) => a.title.compareTo(b.title));
+          expect(retrievedNewsList.length, 2);
+          expect(retrievedNewsList[0].title, "Fake Title 1");
+        },
+      );
     });
   });
 }

@@ -1,3 +1,4 @@
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -21,23 +22,28 @@ import '../mocks/services/MockVolunteerAssociationService.dart';
 void main() {
   testGoldens('Apply golden test', (WidgetTester tester) async {
     // Build the HomePage widget with the overridden provider
-    var mockVolunteerAssociationService = MockVolunteerAssociationService();
+    var mockVolunteerAssociationService =
+        MockVolunteerAssociationService(FakeFirebaseFirestore());
     var mockVolunteerAssociationProvider = mockCurrentAssociationProvider;
-    await mockNetworkImagesFor (() => tester.pumpWidget(
-      ProviderScope(
-        overrides:[
-          favoritesProvider.overrideWithProvider(mockFavoritesProvider),
-          locationProvider.overrideWithProvider(mockLocationProvider),
-          currentAssociationProvider.overrideWithProvider(mockVolunteerAssociationProvider),
-        ],
-        child: MaterialApp(
-          home: HomePage(
-            location: 'apply',
-            child: ApplyTab(volunteerAssociationService: mockVolunteerAssociationService,),
-        ),
-      ),
-      ),
-    ));
-    await screenMatchesGolden(tester, 'apply_page_golden'); // Compare with golden image
+    await mockNetworkImagesFor(() => tester.pumpWidget(
+          ProviderScope(
+            overrides: [
+              favoritesProvider.overrideWithProvider(mockFavoritesProvider),
+              locationProvider.overrideWithProvider(mockLocationProvider),
+              currentAssociationProvider
+                  .overrideWithProvider(mockVolunteerAssociationProvider),
+            ],
+            child: MaterialApp(
+              home: HomePage(
+                location: 'apply',
+                child: ApplyTab(
+                  volunteerAssociationService: mockVolunteerAssociationService,
+                ),
+              ),
+            ),
+          ),
+        ));
+    await screenMatchesGolden(
+        tester, 'apply_page_golden'); // Compare with golden image
   });
 }

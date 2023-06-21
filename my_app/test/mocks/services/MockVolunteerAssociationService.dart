@@ -3,12 +3,26 @@ import 'package:latlng/latlng.dart';
 import 'package:my_app/models/volunteer_association.dart';
 import 'package:my_app/services/volunteer_service.dart';
 
-class MockVolunteerAssociationService extends VolunteerAssociationService{
+class MockVolunteerAssociationService extends VolunteerAssociationService {
+  final VolunteerAssociation volunteerAssociation = VolunteerAssociation(
+      id: '123',
+      imagePath: '',
+      associationType: 'asdf',
+      name: 'asdf',
+      subtitle: 'asdf',
+      location: GeoPoint(12, 23),
+      address: 'asdf',
+      schedule: 'asdf',
+      description: 'asdf',
+      capacity: 10,
+      volunteers: 2,
+      requirements: 'asdf');
 
-  final VolunteerAssociation volunteerAssociation = VolunteerAssociation(id: '123', imagePath: '', associationType: 'asdf', name: 'asdf', subtitle: 'asdf', location: GeoPoint(12,23), address: 'asdf', schedule: 'asdf', description: 'asdf', capacity: 10, volunteers: 2, requirements: 'asdf');
+  MockVolunteerAssociationService(super.instance);
 
   @override
-  Future createVolunteerAssociation(VolunteerAssociation volunteerAssociation) async {
+  Future createVolunteerAssociation(
+      VolunteerAssociation volunteerAssociation) async {
     return this.volunteerAssociation;
   }
 
@@ -26,5 +40,4 @@ class MockVolunteerAssociationService extends VolunteerAssociationService{
   Future<void> changeCurrentVolunteers(String associationId, int add) async {
     return;
   }
-
 }
