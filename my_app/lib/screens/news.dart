@@ -7,21 +7,26 @@ import 'package:my_app/models/news.dart';
 import '../services/news_service.dart';
 
 class NewsTab extends StatefulWidget {
-  const NewsTab({super.key});
+  NewsTab({super.key, this.newsService});
   static String get routeName => 'news';
   static String get routeLocation => '/news';
-
+  NewsService? newsService;
   @override
   State<StatefulWidget> createState() => NewsState();
 }
 
 class NewsState extends State<NewsTab> {
   List<News> news = [];
+  var newsService;
   @override
   void initState() {
     super.initState();
-
-    NewsService().getAllNews().then((value) {
+    if(widget.newsService == null) {
+      newsService = NewsService();
+    } else {
+      newsService = widget.newsService;
+    }
+    newsService.getAllNews().then((value) {
       setState(() {
         news = value;
       });

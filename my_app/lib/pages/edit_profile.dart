@@ -15,10 +15,12 @@ import '../services/user_service.dart';
 import 'package:intl/intl.dart';
 
 class EditProfilePage extends ConsumerStatefulWidget {
-  const EditProfilePage({super.key});
+  EditProfilePage({super.key, this.authService, this.imageService});
 
   static String get routeName => 'edit_profile';
   static String get routeLocation => 'edit_profile';
+  AuthenticationService? authService;
+  ImagesService? imageService;
 
   @override
   ConsumerState<EditProfilePage> createState() => _EditProfilePageState();
@@ -33,10 +35,23 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
   GlobalKey<FormState> personalInfoFormKey = GlobalKey<FormState>();
   GlobalKey<FormState> contactInfoFormKey = GlobalKey<FormState>();
 
+  var userService;
+  var imageService;
+
   @override
   void initState() {
     super.initState();
     Volunteer currentUser = ref.read(userProvider)!;
+    if(widget.authService == null) {
+      userService = AuthenticationService();
+    } else {
+      userService = widget.authService;
+    }
+    if(widget.imageService == null) {
+      imageService = ImagesService();
+    } else {
+      imageService = widget.imageService;
+    }
     if (currentUser.profileCompleted) {
       final DateFormat formatter = DateFormat('dd/MM/yyy');
       personalInfo = PersonalInfo(
@@ -53,8 +68,7 @@ class _EditProfilePageState extends ConsumerState<EditProfilePage> {
     }
   }
 
-  final userService = AuthenticationService();
-  final imageService = ImagesService();
+
 
   void onPersonalInfoValidationChanged(bool isValid) {
     setState(() => personalIsValid = isValid);

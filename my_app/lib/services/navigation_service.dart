@@ -76,7 +76,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: NewsTab.routeLocation,
                 parentNavigatorKey: _shellNavigatorKey,
                 pageBuilder: (context, state) {
-                  return const NoTransitionPage(child: NewsTab());
+                  return NoTransitionPage(child: NewsTab());
                 },
                 routes: [
                   GoRoute(
