@@ -1,3 +1,4 @@
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -14,7 +15,7 @@ import '../mocks/services/MockNewsService.dart';
 void main() {
   testGoldens('News Detailed golden test', (WidgetTester tester) async {
     // Build the HomePage widget with the overridden provider
-    var newsService = MockNewsService();
+    var newsService = MockNewsService(FakeFirebaseFirestore());
     await mockNetworkImagesFor (() => tester.pumpWidget(
       ProviderScope(
         child: MaterialApp(
