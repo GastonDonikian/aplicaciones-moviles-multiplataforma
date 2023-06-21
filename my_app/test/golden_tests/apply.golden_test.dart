@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
+import 'package:my_app/pages/home.dart';
 import 'package:my_app/pages/not_found.dart';
 import 'package:my_app/providers/current_association_provider.dart';
 import 'package:my_app/providers/favorites_provider.dart';
@@ -30,8 +31,11 @@ void main() {
           currentAssociationProvider.overrideWithProvider(mockVolunteerAssociationProvider),
         ],
         child: MaterialApp(
-          home: ApplyTab(volunteerAssociationService: mockVolunteerAssociationService,),
+          home: HomePage(
+            location: 'apply',
+            child: ApplyTab(volunteerAssociationService: mockVolunteerAssociationService,),
         ),
+      ),
       ),
     ));
     await screenMatchesGolden(tester, 'apply_page_golden'); // Compare with golden image

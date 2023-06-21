@@ -44,7 +44,6 @@ dependencies:
   firebase_storage: ^11.2.3
   mask_text_input_formatter: ^2.4.0
   url_launcher: ^6.1.11
-  shared_preferences: ^2.1.2
   flutter_riverpod: ^2.3.6
   intl: ^0.18.1
   flutter_markdown: ^0.6.1
@@ -58,12 +57,12 @@ dependencies:
   geolocator: ^9.0.2
   latlng: ^1.0.0
   fake_cloud_firestore: ^2.4.1+1
-
+  shared_preferences: ^2.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mockito: ^5.0.0
-  network_image_mock: ^2.0.1
+  mockito: ^5.2.0
+  network_image_mock: ^2.1.1
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your

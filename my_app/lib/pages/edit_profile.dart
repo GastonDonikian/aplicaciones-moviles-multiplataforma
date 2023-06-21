@@ -10,8 +10,7 @@ import 'package:my_app/models/forms/personal_info.dart';
 import 'package:my_app/models/volunteer.dart';
 import 'package:my_app/providers/user_provider.dart';
 import 'package:my_app/services/images_service.dart';
-
-import '../services/user_service.dart';
+import 'package:my_app/services/user_service.dart';
 import 'package:intl/intl.dart';
 
 class EditProfilePage extends ConsumerStatefulWidget {

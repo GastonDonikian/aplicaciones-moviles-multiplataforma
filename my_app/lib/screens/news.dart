@@ -17,14 +17,14 @@ class NewsTab extends StatefulWidget {
 
 class NewsState extends State<NewsTab> {
   List<News> news = [];
-  var newsService;
+  late NewsService newsService;
   @override
   void initState() {
     super.initState();
     if(widget.newsService == null) {
       newsService = NewsService();
     } else {
-      newsService = widget.newsService;
+      newsService = widget.newsService!;
     }
     newsService.getAllNews().then((value) {
       setState(() {
@@ -64,15 +64,3 @@ class NewsState extends State<NewsTab> {
   }
 }
 
-News myNews = News(
-  id: '1',
-  imagePath: 'assets/news_card_1.png',
-  newspaper: 'Reporte 2820',
-  link: 'www.google.com',
-  title: 'Ser Donante Voluntario',
-  subtitle: 'Desde el Hospital Centenario recalcan la importancia de la donación voluntaria de Sangre',
-  text: 'Desde el Hospital Centenario recalcan la importancia de la donación voluntaria de Sangre. '
-      'Desde el Hospital Centenario recalcan la importancia de la donación voluntaria de Sangre. '
-      'Desde el Hospital Centenario recalcan la importancia de la donación voluntaria de Sangre. '
-      'Desde el Hospital Centenario recalcan la importancia de la donación voluntaria de Sangre',
-);

@@ -9,7 +9,7 @@ class NewsService {
     if (instance == null) {
       instance = FirebaseFirestore.instance;
     } else {
-      this.instance = instance;
+      instance = instance;
     }
   }
 

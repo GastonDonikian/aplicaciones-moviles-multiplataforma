@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:latlng/latlng.dart';
 import 'package:my_app/models/volunteer_association.dart';

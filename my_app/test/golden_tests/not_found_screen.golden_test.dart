@@ -18,3 +18,4 @@ void main() {
     await screenMatchesGolden(tester, 'not_found_page_golden'); // Compare with golden image
   });
 }
+
