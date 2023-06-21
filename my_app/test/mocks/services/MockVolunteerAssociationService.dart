@@ -4,8 +4,21 @@ import 'package:my_app/models/volunteer_association.dart';
 import 'package:my_app/services/volunteer_service.dart';
 
 class MockVolunteerAssociationService extends VolunteerAssociationService {
-  final VolunteerAssociation volunteerAssociation = VolunteerAssociation(
-      id: '123',
+  final VolunteerAssociation volunteerAssociation1 = VolunteerAssociation(
+      id: 'assoc1',
+      imagePath: '',
+      associationType: 'asdf',
+      name: 'asdf',
+      subtitle: 'asdf',
+      location: GeoPoint(12, 23),
+      address: 'asdf',
+      description: 'asdf',
+      capacity: 10,
+      volunteers: 2,
+      requirements: 'asdf');
+
+  final VolunteerAssociation volunteerAssociation2 = VolunteerAssociation(
+      id: 'assoc2',
       imagePath: '',
       associationType: 'asdf',
       name: 'asdf',
@@ -22,17 +35,20 @@ class MockVolunteerAssociationService extends VolunteerAssociationService {
   @override
   Future createVolunteerAssociation(
       VolunteerAssociation volunteerAssociation) async {
-    return this.volunteerAssociation;
+    return this.volunteerAssociation1;
   }
 
   @override
   Future getVolunteerAssociations(String? query, LatLng? userPosition) async {
-    return volunteerAssociation;
+    return volunteerAssociation1;
   }
 
   @override
   Future<VolunteerAssociation?> getVolunteerById(String id) async {
-    return volunteerAssociation;
+    if (id == "assoc2") {
+      return volunteerAssociation2;
+    }
+    return volunteerAssociation1;
   }
 
   @override
