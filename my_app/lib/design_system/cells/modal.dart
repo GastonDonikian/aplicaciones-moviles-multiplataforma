@@ -44,7 +44,8 @@ class SerManosModal extends StatelessWidget {
                         Expanded(
                           child: SerManosTexts.subtitle1(
                             header,
-                            color: SerManosColorFoundations.modalSubtitleTextColor,
+                            color:
+                                SerManosColorFoundations.modalSubtitleTextColor,
                           ),
                         ),
                       ],
@@ -53,9 +54,12 @@ class SerManosModal extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SerManosTexts.headline2(
-                          title,
-                          color: SerManosColorFoundations.modalHeadlineTextColor,
+                        Expanded(
+                          child: SerManosTexts.headline2(
+                            title,
+                            color:
+                                SerManosColorFoundations.modalHeadlineTextColor,
+                          ),
                         ),
                       ],
                     ),

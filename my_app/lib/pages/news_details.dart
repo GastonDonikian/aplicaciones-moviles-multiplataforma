@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_share/flutter_share.dart';
+
 import 'package:go_router/go_router.dart';
 import 'package:my_app/screens/news.dart';
 import 'package:my_app/services/news_service.dart';
@@ -12,13 +12,15 @@ import 'package:my_app/design_system/foundations/colors.dart';
 import 'package:my_app/design_system/molecules/buttons.dart';
 import 'package:my_app/design_system/tokens/grid_padding.dart';
 import 'package:http/http.dart' as http;
+import 'package:share_plus/share_plus.dart';
 
 import '../design_system/foundations/texts.dart';
 import '../models/news.dart';
 import '../services/analytics_service.dart';
 
 class DetailedNews extends StatefulWidget {
-  const DetailedNews({Key? key, required this.id, required this.maybeNews}) : super(key: key);
+  const DetailedNews({Key? key, required this.id, required this.maybeNews})
+      : super(key: key);
 
   final String id;
   final News? maybeNews;
@@ -63,12 +65,15 @@ class _DetailedNewsState extends State<DetailedNews> {
     final response = await http.get(url);
     final bytes = response.bodyBytes;
     final temp = await getTemporaryDirectory();
-    final path = '${temp.path}/image.png';
-    File(path).writeAsBytes(bytes);
-    await FlutterShare.shareFile(
-      title: news!.title,
+    final path = '${temp.path}/image.jpg';
+
+    final file = File(path);
+    file.writeAsBytes(bytes);
+    XFile xfile = XFile(path);
+    await Share.shareXFiles(
+      [xfile],
       text: news!.subtitle,
-      filePath: path,
+      subject: news!.title,
     );
   }
 
@@ -82,7 +87,9 @@ class _DetailedNewsState extends State<DetailedNews> {
                 return SerManosGridPadding(
                   child: SingleChildScrollView(
                     child: ConstrainedBox(
-                      constraints: BoxConstraints(minWidth: constraints.maxWidth, minHeight: constraints.maxHeight),
+                      constraints: BoxConstraints(
+                          minWidth: constraints.maxWidth,
+                          minHeight: constraints.maxHeight),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,
@@ -92,11 +99,14 @@ class _DetailedNewsState extends State<DetailedNews> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.only(top: 24),
-                                child: SerManosTexts.overline(news!.newspaper.toUpperCase(),
-                                    color: SerManosColorFoundations.defaultOverlineColor),
+                                child: SerManosTexts.overline(
+                                    news!.newspaper.toUpperCase(),
+                                    color: SerManosColorFoundations
+                                        .defaultOverlineColor),
                               ),
                               SerManosTexts.headline2(news!.title,
-                                  color: SerManosColorFoundations.defaultHeadlineColor),
+                                  color: SerManosColorFoundations
+                                      .defaultHeadlineColor),
                               Padding(
                                 padding: const EdgeInsets.only(top: 16),
                                 child: Row(
@@ -117,11 +127,13 @@ class _DetailedNewsState extends State<DetailedNews> {
                               Padding(
                                   padding: const EdgeInsets.only(top: 16),
                                   child: SerManosTexts.subtitle1(news!.subtitle,
-                                      color: SerManosColorFoundations.linkTextColor)),
+                                      color: SerManosColorFoundations
+                                          .linkTextColor)),
                               Padding(
                                   padding: const EdgeInsets.only(top: 16),
                                   child: SerManosTexts.body1(news!.text,
-                                      color: SerManosColorFoundations.defaultBodyColor)),
+                                      color: SerManosColorFoundations
+                                          .defaultBodyColor)),
                             ],
                           ),
                           Column(
@@ -130,11 +142,14 @@ class _DetailedNewsState extends State<DetailedNews> {
                                 alignment: Alignment.center,
                                 child: Padding(
                                     padding: const EdgeInsets.only(top: 16),
-                                    child: SerManosTexts.headline2('Comparte esta nota',
-                                        color: SerManosColorFoundations.defaultHeadlineColor)),
+                                    child: SerManosTexts.headline2(
+                                        'Comparte esta nota',
+                                        color: SerManosColorFoundations
+                                            .defaultHeadlineColor)),
                               ),
                               const SizedBox(height: 16),
-                              SerManosElevatedButton(label: 'Compartir', onPressed: shareNews),
+                              SerManosElevatedButton(
+                                  label: 'Compartir', onPressed: shareNews),
                               const SizedBox(height: 32),
                             ],
                           ),

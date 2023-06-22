@@ -50,7 +50,6 @@ dependencies:
   markdown: ^4.0.0
   image_picker: ^0.8.9
   http: ^0.13.6
-  flutter_share: ^2.0.0
   path_provider: ^2.0.15
   crypto: ^3.0.0
   golden_toolkit: ^0.15.0
@@ -58,6 +57,7 @@ dependencies:
   latlng: ^1.0.0
   fake_cloud_firestore: ^2.4.1+1
   shared_preferences: ^2.0.0
+  share_plus: ^7.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
