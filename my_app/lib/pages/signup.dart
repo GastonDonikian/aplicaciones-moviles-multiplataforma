@@ -51,16 +51,19 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
       var password = signUpInfo.password!;
 
       userService.signUp(name, surname, email, password).then((value) {
-        userService.getUserById(value.user!.uid).then((user) {
-          if (user == null) {
-            throw FirebaseAuthException(code: 'user-not-found', message: 'User not found');
-          } else {
-            ref.read(userProvider.notifier).setUser(user);
-            context.goNamed('welcome');
-            setState(() {
-              loading = false;
-            });
-          }
+        userService.signIn(email, password).then((value) {
+          userService.getUserById(value.user!.uid).then((user) {
+            if (user == null) {
+              throw FirebaseAuthException(
+                  code: 'user-not-found', message: 'User not found');
+            } else {
+              ref.read(userProvider.notifier).setUser(user);
+              context.goNamed('welcome');
+              setState(() {
+                loading = false;
+              });
+            }
+          });
         });
       }).catchError((e) {
         if (e is FirebaseAuthException) {
@@ -93,7 +96,10 @@ class _SignUpPageState extends ConsumerState<SignUpPage> {
           signUpInfo: signUpInfo,
           formKey: formKey,
         ),
-        footer: _SignUpFooter(signUpEnabled: isValid, onSignUpPressed: onSignUpPressed, isLoading: loading));
+        footer: _SignUpFooter(
+            signUpEnabled: isValid,
+            onSignUpPressed: onSignUpPressed,
+            isLoading: loading));
   }
 }
 
@@ -125,7 +131,11 @@ class _SignUpBody extends StatelessWidget {
 }
 
 class _SignUpFooter extends StatelessWidget {
-  const _SignUpFooter({Key? key, required this.signUpEnabled, this.isLoading = false, required this.onSignUpPressed});
+  const _SignUpFooter(
+      {Key? key,
+      required this.signUpEnabled,
+      this.isLoading = false,
+      required this.onSignUpPressed});
 
   final bool signUpEnabled;
   final bool isLoading;
@@ -142,7 +152,9 @@ class _SignUpFooter extends StatelessWidget {
           loading: isLoading,
         ),
         const SizedBox(height: 28),
-        SerManosTextButton(label: "Ya tengo cuenta", onPressed: () => context.goNamed("login")),
+        SerManosTextButton(
+            label: "Ya tengo cuenta",
+            onPressed: () => context.goNamed("login")),
       ],
     );
   }
