@@ -21,7 +21,28 @@ final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final routerProvider = Provider<GoRouter>((ref) {
-  final bool isLogged = ref.watch(authProvider);
+  ref.listen(authProvider, (previous, next) {
+    if (previous != next) {
+      if (next) {
+        // user is now logged in
+        var routeLocation = _rootNavigatorKey.currentState!.widget.initialRoute;
+        if (routeLocation == LoginPage.routeLocation ||
+            routeLocation == SignUpPage.routeLocation ||
+            routeLocation == LandingPage.routeLocation) {
+          _rootNavigatorKey.currentState!.pushReplacementNamed(ApplyTab.routeLocation);
+        }
+      } else {
+        // user is now logged out
+        var routeLocation = _rootNavigatorKey.currentState!.widget.initialRoute;
+        final needsAuth = routeLocation != LoginPage.routeLocation &&
+            routeLocation != SignUpPage.routeLocation &&
+            routeLocation != LandingPage.routeLocation;
+        if (needsAuth) {
+          _rootNavigatorKey.currentState!.pushReplacementNamed(LandingPage.routeLocation);
+        }
+      }
+    }
+  });
 
   return GoRouter(
       navigatorKey: _rootNavigatorKey,
@@ -116,6 +137,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         ),
       ],
       redirect: (context, state) {
+        bool isLogged = ref.read(authProvider);
         final needsAuth = state.location != LoginPage.routeLocation &&
             state.location != SignUpPage.routeLocation &&
             state.location != LandingPage.routeLocation;
