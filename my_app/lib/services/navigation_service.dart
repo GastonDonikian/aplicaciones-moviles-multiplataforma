@@ -25,20 +25,20 @@ final routerProvider = Provider<GoRouter>((ref) {
     if (previous != next) {
       if (next) {
         // user is now logged in
-        var routeLocation = _rootNavigatorKey.currentState!.widget.initialRoute;
+        var routeLocation = GoRouter.of(_rootNavigatorKey.currentContext!).location;
         if (routeLocation == LoginPage.routeLocation ||
             routeLocation == SignUpPage.routeLocation ||
             routeLocation == LandingPage.routeLocation) {
-          _rootNavigatorKey.currentState!.pushReplacementNamed(ApplyTab.routeLocation);
+          GoRouter.of(_rootNavigatorKey.currentContext!).goNamed(ApplyTab.routeName);
         }
       } else {
         // user is now logged out
-        var routeLocation = _rootNavigatorKey.currentState!.widget.initialRoute;
+        var routeLocation = GoRouter.of(_rootNavigatorKey.currentContext!).location;
         final needsAuth = routeLocation != LoginPage.routeLocation &&
             routeLocation != SignUpPage.routeLocation &&
             routeLocation != LandingPage.routeLocation;
         if (needsAuth) {
-          _rootNavigatorKey.currentState!.pushReplacementNamed(LandingPage.routeLocation);
+          GoRouter.of(_rootNavigatorKey.currentContext!).goNamed(LandingPage.routeName);
         }
       }
     }
